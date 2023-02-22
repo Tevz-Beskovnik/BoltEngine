@@ -12,15 +12,15 @@ int main()
         .fullscreen = false
     };
 
-    RGB bg(0, 255, 0);
+    RGB bg(128, 78, 90);
 
     single_ptr<Window> window = Window::create(&w_conf);
 
-    window->set_background_color(&bg);
+    window->setBackgroundColor(&bg);
 
-    while(window->is_window_open())
+    while(window->isWindowOpen())
     {
-        window->window_frame_routine();
+        window->windowFrameRoutine();
     }
 
     window->close();

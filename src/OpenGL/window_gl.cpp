@@ -27,7 +27,7 @@ namespace bolt
         return create_single<WindowGL>(width, height, title);
     }
 
-    void WindowGL::resize_window(uint16_t width, uint16_t height)
+    void WindowGL::resizeWindow(uint16_t width, uint16_t height)
     {
         BOLT_MSG_DEBUG("Resizing window")
         glfwSetWindowSize(window, width, height);
@@ -80,7 +80,7 @@ namespace bolt
         );
     }
 
-    void WindowGL::frame_routine()
+    void WindowGL::frameRoutine()
     {
         glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
 
@@ -91,7 +91,7 @@ namespace bolt
         glfwSwapBuffers(window);
     }
 
-    void WindowGL::set_background_color(RGB* color)
+    void WindowGL::setBackgroundColor(RGB* color)
     {
         if(background_color_owned)
             delete background_color;
@@ -100,7 +100,7 @@ namespace bolt
         background_color_owned = false;
     }
 
-    void WindowGL::set_active()
+    void WindowGL::setActive()
     {
         if(!window)
         {
@@ -118,7 +118,7 @@ namespace bolt
         BOLT_MSG_DEBUG("GLEW initialised")
     }
 
-    [[nodiscard]] bool WindowGL::should_close()
+    [[nodiscard]] bool WindowGL::shouldClose()
     {
         return !glfwWindowShouldClose(window);
     }

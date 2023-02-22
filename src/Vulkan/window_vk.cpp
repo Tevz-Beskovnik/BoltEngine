@@ -13,7 +13,7 @@ namespace bolt
         return create_single<WindowVK>(width, height, title);
     }
 
-    void WindowVK::resize_window(uint16_t width, uint16_t height)
+    void WindowVK::resizeWindow(uint16_t width, uint16_t height)
     {
         ;
     }
@@ -33,17 +33,17 @@ namespace bolt
         ;
     }
 
-    void WindowVK::frame_routine()
+    void WindowVK::frameRoutine()
     {
         ;
     }
 
-    void WindowVK::set_active()
+    void WindowVK::setActive()
     {
         ;
     }
 
-    [[nodiscard]] bool WindowVK::should_close()
+    [[nodiscard]] bool WindowVK::shouldClose()
     {
         return false;
     }

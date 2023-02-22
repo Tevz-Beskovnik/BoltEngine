@@ -13,7 +13,7 @@ namespace bolt
         if(config->fullscreen == true)
             framework_window->fullscreen();
 
-        framework_window->set_active();
+        framework_window->setActive();
     }
 
     [[nodiscard]] single_ptr<Window> Window::create(window_config* config)
@@ -34,7 +34,7 @@ namespace bolt
         width = new_width;
         height = new_height;
 
-        framework_window->resize_window(width, height);
+        framework_window->resizeWindow(width, height);
     }
 
     void Window::window_windowed(uint16_t x, uint16_t y, uint16_t new_width, uint16_t new_height)
@@ -63,14 +63,14 @@ namespace bolt
         framework_window->fullscreen();
     }
 
-    void Window::window_frame_routine()
+    void Window::windowFrameRoutine()
     {
-        framework_window->frame_routine();
+        framework_window->frameRoutine();
     }
 
-    void Window::set_background_color(RGB* color)
+    void Window::setBackgroundColor(RGB* color)
     {
-        framework_window->set_background_color(color);
+        framework_window->setBackgroundColor(color);
     }
 
     void Window::get_size(uint16_t *set_width, uint16_t *set_height)
@@ -79,9 +79,9 @@ namespace bolt
         *set_height = height;
     }
 
-    [[nodiscard]] bool Window::is_window_open()
+    [[nodiscard]] bool Window::isWindowOpen()
     {
-        return framework_window->should_close();
+        return framework_window->shouldClose();
     }
 
     void Window::close()

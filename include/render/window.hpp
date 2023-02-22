@@ -42,13 +42,13 @@ namespace bolt
 
             void window_fullscreen();
 
-            void window_frame_routine();
+            void windowFrameRoutine();
 
-            void set_background_color(RGB* color);
+            void setBackgroundColor(RGB* color);
 
             void get_size(uint16_t *width, uint16_t *height);
 
-            [[nodiscard]] bool is_window_open();
+            [[nodiscard]] bool isWindowOpen();
 
             void close();
 
