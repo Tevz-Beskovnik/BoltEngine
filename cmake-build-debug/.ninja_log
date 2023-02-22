@@ -1,0 +1,16 @@
+# ninja log v5
+0	12	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+0	516	1677082046538020653	CMakeFiles/BoltEngine.dir/src/core/colors.cpp.o	9a548e3a1063ada7
+1	524	1677082046546514306	CMakeFiles/BoltEngine.dir/src/render/window.cpp.o	7da1e0cb0569c0b2
+0	525	1677082046547386150	CMakeFiles/BoltEngine.dir/src/OpenGL/window_gl.cpp.o	93d7217c40a4ac5a
+1	530	1677082046553455265	CMakeFiles/BoltEngine.dir/example/basic/main.cpp.o	ea85b5e6b54c549f
+0	554	1677082046577418613	CMakeFiles/BoltEngine.dir/src/Vulkan/window_vk.cpp.o	d7bd9b3936553335
+554	660	1677082046684639431	bin/BoltEngine	813735ca3e68b4d6
+0	7	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+1	12	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+0	7	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+1	9	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+1	9	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+1	11	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+1	10	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
+0	9	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	a6f8c14cf374fc35
