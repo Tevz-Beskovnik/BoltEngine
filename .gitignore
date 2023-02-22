@@ -15,5 +15,7 @@ conaninfo.txt
 graph_info.json
 _deps
 
+/cmake-build-debug/**
+
 /build/**
 /.vscode

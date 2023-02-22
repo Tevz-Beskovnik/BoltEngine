@@ -9,7 +9,7 @@ int main()
         .width = 800,
         .height = 600,
         .title = "Title",
-        .fullscreen = false
+        .fullscreen = true
     };
 
     RGB bg(128, 78, 90);
