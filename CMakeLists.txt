@@ -26,7 +26,7 @@ target_include_directories("${CMAKE_PROJECT_NAME}"
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/render
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/Vulkan
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/OpenGL
-    #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/model
     #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/scene
     #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/utils
 )
