@@ -1,16 +1,9 @@
 # ninja log v5
-373	471	1677098453522399986	bin/BoltEngine	2b8efda25b2a6975
-2	526	1677098418774347494	CMakeFiles/BoltEngine.dir/src/Vulkan/window_vk.cpp.o	a44c92233baa9566
-1	373	1677098453423385296	CMakeFiles/BoltEngine.dir/example/basic/main.cpp.o	b09da1bf113ffb2f
-9	55	1677145593319168166	build.ninja	2fdff8b29ede52ca
-1	513	1677098418761575011	CMakeFiles/BoltEngine.dir/src/OpenGL/window_gl.cpp.o	4e00ff1faa0fd8f2
-1	9	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	3939ebba7edf533c
-2	509	1677098418757385472	CMakeFiles/BoltEngine.dir/src/render/window.cpp.o	df8b099a65a21562
-2	498	1677098418744736482	CMakeFiles/BoltEngine.dir/src/core/colors.cpp.o	dd6537711fe3d173
-0	12	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	3939ebba7edf533c
-2	500	1677145622893813653	CMakeFiles/BoltEngine.dir/src/core/colors.cpp.o	2d24fdc160b568ee
+546	677	1677145623076844038	bin/BoltEngine	2b8efda25b2a6975
 1	516	1677145622914354930	CMakeFiles/BoltEngine.dir/src/Vulkan/window_vk.cpp.o	e297c209e73431d1
 2	540	1677145622937795444	CMakeFiles/BoltEngine.dir/example/basic/main.cpp.o	7780548618cf6fea
+9	55	1677147340278260591	build.ninja	2fdff8b29ede52ca
 1	540	1677145622939245896	CMakeFiles/BoltEngine.dir/src/OpenGL/window_gl.cpp.o	ffd015fde123e05f
+0	12	0	/Users/tevz/Documents/programing/BoltEngine/cmake-build-debug/CMakeFiles/cmake.verify_globs	3939ebba7edf533c
 2	546	1677145622945642600	CMakeFiles/BoltEngine.dir/src/render/window.cpp.o	fc3faeddf8ee94a0
-546	677	1677145623076844038	bin/BoltEngine	2b8efda25b2a6975
+2	500	1677145622893813653	CMakeFiles/BoltEngine.dir/src/core/colors.cpp.o	2d24fdc160b568ee

@@ -43,4 +43,11 @@ namespace bolt
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
+
+    bool doesFileExist(const_str file)
+    {
+        std::fstream file_open(file);
+
+        return file_open.is_open();
+    }
 }

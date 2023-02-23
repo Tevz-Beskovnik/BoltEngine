@@ -7,13 +7,6 @@
 
 namespace bolt
 {
-    enum model_standard{
-        OBJ = 0,
-        COLLADA = 1,
-        STL = 2,
-        FBX = 3,
-    };
-
     struct polygon
     {
         vector_3 vert[3];
@@ -25,7 +18,7 @@ namespace bolt
     class Model
     {
         public:
-            Model();
+            [[nodiscard]] Model(ref_ptr<std::vector<polygon>>);
 
             [[nodiscard]] ref_ptr<Model> create(ref_ptr<std::vector<polygon>> mesh);
 
