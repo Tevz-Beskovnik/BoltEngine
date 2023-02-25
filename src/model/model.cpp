@@ -49,6 +49,16 @@ namespace bolt
         }
     }
 
+    void Model::rotate_model(vector_3 rotation_vector) noexcept
+    {
+        // TODO: implement model rotation
+    }
+
+    void Model::apply_lighting()
+    {
+        // TODO: write a coherent lighting system
+    }
+
     void Model::recalculate_normals()
     {
         #pragma omp parallel for

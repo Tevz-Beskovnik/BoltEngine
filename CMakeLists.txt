@@ -24,7 +24,9 @@ set (
         ${CMAKE_CURRENT_SOURCE_DIR}/include/render/window_interface.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/Vulkan/window_vk.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/io/file_system.hpp
-)
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/render/shader.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/render/shader_interface.hpp
+        src/render/shader.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 

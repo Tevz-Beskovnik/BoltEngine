@@ -28,7 +28,7 @@ namespace bolt
     class Window
     {
         public:
-            [[nodiscard]] Window(window_config* config);
+            [[nodiscard]] explicit Window(window_config* config);
 
             [[nodiscard]] static single_ptr<Window> create(window_config* config);
 
@@ -42,13 +42,13 @@ namespace bolt
 
             void window_fullscreen();
 
-            void windowFrameRoutine();
+            void window_frame_routine();
 
-            void setBackgroundColor(RGB* color);
+            void set_cackground_color(RGB* color);
 
             void get_size(uint16_t *width, uint16_t *height);
 
-            [[nodiscard]] bool isWindowOpen();
+            [[nodiscard]] bool is_window_open();
 
             void close();
 

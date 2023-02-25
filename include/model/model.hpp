@@ -32,7 +32,7 @@ namespace bolt
             void rotate_model(vector_3 rotation_vector) noexcept;
 
             void apply_lighting();
-        private:
+    private:
             void recalculate_normals();
 
             [[nodiscard]] static vector_3 calculate_normal(polygon triangle);

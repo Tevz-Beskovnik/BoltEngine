@@ -16,11 +16,11 @@ int main()
 
     single_ptr<Window> window = Window::create(&w_conf);
 
-    window->setBackgroundColor(&bg);
+    window->set_cackground_color(&bg);
 
-    while(window->isWindowOpen())
+    while(window->is_window_open())
     {
-        window->windowFrameRoutine();
+        window->window_frame_routine();
     }
 
     window->close();

@@ -321,15 +321,5 @@ namespace bolt
                 resX, resY, resZ
             };
         }
-
-        static matrix_4 translation(const vector_3& vec)
-        {
-            return {
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                vec.x, vec.y, vec.z, 1
-            };
-        }
     };
 }

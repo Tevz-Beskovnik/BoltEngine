@@ -24,23 +24,23 @@ namespace bolt
 
             [[nodiscard]] static single_ptr<WindowGL> create(uint16_t width, uint16_t height, const_str title);
 
-            void resizeWindow(uint16_t width, uint16_t height);
+            void resize_window(uint16_t width, uint16_t height) override;
 
-            void fullscreen();
+            void fullscreen() override;
 
-            void windowed(uint16_t width, uint16_t height);
+            void windowed(uint16_t width, uint16_t height) override;
 
-            void windowed(uint16_t width, uint16_t height, uint16_t x, uint16_t y);
+            void windowed(uint16_t width, uint16_t height, uint16_t x, uint16_t y) override;
 
-            void frameRoutine();
+            void frame_routine() override;
 
-            void setBackgroundColor(RGB* color);
+            void set_background_color(RGB* color) override;
 
-            void setActive();
+            void set_active() override;
 
-            [[nodiscard]] bool shouldClose();
+            [[nodiscard]] bool should_close() override;
 
-            void close();
+            void close() override;
         
         private:
             bool background_color_owned;
