@@ -2,14 +2,13 @@
 
 // PRIMARY
 #include <iostream>
-#include <math.h>
 #include <cmath>
 #include <vector>
 #include <fstream>
 #include <algorithm>
 #include <functional>
 #include <string>
-#include <string.h>
+#include <sstream>
 #include <memory>
 #include <map>
 

@@ -23,6 +23,7 @@ set (
         ${CMAKE_CURRENT_SOURCE_DIR}/include/render/window.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/render/window_interface.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/Vulkan/window_vk.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/io/file_system.hpp
 )
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
@@ -43,6 +44,7 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/Vulkan
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/OpenGL
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/model
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/io
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/scene
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/utils
 )

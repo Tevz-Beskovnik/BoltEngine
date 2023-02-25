@@ -3,6 +3,8 @@
 #include <model.hpp>
 #include <util.hpp>
 #include <colors.hpp>
+#include <primitives.hpp>
+#include <file_system.hpp>
 
 namespace bolt
 {
