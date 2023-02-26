@@ -5,5 +5,5 @@
 
 namespace bolt
 {
-    bool does_file_exist(const_str file);
+
 }

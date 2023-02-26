@@ -9,7 +9,7 @@ namespace bolt
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::read_model(const_str file_path, model_standard file_standard)
     {
-        if(!doesFileExist(file_path))
+        if(!does_file_exist(file_path))
             BOLT_ERROR("File for model does not exist")
 
         switch(file_standard)

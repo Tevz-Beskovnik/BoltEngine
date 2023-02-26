@@ -2,7 +2,7 @@
 
 namespace bolt
 {
-    bool doesFileExist(const_str file)
+    bool does_file_exist(const_str file)
     {
         std::fstream file_open(file);
 
