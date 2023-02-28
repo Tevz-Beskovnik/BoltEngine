@@ -62,6 +62,14 @@ build CMakeFiles/BoltEngine.dir/src/OpenGL/window_gl.cpp.o: CXX_COMPILER__BoltEn
   OBJECT_DIR = CMakeFiles/BoltEngine.dir
   OBJECT_FILE_DIR = CMakeFiles/BoltEngine.dir/src/OpenGL
 
+build CMakeFiles/BoltEngine.dir/src/Vulkan/shader_vk.cpp.o: CXX_COMPILER__BoltEngine_Debug /Users/tevz/Documents/programing/BoltEngine/src/Vulkan/shader_vk.cpp || cmake_object_order_depends_target_BoltEngine
+  DEFINES = -DBOLT_DEBUG -DGL_SILENCE_DEPRECATION=1
+  DEP_FILE = CMakeFiles/BoltEngine.dir/src/Vulkan/shader_vk.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -fcolor-diagnostics -std=gnu++2a
+  INCLUDES = -I/Users/tevz/Documents/programing/BoltEngine/BoltEngine_HEADERS -I/Users/tevz/Documents/programing/BoltEngine/include/core -I/Users/tevz/Documents/programing/BoltEngine/include/render -I/Users/tevz/Documents/programing/BoltEngine/include/Vulkan -I/Users/tevz/Documents/programing/BoltEngine/include/OpenGL -I/Users/tevz/Documents/programing/BoltEngine/include/model -I/Users/tevz/Documents/programing/BoltEngine/include/io -isystem /Users/tevz/.conan/data/glfw/3.3.8/_/_/package/ca773a905d75875e29090ba5ab4bdf02c9ab342e/include -isystem /Users/tevz/.conan/data/glew/2.2.0/_/_/package/18f8b628323ba281cd2328890abe14c5c8b09c32/include
+  OBJECT_DIR = CMakeFiles/BoltEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles/BoltEngine.dir/src/Vulkan
+
 build CMakeFiles/BoltEngine.dir/src/Vulkan/window_vk.cpp.o: CXX_COMPILER__BoltEngine_Debug /Users/tevz/Documents/programing/BoltEngine/src/Vulkan/window_vk.cpp || cmake_object_order_depends_target_BoltEngine
   DEFINES = -DBOLT_DEBUG -DGL_SILENCE_DEPRECATION=1
   DEP_FILE = CMakeFiles/BoltEngine.dir/src/Vulkan/window_vk.cpp.o.d
@@ -134,7 +142,7 @@ build CMakeFiles/BoltEngine.dir/example/basic/main.cpp.o: CXX_COMPILER__BoltEngi
 #############################################
 # Link the executable bin/BoltEngine
 
-build bin/BoltEngine: CXX_EXECUTABLE_LINKER__BoltEngine_Debug CMakeFiles/BoltEngine.dir/src/OpenGL/shader_gl.cpp.o CMakeFiles/BoltEngine.dir/src/OpenGL/window_gl.cpp.o CMakeFiles/BoltEngine.dir/src/Vulkan/window_vk.cpp.o CMakeFiles/BoltEngine.dir/src/core/colors.cpp.o CMakeFiles/BoltEngine.dir/src/io/file_system.cpp.o CMakeFiles/BoltEngine.dir/src/model/mesh_builder.cpp.o CMakeFiles/BoltEngine.dir/src/model/model.cpp.o CMakeFiles/BoltEngine.dir/src/render/shader.cpp.o CMakeFiles/BoltEngine.dir/src/render/window.cpp.o CMakeFiles/BoltEngine.dir/example/basic/main.cpp.o | /Users/tevz/.conan/data/glfw/3.3.8/_/_/package/ca773a905d75875e29090ba5ab4bdf02c9ab342e/lib/libglfw3.a /Users/tevz/.conan/data/glew/2.2.0/_/_/package/18f8b628323ba281cd2328890abe14c5c8b09c32/lib/libGLEW.a
+build bin/BoltEngine: CXX_EXECUTABLE_LINKER__BoltEngine_Debug CMakeFiles/BoltEngine.dir/src/OpenGL/shader_gl.cpp.o CMakeFiles/BoltEngine.dir/src/OpenGL/window_gl.cpp.o CMakeFiles/BoltEngine.dir/src/Vulkan/shader_vk.cpp.o CMakeFiles/BoltEngine.dir/src/Vulkan/window_vk.cpp.o CMakeFiles/BoltEngine.dir/src/core/colors.cpp.o CMakeFiles/BoltEngine.dir/src/io/file_system.cpp.o CMakeFiles/BoltEngine.dir/src/model/mesh_builder.cpp.o CMakeFiles/BoltEngine.dir/src/model/model.cpp.o CMakeFiles/BoltEngine.dir/src/render/shader.cpp.o CMakeFiles/BoltEngine.dir/src/render/window.cpp.o CMakeFiles/BoltEngine.dir/example/basic/main.cpp.o | /Users/tevz/.conan/data/glfw/3.3.8/_/_/package/ca773a905d75875e29090ba5ab4bdf02c9ab342e/lib/libglfw3.a /Users/tevz/.conan/data/glew/2.2.0/_/_/package/18f8b628323ba281cd2328890abe14c5c8b09c32/lib/libGLEW.a
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk
   LINK_LIBRARIES = /Users/tevz/.conan/data/glfw/3.3.8/_/_/package/ca773a905d75875e29090ba5ab4bdf02c9ab342e/lib/libglfw3.a  -Xlinker -framework -Xlinker Cocoa  -Xlinker -framework -Xlinker IOKit  -Xlinker -framework -Xlinker CoreFoundation  /Users/tevz/.conan/data/glew/2.2.0/_/_/package/18f8b628323ba281cd2328890abe14c5c8b09c32/lib/libGLEW.a  -Xlinker -framework -Xlinker OpenGL
   OBJECT_DIR = CMakeFiles/BoltEngine.dir

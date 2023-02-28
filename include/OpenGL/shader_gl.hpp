@@ -2,6 +2,7 @@
 
 #include <core.hpp>
 #include <util.hpp>
+#include <file_system.hpp>
 #include <shader_interface.hpp>
 
 namespace bolt
@@ -9,9 +10,11 @@ namespace bolt
     class ShaderGL : public ShaderInterface
     {
         public:
-            [[nodiscard]] ShaderGL(const_str shader_location, shader_type type, render_framework framework_type);
+            [[nodiscard]] ShaderGL(const_str shader_location, shader_type type);
 
             ~ShaderGL();
+
+            [[nodiscard]] static ref_ptr<ShaderGL> create(const_str shader_location, shader_type type);
 
             void bind() override;
 

@@ -26,7 +26,7 @@ set (
         ${CMAKE_CURRENT_SOURCE_DIR}/include/io/file_system.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/render/shader.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/render/shader_interface.hpp
-        src/render/shader.cpp src/OpenGL/shader_gl.cpp)
+        src/render/shader.cpp src/OpenGL/shader_gl.cpp include/Vulkan/shader_vk.hpp src/Vulkan/shader_vk.cpp include/render/vertex_array.hpp include/render/vertex_array_interface.hpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 

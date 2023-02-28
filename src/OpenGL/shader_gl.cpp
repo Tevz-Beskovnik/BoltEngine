@@ -2,7 +2,7 @@
 
 namespace bolt
 {
-    [[nodiscard]] ShaderGL::ShaderGL(const_str shader_location, shader_type type, render_framework framework_type)
+    [[nodiscard]] ShaderGL::ShaderGL(const_str shader_location, shader_type type)
         :shader(0)
     {
         program = glCreateProgram();
@@ -18,6 +18,14 @@ namespace bolt
     {
         if(glIsProgram(program) == GL_TRUE)
             glDeleteProgram(program);
+    }
+
+    [[nodiscard]] ref_ptr<ShaderGL> ShaderGL::create(const_str shader_location, shader_type type)
+    {
+        if(does_file_exist(shader_location))
+            BOLT_ERROR("Shader file does not exist!")
+
+        return create_ref<ShaderGL>(shader_location, type);
     }
 
     void ShaderGL::bind()
