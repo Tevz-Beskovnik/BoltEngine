@@ -2,11 +2,10 @@
 
 #include <core.hpp>
 #include <util.hpp>
-#include <shader_interface.hpp>
 
 namespace bolt
 {
-    class ShaderVK : public ShaderInterface
+    class ShaderVK
     {
     public:
         [[nodiscard]] ShaderVK(const_str shader_location, shader_type type);

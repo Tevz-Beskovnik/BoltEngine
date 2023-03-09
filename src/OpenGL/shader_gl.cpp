@@ -28,7 +28,11 @@ namespace bolt
         return create_ref<ShaderGL>(shader_location, type);
     }
 
-    void ShaderGL::bind()
+    [[nodiscard]] uint32_t ShaderGL::get_program() const {
+        return program;
+    }
+
+    void ShaderGL::bind() const
     {
         glUseProgram(program);
     }
@@ -38,7 +42,7 @@ namespace bolt
         glUseProgram(0);
     }
 
-    void ShaderGL::destroy()
+    void ShaderGL::destroy() const
     {
         glDeleteProgram(program);
     }

@@ -2,5 +2,13 @@
 
 namespace bolt
 {
-    class
+    class VertexGL
+    {
+        public:
+            VertexGL();
+
+            ~VertexGL();
+
+        private:
+    };
 }

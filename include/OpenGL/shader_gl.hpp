@@ -3,11 +3,16 @@
 #include <core.hpp>
 #include <util.hpp>
 #include <file_system.hpp>
-#include <shader_interface.hpp>
 
 namespace bolt
 {
-    class ShaderGL : public ShaderInterface
+    enum shader_type
+    {
+        VERTEX_SHADER,
+        FRAGMENT_SHADER
+    };
+
+    class ShaderGL
     {
         public:
             [[nodiscard]] ShaderGL(const_str shader_location, shader_type type);
@@ -16,13 +21,16 @@ namespace bolt
 
             [[nodiscard]] static ref_ptr<ShaderGL> create(const_str shader_location, shader_type type);
 
-            void bind() override;
+            [[nodiscard]] uint32_t get_program() const;
 
-            void unbind() override;
+            void bind() const;
 
-            void destroy() override;
+            void static unbind();
+
+            void destroy() const;
 
         private:
+
             void read_shader(const_str shader_location);
 
             void compile_shader(shader_type type);

@@ -322,4 +322,11 @@ namespace bolt
             };
         }
     };
+
+    struct polygon
+    {
+        vector_3 vert[3];
+        vector_2 UV[3];
+        vector_3 normal;
+    };
 }
