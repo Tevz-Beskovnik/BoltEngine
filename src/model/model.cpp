@@ -6,7 +6,7 @@ namespace bolt
     = default;
 
     [[nodiscard]] Model::Model(const std::vector<polygon>& mesh)
-        :mesh(mesh)
+        :mesh(mesh), polycount(mesh.size())
     {
         ;
     }

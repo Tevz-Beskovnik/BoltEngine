@@ -31,6 +31,7 @@ namespace bolt
             [[nodiscard]] static vector_3 calculate_normal(polygon triangle);
 
             std::vector<polygon> mesh;
+            uint64_t polycount{};
             RGB color;
     };
 }

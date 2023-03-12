@@ -19,3 +19,4 @@ _deps
 
 /build/**
 /.vscode
+cmake-build-debug/

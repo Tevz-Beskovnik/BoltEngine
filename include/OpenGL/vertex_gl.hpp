@@ -9,18 +9,23 @@ namespace bolt
     class VertexGL
     {
         public:
-            VertexGL();
+            explicit VertexGL(std::vector<float>& buffer);
 
             ~VertexGL();
 
-            [[nodiscard]] static single_ptr<VertexGL> create();
+            [[nodiscard]] static single_ptr<VertexGL> create(std::vector<float>& buffer);
 
             [[nodiscard]] uint32_t get_buffer() const;
 
+            void set_data(long offset, std::vector<float>& new_buffer) const;
+
             void bind() const;
 
-            static void unbind() const;
+            static void unbind();
+
+            void delete_buffer();
 
         private:
+            uint32_t buffer;
     };
 }
