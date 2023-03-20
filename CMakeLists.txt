@@ -24,7 +24,7 @@ set (
         ${CMAKE_CURRENT_SOURCE_DIR}/include/render/window_interface.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/Vulkan/window_vk.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/io/file_system.hpp
-        src/OpenGL/shader_gl.cpp include/Vulkan/shader_vk.hpp src/Vulkan/shader_vk.cpp include/render/renderer.hpp include/render/renderer_interface.hpp include/OpenGL/renderer_gl.hpp include/OpenGL/vertex_gl.hpp include/OpenGL/texture_gl.hpp src/OpenGL/texture_gl.hpp.cpp)
+        src/OpenGL/shader_gl.cpp include/Vulkan/shader_vk.hpp src/Vulkan/shader_vk.cpp include/render/renderer.hpp include/render/renderer_interface.hpp include/OpenGL/renderer_gl.hpp include/OpenGL/vertex_gl.hpp include/OpenGL/texture_gl.hpp src/OpenGL/texture_gl.cpp src/OpenGL/renderer_gl.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 

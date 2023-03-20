@@ -15,8 +15,21 @@ namespace bolt
 
     #define BOLT_MSG_ERROR(bolt_msg_err) COLOR(RED_FG, BLACK_BG) std::cout << "ERROR: " << bolt_msg_err << std::endl;
 
-    #define BOLT_ERROR(err) throw err;
+    #define BOLT_ERROR(err) throw std::runtime_error(err);
     //
+
+    // assertion definitions
+    #ifndef ASSERT
+    #define ASSERT(x, err) (x == true ? true : throw std::runtime_error(err))
+    #endif
+
+    #ifndef ASSERT_EQ
+    #define ASSERT_EQ(left, right, err) (left == right ? true : throw std::runtime_error(err))
+    #endif
+
+    #ifndef ASSERT_NE
+    #define ASSERT_NE(left, right, err) (left != right ? true : throw std::runtime_error(err))
+    #endif
 
     enum render_framework
     {
@@ -24,8 +37,15 @@ namespace bolt
         VULKAN = 1
     };
 
-    typedef const char* const_str;
+    enum shader_type
+    {
+        VERTEX_SHADER,
+        FRAGMENT_SHADER,
+        GEOMETRY_SHADER,
+        COMPUTE_SHADER
+    };
 
+    typedef const char* const_str;
     typedef char* basic_str;
 
     template<typename T>

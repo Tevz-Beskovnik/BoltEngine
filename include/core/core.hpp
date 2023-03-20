@@ -11,6 +11,7 @@
 #include <sstream>
 #include <memory>
 #include <map>
+#include <stdexcept>
 
 // EXTERNAL
 #include <GL/glew.h>

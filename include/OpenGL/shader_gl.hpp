@@ -6,12 +6,6 @@
 
 namespace bolt
 {
-    enum shader_type
-    {
-        VERTEX_SHADER,
-        FRAGMENT_SHADER
-    };
-
     class ShaderGL
     {
         public:

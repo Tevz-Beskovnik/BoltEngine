@@ -3,6 +3,10 @@
 #include <core.hpp>
 #include <util.hpp>
 #include <renderer_interface.hpp>
+#include <shader_gl.hpp>
+#include <texture_gl.hpp>
+#include <vertex_gl.hpp>
+#include <file_system.hpp>
 
 namespace bolt
 {
@@ -21,15 +25,25 @@ namespace bolt
     class RendererGL : public RenderInterface
     {
         public:
-            void setVertexLayout(Layout vertex_layout);
+            RendererGL();
 
-            [[nodiscard]] bool setMesh(std::vector<polygon> mesh) override;
+            void addVertexLayout(Layout vertex_layout);
 
-            [[nodiscard]] bool setShader(std::string path) override;
+            [[nodiscard]] void setMesh(const std::vector<polygon>& mesh) override;
 
-            [[nodiscard]] bool setTexture(std::string path) override;
+            [[nodiscard]] void addShader(const std::string &path, shader_type type) override;
+
+            [[nodiscard]] void addTexture(const std::string &path) override;
 
             void render() const override;
         private:
+            void convertMeshToVertex();
+
+            std::vector<Layout> vertexLayouts;
+            std::vector<ref_ptr<ShaderGL>> shaders;
+            std::vector<ref_ptr<TextureGL>> textures;
+            single_ptr<VertexGL> vertex;
+
+            std::vector<polygon> mesh;
     };
 }

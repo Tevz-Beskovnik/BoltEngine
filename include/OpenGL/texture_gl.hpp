@@ -11,7 +11,7 @@ namespace bolt
         public:
             TextureGL();
 
-            [[nodiscard]] static single_ptr<TextureGL> create();
+            [[nodiscard]] static ref_ptr<TextureGL> create();
 
             void bind() const;
 
