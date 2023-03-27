@@ -1,4 +1,4 @@
-#include <vertex_gl.hpp>
+#include "vertex_gl.hpp"
 
 namespace bolt
 {

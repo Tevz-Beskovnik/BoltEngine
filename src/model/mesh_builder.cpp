@@ -1,4 +1,4 @@
-#include <mesh_builder.hpp>
+#include "mesh_builder.hpp"
 
 namespace bolt
 {
@@ -9,8 +9,8 @@ namespace bolt
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::read_model(const_str file_path, model_standard file_standard)
     {
-        if(!does_file_exist(file_path))
-            BOLT_ERROR("File for model does not exist")
+        std::string error = "Model file: " + std::string(file_path) + " does not exist.";
+        ASSERT_FILE_EXISTS(file_path, error);
 
         switch(file_standard)
         {
@@ -34,7 +34,7 @@ namespace bolt
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_quad(const vector_2 corner, const vector_2 dimensions)
     {
-        std::vector<polygon> mesh = create_ref<std::vector<polygon>>();
+        std::vector<polygon> mesh;
 
         mesh.push_back(
             {

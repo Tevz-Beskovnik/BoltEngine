@@ -6,7 +6,7 @@
 namespace bolt
 {
     #ifndef ASSERT_FILE_EXISTS
-    #define ASSERT_FILE_EXISTS(path) (does_file_exist(path) ? true : throw std::runtime_error("File does not exist"))
+    #define ASSERT_FILE_EXISTS(path, err) (does_file_exist(path) ? true : throw std::runtime_error(err))
     #endif
 
     bool does_file_exist(const_str file);

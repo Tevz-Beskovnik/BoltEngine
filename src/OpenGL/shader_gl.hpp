@@ -9,11 +9,13 @@ namespace bolt
     class ShaderGL
     {
         public:
-            [[nodiscard]] ShaderGL(const_str shader_location, shader_type type);
+            ShaderGL();
 
             ~ShaderGL();
 
-            [[nodiscard]] static ref_ptr<ShaderGL> create(const_str shader_location, shader_type type);
+            [[nodiscard]] static ref_ptr<ShaderGL> create();
+
+            void add_shader(const_str shader_location, shader_type type);
 
             [[nodiscard]] uint32_t get_program() const;
 
@@ -29,7 +31,7 @@ namespace bolt
 
             void compile_shader(shader_type type);
 
-            void link_shader();
+            void link_shader() const;
 
             std::string shader_string;
 

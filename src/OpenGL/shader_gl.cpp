@@ -1,15 +1,11 @@
-#include <shader_gl.hpp>
+#include "shader_gl.hpp"
 
 namespace bolt
 {
-    [[nodiscard]] ShaderGL::ShaderGL(const_str shader_location, shader_type type)
+    [[nodiscard]] ShaderGL::ShaderGL()
         :shader(0)
     {
         program = glCreateProgram();
-
-        read_shader(shader_location);
-        compile_shader(type);
-        link_shader();
 
         glUseProgram(0);
     }
@@ -20,12 +16,21 @@ namespace bolt
             glDeleteProgram(program);
     }
 
-    [[nodiscard]] ref_ptr<ShaderGL> ShaderGL::create(const_str shader_location, shader_type type)
+    [[nodiscard]] ref_ptr<ShaderGL> ShaderGL::create()
     {
-        if(does_file_exist(shader_location))
-            BOLT_ERROR("Shader file does not exist!")
+        return create_ref<ShaderGL>();
+    }
 
-        return create_ref<ShaderGL>(shader_location, type);
+    void ShaderGL::add_shader(const_str shader_location, shader_type type)
+    {
+        std::string error = "File: " + std::string(shader_location) + " does not exist.";
+        ASSERT_FILE_EXISTS(shader_location, error);
+
+        read_shader(shader_location);
+
+        compile_shader(type);
+
+        link_shader();
     }
 
     [[nodiscard]] uint32_t ShaderGL::get_program() const {
@@ -49,6 +54,8 @@ namespace bolt
 
     void ShaderGL::read_shader(const_str shader_location)
     {
+        shader_string = "";
+
         std::string line;
         std::ifstream file(shader_location);
 
@@ -94,7 +101,7 @@ namespace bolt
         }
     }
 
-    void ShaderGL::link_shader()
+    void ShaderGL::link_shader() const
     {
         glAttachShader(program, shader);
 

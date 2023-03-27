@@ -1,6 +1,6 @@
 #pragma once
 
-#include <model.hpp>
+#include "Models/model.hpp"
 #include <util.hpp>
 #include <colors.hpp>
 #include <primitives.hpp>
@@ -18,8 +18,6 @@ namespace bolt
     class MeshBuilder
     {
         public:
-            MeshBuilder();
-
             [[nodiscard]] static ref_ptr<Model> read_model(const_str file_path, model_standard file_standard);
 
             [[nodiscard]] static ref_ptr<Model> make_quad(vector_2 corner, vector_2 dimensions);
@@ -31,6 +29,8 @@ namespace bolt
             [[nodiscard]] static ref_ptr<Model> make_sphere(vector_2 center, double radius);
 
         private:
+            MeshBuilder();
+
             [[nodiscard]] static ref_ptr<Model> read_obj(const_str file_path);
 
             [[nodiscard]] static ref_ptr<Model> read_collada(const_str file_path);
