@@ -1,4 +1,4 @@
-#include "window_gl.hpp"
+#include <window_gl.hpp>
 
 namespace bolt 
 {

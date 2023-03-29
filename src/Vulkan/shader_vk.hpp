@@ -14,10 +14,10 @@ namespace bolt
 
         [[nodiscard]] static ref_ptr<ShaderVK> create(const_str shader_location, shader_type type);
 
-        void bind() override;
+        void bind();
 
-        void unbind() override;
+        void unbind();
 
-        void destroy() override;
+        void destroy();
     };
 }

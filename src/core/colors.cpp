@@ -1,4 +1,4 @@
-#include "colors.hpp"
+#include <colors.hpp>
 
 namespace bolt
 {

@@ -1,4 +1,4 @@
-#include "mesh_builder.hpp"
+#include <mesh_builder.hpp>
 
 namespace bolt
 {
@@ -16,19 +16,14 @@ namespace bolt
         {
             case model_standard::OBJ:
                 return read_obj(file_path);
-                break;
             case model_standard::COLLADA:
                 return read_collada(file_path);
-                break;
             case model_standard::STL:
                 return read_stl(file_path);
-                break;
             case model_standard::FBX:
                 return read_fbx(file_path);
-                break;
             default:
                 BOLT_ERROR("Incorrect file standard specified")
-                break;
         }
     }
 
@@ -71,17 +66,17 @@ namespace bolt
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_triangle(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3)
     {
-        return create_ref<Model>(NULL);
+        return Model::create({});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_2 center, const vector_3 dimensions)
     {
-        return create_ref<Model>(NULL);
+        return Model::create({});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_sphere(const vector_2 center, const double radius)
     {
-        return create_ref<Model>(NULL);
+        return Model::create({});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::read_obj(const_str file_path)
@@ -89,8 +84,7 @@ namespace bolt
         std::ifstream file(file_path);
         std::vector<polygon> mesh;
 
-        if(!file.is_open())
-            return create_ref<Model>(NULL);
+        ASSERT(!file.is_open(), "Can't open file");
 
         std::vector<vector_3> verticies;
         std::vector<vector_3> normals;
@@ -153,18 +147,18 @@ namespace bolt
         return Model::create(mesh);
     }
 
-    [[nodiscard]] ref_ptr<Model> MeshBuilder::read_collada(const_str file_path)
+    [[nodiscard]] ref_ptr<Model> MeshBuilder::read_collada(const_str file_path) // TODO
     {
-        return create_ref<Model>(NULL);
+        return Model::create({});
     }
 
-    [[nodiscard]] ref_ptr<Model> MeshBuilder::read_stl(const_str file_path)
+    [[nodiscard]] ref_ptr<Model> MeshBuilder::read_stl(const_str file_path) // TODO
     {
-        return create_ref<Model>(NULL);
+        return Model::create({});
     }
 
-    [[nodiscard]] ref_ptr<Model> MeshBuilder::read_fbx(const_str file_path)
+    [[nodiscard]] ref_ptr<Model> MeshBuilder::read_fbx(const_str file_path) // TODO
     {
-        return create_ref<Model>(NULL);
+        return Model::create({});
     }
 }

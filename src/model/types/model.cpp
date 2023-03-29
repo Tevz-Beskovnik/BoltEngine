@@ -2,13 +2,8 @@
 
 namespace bolt
 {
-    Model::Model()
-    {
-
-    }
-
-    [[nodiscard]] Model::Model(const std::vector<polygon>& mesh)
-        :mesh(mesh)
+    [[nodiscard]] Model::Model(std::vector<polygon> mesh)
+        :mesh(std::move(mesh))
     {
         to_drawable_vector();
     }
@@ -18,7 +13,7 @@ namespace bolt
         ;
     }
 
-    [[nodiscard]] ref_ptr<Model> Model::create(const std::vector<polygon>& mesh)
+    [[nodiscard]] ref_ptr<Model> Model::create(std::vector<polygon> mesh)
     {
         return create_ref<Model>(mesh);
     }
@@ -30,14 +25,19 @@ namespace bolt
         to_drawable_vector();
     }
 
-    [[nodiscard]] const std::vector<double>& Model::get_drawable_vector() noexcept
+    [[nodiscard]] const std::vector<double>& Model::get_drawable_vector() const noexcept
     {
         return drawable_vector;
     }
 
-    [[nodiscard]] const std::vector<AttributeLayout>& Model::get_attribute_layout() noexcept
+    [[nodiscard]] const std::vector<AttributeLayout>& Model::get_attribute_layout() const noexcept
     {
         return attribute_layout;
+    }
+
+    [[nodiscard]] uint32_t Model::polygon_count() const noexcept
+    {
+        return mesh.size();
     }
 
     void Model::transform_model(const matrix_4& mat) noexcept
@@ -145,7 +145,7 @@ namespace bolt
     void Model::set_attribute_layout()
     {
         attribute_layout.push_back({
-            "position",
+            "iPosition",
             3,
             GL_DOUBLE,
             GL_FALSE,
@@ -154,7 +154,7 @@ namespace bolt
         });
 
         attribute_layout.push_back({
-            "position",
+            "iNormals",
             3,
             GL_DOUBLE,
             GL_FALSE,
@@ -163,7 +163,7 @@ namespace bolt
         });
 
         attribute_layout.push_back({
-            "position",
+            "iUV",
             3,
             GL_DOUBLE,
             GL_FALSE,

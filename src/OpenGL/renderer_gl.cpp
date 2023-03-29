@@ -1,24 +1,44 @@
-#include "renderer_gl.hpp"
+#include <renderer_gl.hpp>
 
 namespace bolt {
-    void RendererGL::setModel(ref_ptr<ModelInterface> model)
+    bool RendererGL::set_instances(uint32_t instances)
+    {
+        if(instances == 0) return false;
+
+        this->instances = instances;
+
+        return true;
+    }
+
+    void RendererGL::set_draw_type(uint32_t draw_type)
+    {
+        this->draw_type = draw_type;
+    }
+
+    void RendererGL::set_offset(uint32_t offset)
+    {
+        this->offset = offset;
+    }
+
+    void RendererGL::set_model(ref_ptr<ModelInterface> model)
     {
         ASSERT(!model, "Model cannot be a null pointer");
 
         this->model = model;
     };
 
-    void RendererGL::addShader(const std::string &path, shader_type type) {
+    void RendererGL::add_shader(const std::string &path, shader_type type) {
         ASSERT(!path.empty(), "Path cannot be a empty string");
 
         this->shader->add_shader(path.c_str(), type);
     }
 
-    void RendererGL::addTexture(const std::string &path) {
+    void RendererGL::add_texture(const std::string &path) {
         ASSERT(!path.empty(), "Path cannot be a empty string");
         ASSERT_FILE_EXISTS(path.c_str(), "Bad texture file");
+        ASSERT((textures.size() < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS), "Max number of textures binded to renderer");
 
-        this->textures.push_back(TextureGL::create()); // TODO: implement texture class
+        this->textures.push_back(TextureGL::create(TEXTURE_2D)); // TODO: implement texture class
     }
 
     void RendererGL::render() const {
@@ -38,6 +58,21 @@ namespace bolt {
                 layout.totalSizeInBytes,
                 (void*)layout.offset
             );
+
+            shader->bind();
+
+            for(const auto& texture : textures) texture->bind();
+
+            if(instances > 1)
+                glDrawArrays(draw_type, static_cast<int>(offset), static_cast<int>(model->polygon_count()));
+            else
+                glDrawArraysInstanced(draw_type, static_cast<int>(offset), static_cast<int>(model->polygon_count()), static_cast<int>(instances));
+
+            VertexGL::unbind();
+
+            ShaderGL::unbind();
+
+            for(const auto& texture : textures) texture->unbind();
         }
     }
 }

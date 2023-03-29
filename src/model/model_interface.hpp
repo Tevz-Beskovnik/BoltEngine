@@ -25,8 +25,10 @@ namespace bolt {
 
             virtual void apply_lighting() = 0;
 
-            [[nodiscard]] virtual const std::vector<AttributeLayout>& get_attribute_layout() noexcept = 0;
+            [[nodiscard]] virtual uint32_t polygon_count() const noexcept = 0;
 
-            [[nodiscard]] virtual const std::vector<double>& get_drawable_vector() noexcept = 0;
+            [[nodiscard]] virtual const std::vector<AttributeLayout>& get_attribute_layout() const noexcept = 0;
+
+            [[nodiscard]] virtual const std::vector<double>& get_drawable_vector() const noexcept = 0;
     };
 }

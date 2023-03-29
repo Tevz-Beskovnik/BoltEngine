@@ -6,18 +6,26 @@
 
 namespace bolt
 {
+    enum texture_type {
+        TEXTURE_2D = GL_TEXTURE_2D
+    };
+
     class TextureGL
     {
         public:
-            TextureGL();
+            TextureGL(texture_type type);
 
-            [[nodiscard]] static ref_ptr<TextureGL> create();
+            [[nodiscard]] static ref_ptr<TextureGL> create(texture_type type);
 
             void bind() const;
 
-            static void unbind();
+            void unbind();
 
         private:
+            static uint32_t activeTexture;
+
+            texture_type type;
+
             uint32_t texture;
 
             uint64_t width, height;

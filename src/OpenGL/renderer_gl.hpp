@@ -13,15 +13,25 @@ namespace bolt
     class RendererGL : public RenderInterface
     {
         public:
-            void setModel(ref_ptr<ModelInterface> model) override;
+            bool set_instances(uint32_t instances);
 
-            void addShader(const std::string &path, shader_type type) override;
+            void set_draw_type(uint32_t draw_type);
 
-            void addTexture(const std::string &path) override;
+            void set_offset(uint32_t offset);
+
+            void set_model(ref_ptr<ModelInterface> model) override;
+
+            void add_shader(const std::string &path, shader_type type) override;
+
+            void add_texture(const std::string &path) override;
 
             void render() const override;
 
         private:
+            uint32_t draw_type;
+            uint32_t offset;
+            uint32_t instances;
+
             ref_ptr<ModelInterface> model;
             ref_ptr<ShaderGL> shader;
             std::vector<ref_ptr<TextureGL>> textures;

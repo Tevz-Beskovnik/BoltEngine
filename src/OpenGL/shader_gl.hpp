@@ -26,7 +26,6 @@ namespace bolt
             void destroy() const;
 
         private:
-
             void read_shader(const_str shader_location);
 
             void compile_shader(shader_type type);

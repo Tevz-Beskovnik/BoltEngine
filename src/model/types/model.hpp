@@ -11,19 +11,19 @@ namespace bolt
     class Model : public ModelInterface
     {
         public:
-            Model();
-
-            explicit Model(const std::vector<polygon>& mesh);
+            explicit Model(std::vector<polygon> mesh);
 
             ~Model() override;
 
-            [[nodiscard]] static ref_ptr<Model> create(const std::vector<polygon>& mesh);
+            [[nodiscard]] static ref_ptr<Model> create(std::vector<polygon> mesh);
 
             void set_mesh(const std::vector<polygon>& mesh);
 
-            [[nodiscard]] const std::vector<double>& get_drawable_vector() noexcept override;
+            [[nodiscard]] const std::vector<double>& get_drawable_vector() const noexcept override;
 
-            [[nodiscard]] const std::vector<AttributeLayout>& get_attribute_layout() noexcept override;
+            [[nodiscard]] const std::vector<AttributeLayout>& get_attribute_layout() const noexcept override;
+
+            [[nodiscard]] uint32_t polygon_count() const noexcept override;
 
             void move_model(const vector_3& position) noexcept override;
 

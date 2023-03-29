@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Models/model.hpp"
+#include <model.hpp>
 #include <util.hpp>
 #include <colors.hpp>
 #include <primitives.hpp>

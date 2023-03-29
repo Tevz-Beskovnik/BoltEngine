@@ -1,4 +1,4 @@
-#include "shader_gl.hpp"
+#include <shader_gl.hpp>
 
 namespace bolt
 {

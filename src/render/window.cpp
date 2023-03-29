@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include <window.hpp>
 
 namespace bolt
 {
@@ -10,7 +10,7 @@ namespace bolt
         else if(config->framework == VULKAN)
             framework_window = WindowVK::create(width, height, title);
 
-        if(config->fullscreen == true)
+        if(config->fullscreen)
             framework_window->fullscreen();
 
         framework_window->set_active();

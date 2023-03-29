@@ -1,4 +1,4 @@
-#include "vertex_gl.hpp"
+#include <vertex_gl.hpp>
 
 namespace bolt
 {
@@ -31,7 +31,7 @@ namespace bolt
     void VertexGL::set_data(long offset, std::vector<float>& new_buffer) const
     {
         this->bind();
-        glBufferSubData(GL_ARRAY_BUFFER, offset, static_cast<long>(buffer.size()), buffer.data());
+        glBufferSubData(GL_ARRAY_BUFFER, offset, static_cast<long>(new_buffer.size()), new_buffer.data());
         unbind();
     }
 
