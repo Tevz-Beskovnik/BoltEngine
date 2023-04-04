@@ -9,11 +9,11 @@ namespace bolt
     class VertexGL
     {
         public:
-            explicit VertexGL(std::vector<float>& buffer);
+            explicit VertexGL(const std::vector<float>& buffer);
 
             ~VertexGL();
 
-            [[nodiscard]] static single_ptr<VertexGL> create(std::vector<float>& buffer);
+            [[nodiscard]] static single_ptr<VertexGL> create(const std::vector<float>& buffer);
 
             [[nodiscard]] uint32_t get_buffer() const;
 

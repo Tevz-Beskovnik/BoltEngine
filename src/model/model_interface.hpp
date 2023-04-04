@@ -28,7 +28,7 @@ namespace bolt {
             [[nodiscard]] virtual uint32_t polygon_count() const noexcept = 0;
 
             [[nodiscard]] virtual const std::vector<AttributeLayout>& get_attribute_layout() const noexcept = 0;
-
-            [[nodiscard]] virtual const std::vector<double>& get_drawable_vector() const noexcept = 0;
+            // TODO: return vector to double!!!
+            [[nodiscard]] virtual const std::vector<float>& get_drawable_vector() const noexcept = 0;
     };
 }

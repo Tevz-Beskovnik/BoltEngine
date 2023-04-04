@@ -13,8 +13,6 @@ namespace bolt
 
             void add_texture(const std::string &path) override;
 
-            void add_shader(const std::string &path, shader_type type) override;
-
             void render() const override;
     };
 }

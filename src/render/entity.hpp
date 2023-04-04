@@ -14,7 +14,7 @@ namespace bolt
         public:
             [[nodiscard]] bool is_renderable();
 
-            void set_renderer(ref_ptr<RenderInterface>);
+            void set_renderer(ref_ptr<RenderInterface> renderer);
 
             virtual void update_pre() const = 0;
 

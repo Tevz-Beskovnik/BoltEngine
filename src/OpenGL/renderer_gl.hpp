@@ -31,8 +31,6 @@ namespace bolt
 
             bool set_instances(uint32_t instances);
 
-            void add_shader(const std::string &path, shader_type type) override;
-
             void add_texture(const std::string &path) override;
 
             void render() const override;

@@ -25,7 +25,7 @@ namespace bolt
         to_drawable_vector();
     }
 
-    [[nodiscard]] const std::vector<double>& Model::get_drawable_vector() const noexcept
+    [[nodiscard]] const std::vector<float>& Model::get_drawable_vector() const noexcept
     {
         return drawable_vector;
     }
@@ -107,38 +107,38 @@ namespace bolt
 
         for(const auto& polygon: mesh)
         {
-            drawable_vector.push_back(polygon.vert[0].x);
-            drawable_vector.push_back(polygon.vert[0].y);
-            drawable_vector.push_back(polygon.vert[0].z);
+            drawable_vector.push_back(static_cast<float>(polygon.vert[0].x));
+            drawable_vector.push_back(static_cast<float>(polygon.vert[0].y));
+            drawable_vector.push_back(static_cast<float>(polygon.vert[0].z));
 
-            drawable_vector.push_back(polygon.normal.x);
-            drawable_vector.push_back(polygon.normal.y);
-            drawable_vector.push_back(polygon.normal.z);
+            drawable_vector.push_back(static_cast<float>(polygon.normal.x));
+            drawable_vector.push_back(static_cast<float>(polygon.normal.y));
+            drawable_vector.push_back(static_cast<float>(polygon.normal.z));
 
-            drawable_vector.push_back(polygon.UV[0].x);
-            drawable_vector.push_back(polygon.UV[0].y);
+            drawable_vector.push_back(static_cast<float>(polygon.UV[0].x));
+            drawable_vector.push_back(static_cast<float>(polygon.UV[0].y));
 
-            drawable_vector.push_back(polygon.vert[1].x);
-            drawable_vector.push_back(polygon.vert[1].y);
-            drawable_vector.push_back(polygon.vert[1].z);
+            drawable_vector.push_back(static_cast<float>(polygon.vert[1].x));
+            drawable_vector.push_back(static_cast<float>(polygon.vert[1].y));
+            drawable_vector.push_back(static_cast<float>(polygon.vert[1].z));
 
-            drawable_vector.push_back(polygon.normal.x);
-            drawable_vector.push_back(polygon.normal.y);
-            drawable_vector.push_back(polygon.normal.z);
+            drawable_vector.push_back(static_cast<float>(polygon.normal.x));
+            drawable_vector.push_back(static_cast<float>(polygon.normal.y));
+            drawable_vector.push_back(static_cast<float>(polygon.normal.z));
 
-            drawable_vector.push_back(polygon.UV[1].x);
-            drawable_vector.push_back(polygon.UV[1].y);
+            drawable_vector.push_back(static_cast<float>(polygon.UV[1].x));
+            drawable_vector.push_back(static_cast<float>(polygon.UV[1].y));
 
-            drawable_vector.push_back(polygon.vert[2].x);
-            drawable_vector.push_back(polygon.vert[2].y);
-            drawable_vector.push_back(polygon.vert[2].z);
+            drawable_vector.push_back(static_cast<float>(polygon.vert[2].x));
+            drawable_vector.push_back(static_cast<float>(polygon.vert[2].y));
+            drawable_vector.push_back(static_cast<float>(polygon.vert[2].z));
 
-            drawable_vector.push_back(polygon.normal.x);
-            drawable_vector.push_back(polygon.normal.y);
-            drawable_vector.push_back(polygon.normal.z);
+            drawable_vector.push_back(static_cast<float>(polygon.normal.x));
+            drawable_vector.push_back(static_cast<float>(polygon.normal.y));
+            drawable_vector.push_back(static_cast<float>(polygon.normal.z));
 
-            drawable_vector.push_back(polygon.UV[2].x);
-            drawable_vector.push_back(polygon.UV[2].y);
+            drawable_vector.push_back(static_cast<float>(polygon.UV[2].x));
+            drawable_vector.push_back(static_cast<float>(polygon.UV[2].y));
         }
     }
 
@@ -147,28 +147,28 @@ namespace bolt
         attribute_layout.push_back({
             "iPosition",
             3,
-            GL_DOUBLE,
+            GL_FLOAT,
             GL_FALSE,
-            8 * sizeof(double),
+            8 * sizeof(float),
             0
         });
 
         attribute_layout.push_back({
             "iNormals",
             3,
-            GL_DOUBLE,
+            GL_FLOAT,
             GL_FALSE,
-            8 * sizeof(double),
-            3 * sizeof(double)
+            8 * sizeof(float),
+            3 * sizeof(float)
         });
 
         attribute_layout.push_back({
             "iUV",
             3,
-            GL_DOUBLE,
+            GL_FLOAT,
             GL_FALSE,
-            8 * sizeof(double),
-            6 * sizeof(double)
+            8 * sizeof(float),
+            6 * sizeof(float)
         });
     }
 }

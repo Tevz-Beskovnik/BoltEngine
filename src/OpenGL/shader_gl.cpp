@@ -3,11 +3,10 @@
 namespace bolt
 {
     [[nodiscard]] ShaderGL::ShaderGL()
-        :shader(0)
     {
-        program = glCreateProgram();
+        BOLT_MSG_DEBUG("Creating shader program")
 
-        glUseProgram(0);
+        program = glCreateProgram();
     }
 
     ShaderGL::~ShaderGL()
@@ -29,8 +28,6 @@ namespace bolt
         read_shader(config.shader_location);
 
         compile_shader(config.type);
-
-        link_shader();
     }
 
     [[nodiscard]] uint32_t ShaderGL::get_program() const {
@@ -61,13 +58,19 @@ namespace bolt
 
         while(std::getline(file, line))
         {
-            shader_string += line;
+            shader_string += line + '\n';
         }
+
+        BOLT_MSG_DEBUG("Shader read: ")
+        BOLT_MSG_DEBUG(shader_string)
     }
 
     void ShaderGL::compile_shader(shader_type type)
     {
         const_str c_str_shader = shader_string.c_str();
+        uint32_t shader;
+
+        BOLT_MSG_DEBUG("Compiling shader")
 
         switch(type)
         {
@@ -97,15 +100,24 @@ namespace bolt
 
             glDeleteShader(shader);
 
-            BOLT_ERROR(message)
+            BOLT_MSG_ERROR(message)
+            BOLT_ERROR("Failed to compile shader")
         }
+
+        glAttachShader(program, shader);
+
+        delete_queue.push_back(shader);
+
+        BOLT_MSG_DEBUG("Shader compiled")
     }
 
     void ShaderGL::link_shader() const
     {
-        glAttachShader(program, shader);
+        BOLT_MSG_DEBUG("Linking shader")
 
         glLinkProgram(program);
+
+        glValidateProgram(program);
 
         int32_t status;
         glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
@@ -120,9 +132,13 @@ namespace bolt
 
             glDeleteProgram(program);
 
-            BOLT_ERROR(message)
+            BOLT_MSG_ERROR(message)
+            BOLT_ERROR("Program failed to validate")
         }
 
-        glDeleteShader(shader);
+        for(const auto& shader : delete_queue)
+            glDeleteShader(shader);
+
+        BOLT_MSG_DEBUG("Linking finished")
     }
 }

@@ -19,7 +19,7 @@ namespace bolt
 
             void set_mesh(const std::vector<polygon>& mesh);
 
-            [[nodiscard]] const std::vector<double>& get_drawable_vector() const noexcept override;
+            [[nodiscard]] const std::vector<float>& get_drawable_vector() const noexcept override;
 
             [[nodiscard]] const std::vector<AttributeLayout>& get_attribute_layout() const noexcept override;
 
@@ -35,7 +35,7 @@ namespace bolt
 
         private:
             std::vector<polygon> mesh;
-            std::vector<double> drawable_vector;
+            std::vector<float> drawable_vector;
             std::vector<AttributeLayout> attribute_layout;
             RGB color;
 

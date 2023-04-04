@@ -31,16 +31,16 @@ namespace bolt
 
             void destroy() const;
 
+            void link_shader() const;
+
         private:
             void read_shader(const_str shader_location);
 
             void compile_shader(shader_type type);
 
-            void link_shader() const;
-
             std::string shader_string;
 
-            uint32_t shader;
+            std::vector<uint32_t> delete_queue;
 
             uint32_t program;
     };

@@ -2,10 +2,10 @@
 
 namespace bolt
 {
-    VertexGL::VertexGL(std::vector<float>& buffer)
+    VertexGL::VertexGL(const std::vector<float>& buffer)
         :buffer(0)
     {
-        float* positionsPointer = buffer.data();
+        const float* positionsPointer = buffer.data();
 
         glGenBuffers(1, &this->buffer);
         this->bind();
@@ -18,7 +18,7 @@ namespace bolt
         glDeleteBuffers(1, &buffer);
     }
 
-    [[nodiscard]] single_ptr<VertexGL> VertexGL::create(std::vector<float>& buffer)
+    [[nodiscard]] single_ptr<VertexGL> VertexGL::create(const std::vector<float>& buffer)
     {
         return create_single<VertexGL>(buffer);
     }

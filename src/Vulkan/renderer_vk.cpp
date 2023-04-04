@@ -7,11 +7,6 @@ namespace bolt
         ;
     }
 
-    void RendererVK::add_shader(const std::string &path, shader_type type)
-    {
-        ;
-    }
-
     void RendererVK::render() const
     {
         ;
