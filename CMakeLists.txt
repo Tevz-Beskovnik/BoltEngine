@@ -16,7 +16,7 @@ set (
         src/Vulkan/shader_vk.cpp
         src/OpenGL/texture_gl.cpp
         src/OpenGL/renderer_gl.cpp
-)
+        src/render/entity.cpp src/Vulkan/renderer_vk.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 

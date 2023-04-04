@@ -12,6 +12,26 @@ int main()
         .fullscreen = false
     };
 
+    shader_config_gl s_vert {
+        .shader_location = "",
+        .type = shader_type::VERTEX_SHADER
+    };
+
+    shader_config_gl s_frag {
+        .shader_location = "",
+        .type = shader_type::FRAGMENT_SHADER
+    };
+
+    render_config_gl r_conf = {
+        .shader_config = {s_vert, s_frag},
+        .texture_config = {}
+        .model =
+        .shader_bindings =
+        .instances =
+        .draw_type =
+        .offset =
+    };
+
     RGB bg(128, 78, 90);
 
     single_ptr<Window> window = Window::create(&w_conf);

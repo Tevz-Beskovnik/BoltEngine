@@ -21,14 +21,14 @@ namespace bolt
         return create_ref<ShaderGL>();
     }
 
-    void ShaderGL::add_shader(const_str shader_location, shader_type type)
+    void ShaderGL::add_shader(shader_config_gl config)
     {
-        std::string error = "File: " + std::string(shader_location) + " does not exist.";
-        ASSERT_FILE_EXISTS(shader_location, error);
+        std::string error = "File: " + std::string(config.shader_location) + " does not exist.";
+        ASSERT_FILE_EXISTS(config.shader_location, error);
 
-        read_shader(shader_location);
+        read_shader(config.shader_location);
 
-        compile_shader(type);
+        compile_shader(config.type);
 
         link_shader();
     }

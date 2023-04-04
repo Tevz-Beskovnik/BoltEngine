@@ -10,16 +10,26 @@
 
 namespace bolt
 {
+    typedef void (*uniform_bindings)(uint32_t program);
+
+    struct render_config_gl {
+        std::vector<shader_config_gl> shader_config;
+        std::vector<texture_config_gl> texture_config;
+        ref_ptr<ModelInterface> model;
+        uniform_bindings shader_bindings;
+        uint32_t instances;
+        uint32_t draw_type;
+        uint32_t offset;
+    };
+
     class RendererGL : public RenderInterface
     {
         public:
+            explicit RendererGL(render_config_gl config);
+
+            [[nodiscard]] static ref_ptr<RendererGL> create(render_config_gl config);
+
             bool set_instances(uint32_t instances);
-
-            void set_draw_type(uint32_t draw_type);
-
-            void set_offset(uint32_t offset);
-
-            void set_model(ref_ptr<ModelInterface> model) override;
 
             void add_shader(const std::string &path, shader_type type) override;
 
@@ -31,6 +41,7 @@ namespace bolt
             uint32_t draw_type;
             uint32_t offset;
             uint32_t instances;
+            uniform_bindings binding_function;
 
             ref_ptr<ModelInterface> model;
             ref_ptr<ShaderGL> shader;

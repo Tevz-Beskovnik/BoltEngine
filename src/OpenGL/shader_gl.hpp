@@ -6,6 +6,12 @@
 
 namespace bolt
 {
+    struct shader_config_gl
+    {
+        const_str shader_location;
+        shader_type type;
+    };
+
     class ShaderGL
     {
         public:
@@ -15,7 +21,7 @@ namespace bolt
 
             [[nodiscard]] static ref_ptr<ShaderGL> create();
 
-            void add_shader(const_str shader_location, shader_type type);
+            void add_shader(shader_config_gl config);
 
             [[nodiscard]] uint32_t get_program() const;
 

@@ -6,16 +6,24 @@
 
 namespace bolt
 {
-    enum texture_type {
+    enum texture_type_gl {
         TEXTURE_2D = GL_TEXTURE_2D
+    };
+
+    struct texture_config_gl
+    {
+        texture_type_gl type;
+        const_str texture_location;
+        uint64_t width;
+        uint64_t height;
     };
 
     class TextureGL
     {
         public:
-            TextureGL(texture_type type);
+            explicit TextureGL(texture_config_gl config);
 
-            [[nodiscard]] static ref_ptr<TextureGL> create(texture_type type);
+            [[nodiscard]] static ref_ptr<TextureGL> create(texture_config_gl config);
 
             void bind() const;
 
@@ -24,7 +32,7 @@ namespace bolt
         private:
             static uint32_t activeTexture;
 
-            texture_type type;
+            texture_type_gl type;
 
             uint32_t texture;
 
