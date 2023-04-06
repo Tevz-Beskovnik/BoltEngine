@@ -3,15 +3,34 @@
 namespace bolt
 {
     RGB::RGB()
-        :r(0), g(0), b(0), a(0), r_dec(0), g_dec(0), b_dec(0), a_dec(0)
+        : r(0), g(0), b(0), a(0), r_dec(0), g_dec(0), b_dec(0), a_dec(0)
     {
         ;
     }
 
     RGB::RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-        :r(r), g(g), b(b), a(a), r_dec((float)r/255.0f), g_dec((float)g/255.0f), b_dec((float)b/255.0f), a_dec((float)a/255.0f)
+        : r(r), g(g), b(b), a(a), r_dec((float) r / 255.0f), g_dec((float) g / 255.0f), b_dec((float) b / 255.0f),
+          a_dec((float) a / 255.0f)
     {
         ;
+    }
+
+    void RGB::set_r(uint8_t r)
+    {
+        this->r = r;
+        r_dec = (float)r / 255.0f;
+    }
+
+    void RGB::set_g(uint8_t g)
+    {
+        this->g = g;
+        g_dec  = (float)g / 255.0f;
+    }
+
+    void RGB::set_b(uint8_t b)
+    {
+        this->b = b;
+        b_dec  = (float)b / 255.0f;
     }
 
     void RGB::invert()

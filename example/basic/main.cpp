@@ -5,6 +5,19 @@ using namespace bolt;
 #define WIDTH 800
 #define HEIGHT 600
 
+RGB color(189, 240, 180);
+
+void binding_func(uint32_t program)
+{
+    int uColor = glGetUniformLocation(program, "uColor");
+
+    color.set_r(color.r+1);
+    color.set_g(color.g+1);
+    color.set_b(color.b+1);
+
+    glUniform3f(uColor, color.r_dec, color.g_dec, color.b_dec);
+}
+
 int main()
 {
     window_config w_conf = {
@@ -15,7 +28,7 @@ int main()
         .fullscreen = false
     };
 
-    RGB bg(128, 78, 90);
+    RGB bg(65, 134, 244);
 
     single_ptr<Window> window = Window::create(&w_conf);
 
@@ -35,7 +48,7 @@ int main()
         .shader_config = {s_vert, s_frag},
         .texture_config = {},
         .model = MeshBuilder::make_quad({-0.6f, -0.6f}, {0.5f, 0.5f})->add_model(MeshBuilder::make_quad({0.1f, 0.1f}, {0.5f, 0.5f})),//MeshBuilder::make_triangle(0.5f, -0.5f, -0.5f, -0.5f, 0.0f, 0.5f),
-        .shader_bindings = nullptr,
+        .shader_bindings = binding_func,
         .instances = 1,
         .draw_type = GL_TRIANGLES,
         .offset = 0
