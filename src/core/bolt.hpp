@@ -4,7 +4,6 @@
 #include <colors.hpp>
 #include <util.hpp>
 #include <window.hpp>
-#include <entity.hpp>
 #include <renderer_gl.hpp>
 #include <renderer_vk.hpp>
 #include <mesh_builder.hpp>

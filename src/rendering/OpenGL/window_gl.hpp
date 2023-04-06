@@ -34,6 +34,8 @@ namespace bolt
 
             void frame_routine() override;
 
+            void cleanup_routine() override;
+
             void set_background_color(RGB* color) override;
 
             void set_active() override;

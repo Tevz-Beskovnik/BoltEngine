@@ -44,7 +44,9 @@ namespace bolt
 
             void window_frame_routine();
 
-            void set_cackground_color(RGB* color);
+            void window_cleanup_routine();
+
+            void set_background_color(RGB* color);
 
             void get_size(uint16_t *width, uint16_t *height);
 

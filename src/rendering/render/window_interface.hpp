@@ -20,6 +20,8 @@ namespace bolt
 
             virtual void frame_routine() = 0;
 
+            virtual void cleanup_routine() = 0;
+
             virtual void set_background_color(RGB* color) = 0;
 
             virtual void set_active() = 0;

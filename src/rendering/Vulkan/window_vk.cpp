@@ -38,6 +38,11 @@ namespace bolt
         ;
     }
 
+    void WindowVK::cleanup_routine()
+    {
+        ;
+    }
+
     void WindowVK::set_active()
     {
         ;

@@ -61,12 +61,31 @@ namespace bolt
             }
         );
 
+        BOLT_MSG_DEBUG("Mesh-builder poly count: " + std::to_string(mesh.size()))
+
         return Model::create(mesh);
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_triangle(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3)
     {
-        return Model::create({});
+        std::vector<polygon> mesh;
+
+        mesh.push_back(
+            {
+                .vert ={
+                    { x1, y1, 0.0f },
+                    { x2, y2, 0.0f },
+                    { x3, y3, 0.0f }
+                },
+                .UV = {
+                    { 1.0f, 1.0f },
+                    { 1.0f, 0.0f},
+                    { 0.0f, 0.0f},
+                }
+            }
+        );
+
+        return Model::create(mesh);
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_2 center, const vector_3 dimensions)

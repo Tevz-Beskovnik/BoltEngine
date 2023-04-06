@@ -3,9 +3,12 @@
 namespace bolt
 {
     [[nodiscard]] Model::Model(std::vector<polygon> mesh)
-        :mesh(std::move(mesh))
+        :mesh(std::move(mesh)), instance(nullptr)
     {
+        BOLT_MSG_DEBUG("Poly count: " + std::to_string(this->mesh.size()))
         to_drawable_vector();
+
+        set_attribute_layout();
     }
 
     Model::~Model()
@@ -15,7 +18,9 @@ namespace bolt
 
     [[nodiscard]] ref_ptr<Model> Model::create(std::vector<polygon> mesh)
     {
-        return create_ref<Model>(mesh);
+        ref_ptr<Model> temp = create_ref<Model>(mesh);
+        temp->instance = temp;
+        return temp;
     }
 
     void Model::set_mesh(const std::vector<polygon>& new_mesh)
@@ -35,6 +40,11 @@ namespace bolt
         return attribute_layout;
     }
 
+    [[nodiscard]] const std::vector<polygon>& Model::get_polygons() const noexcept
+    {
+        return mesh;
+    }
+
     [[nodiscard]] uint32_t Model::polygon_count() const noexcept
     {
         return mesh.size();
@@ -51,6 +61,16 @@ namespace bolt
 
             mesh[i].normal = Model::calculate_normal(mesh[i]);
         }
+    }
+
+    ref_ptr<ModelInterface> Model::add_model(const ref_ptr<ModelInterface>& model)
+    {
+        for(const auto& poly : model->get_polygons())
+            mesh.push_back(poly);
+
+        to_drawable_vector();
+
+        return instance;
     }
 
     void Model::move_model(const vector_3& position) noexcept
@@ -145,7 +165,6 @@ namespace bolt
     void Model::set_attribute_layout()
     {
         attribute_layout.push_back({
-            "iPosition",
             3,
             GL_FLOAT,
             GL_FALSE,
@@ -154,7 +173,6 @@ namespace bolt
         });
 
         attribute_layout.push_back({
-            "iNormals",
             3,
             GL_FLOAT,
             GL_FALSE,
@@ -163,8 +181,7 @@ namespace bolt
         });
 
         attribute_layout.push_back({
-            "iUV",
-            3,
+            2,
             GL_FLOAT,
             GL_FALSE,
             8 * sizeof(float),

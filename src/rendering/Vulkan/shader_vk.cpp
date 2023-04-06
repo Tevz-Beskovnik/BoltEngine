@@ -2,7 +2,7 @@
 
 namespace bolt
 {
-    [[nodiscard]] ShaderVK::ShaderVK(const_str shader_location, shader_type type)
+    [[nodiscard]] ShaderVK::ShaderVK(const_str shader_location, uint32_t type)
     {
         ;
     }
@@ -12,7 +12,7 @@ namespace bolt
         ;
     }
 
-    [[nodiscard]] ref_ptr<ShaderVK> ShaderVK::create(const_str shader_location, shader_type type)
+    [[nodiscard]] ref_ptr<ShaderVK> ShaderVK::create(const_str shader_location, uint32_t type)
     {
         return create_ref<ShaderVK>(shader_location, type);
     }

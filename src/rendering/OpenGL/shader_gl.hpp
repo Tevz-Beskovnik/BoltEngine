@@ -9,19 +9,17 @@ namespace bolt
     struct shader_config_gl
     {
         const_str shader_location;
-        shader_type type;
+        uint32_t type;
     };
 
     class ShaderGL
     {
         public:
-            ShaderGL();
+            ShaderGL(std::vector<shader_config_gl> config);
 
-            ~ShaderGL();
+            virtual ~ShaderGL();
 
-            [[nodiscard]] static ref_ptr<ShaderGL> create();
-
-            void add_shader(shader_config_gl config);
+            [[nodiscard]] static ref_ptr<ShaderGL> create(std::vector<shader_config_gl> config);
 
             [[nodiscard]] uint32_t get_program() const;
 
@@ -31,12 +29,10 @@ namespace bolt
 
             void destroy() const;
 
-            void link_shader() const;
-
         private:
             void read_shader(const_str shader_location);
 
-            void compile_shader(shader_type type);
+            void compile_shader(uint32_t type);
 
             std::string shader_string;
 

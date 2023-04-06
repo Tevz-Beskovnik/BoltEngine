@@ -68,7 +68,12 @@ namespace bolt
         framework_window->frame_routine();
     }
 
-    void Window::set_cackground_color(RGB* color)
+    void Window::window_cleanup_routine()
+    {
+        framework_window->cleanup_routine();
+    }
+
+    void Window::set_background_color(RGB* color)
     {
         framework_window->set_background_color(color);
     }

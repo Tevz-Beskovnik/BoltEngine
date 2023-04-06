@@ -12,13 +12,26 @@ namespace bolt
 
         glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         BOLT_MSG_DEBUG("Creating window")
 
         window = glfwCreateWindow((int)width, (int)height, title, NULL, NULL);
+
+        if(window == NULL)
+        {
+            glfwTerminate();
+            BOLT_ERROR("Failed to initialize window")
+        }
+
+        glfwMakeContextCurrent(window);
+
+        BOLT_MSG_DEBUG("Set context to window")
+
+        if(glewInit() != GLEW_OK)
+            BOLT_ERROR("GLEW failed to init")
     }
 
     [[nodiscard]] single_ptr<WindowGL> WindowGL::create(uint16_t width, uint16_t height, const_str title)
@@ -85,10 +98,13 @@ namespace bolt
         glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void WindowGL::cleanup_routine()
+    {
+        glfwSwapBuffers(window);
 
         glfwPollEvents();
-
-        glfwSwapBuffers(window);
     }
 
     void WindowGL::set_background_color(RGB* color)
@@ -102,18 +118,15 @@ namespace bolt
 
     void WindowGL::set_active()
     {
-        if(!window)
-        {
-            glfwTerminate();
-            BOLT_ERROR("Failed to initialize window")
-        }
-
         glfwMakeContextCurrent(window);
 
         BOLT_MSG_DEBUG("Set context to window")
 
-        if(glewInit() != GLEW_OK)
-            BOLT_ERROR("GLEW failed to init")
+        /*glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        glCullFace(GL_FRONT);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
 
         BOLT_MSG_DEBUG("GLEW initialised")
     }

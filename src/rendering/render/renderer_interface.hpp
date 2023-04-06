@@ -14,6 +14,8 @@ namespace bolt
 
             virtual void add_texture(const std::string &path) = 0;
 
+            virtual void set_viewport(vector_2 corner, vector_2 dimensions) = 0;
+
             virtual void render() const = 0;
     };
 }

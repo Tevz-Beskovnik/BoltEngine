@@ -4,18 +4,15 @@ namespace bolt {
     RendererGL::RendererGL(render_config_gl config)
         :instances(config.instances == 0 ? 1 : config.instances), offset(config.offset), draw_type(config.draw_type), binding_function(config.shader_bindings), model(config.model)
     {
-        this->vertex = VertexGL::create(model->get_drawable_vector());
-
-        this->shader = ShaderGL::create();
-
-        for(const auto& shader_conf : config.shader_config)
-            this->shader->add_shader(shader_conf);
+        this->vertex = VertexGL::create({
+            .index_buffer = nullptr,
+            .verticies = model->get_drawable_vector(),
+            .layouts = config.model->get_attribute_layout()
+        });
 
         this->vertex->bind();
 
-        this->shader->link_shader();
-
-        VertexGL::unbind();
+        this->shader = ShaderGL::create(config.shader_config); //<---- TODO: THE ERROR IS HERE
 
         for(const auto& texture : config.texture_config)
             this->textures.push_back(TextureGL::create(texture));
@@ -35,6 +32,11 @@ namespace bolt {
         return true;
     }
 
+    void RendererGL::set_viewport(vector_2 corner, vector_2 dimensions)
+    {
+        glViewport(corner.x, corner.y, dimensions.x, dimensions.y);
+    }
+
     void RendererGL::add_texture(const std::string &path) {
         ASSERT(!path.empty(), "Path cannot be a empty string");
         ASSERT_FILE_EXISTS(path.c_str(), "Bad texture file");
@@ -44,39 +46,24 @@ namespace bolt {
     }
 
     void RendererGL::render() const {
-        vertex->bind();
-
-        for(const auto& layout : model->get_attribute_layout()) {
-            uint32_t attrib_index = glGetAttribLocation(shader->get_program(), layout.nameOfAttribute);
-
-            glEnableVertexAttribArray(attrib_index);
-
-            glVertexAttribPointer(
-                attrib_index,
-                layout.size,
-                layout.type,
-                layout.normalise,
-                layout.totalSizeInBytes,
-                (void *) layout.offset
-            );
-        }
-
         shader->bind();
+
+        vertex->bind();
 
         for(const auto& texture : textures) texture->bind();
 
         if(binding_function != nullptr)
             binding_function(shader->get_program());
 
-        if(instances > 1)
-            glDrawArrays(draw_type, static_cast<int>(offset), static_cast<int>(model->polygon_count()));
+        if(!vertex->has_index())
+            if(instances == 1)
+                glDrawArrays(draw_type, offset, static_cast<int>(3*model->polygon_count())); // TODO switch drawing to glDrawElements if index buffer exists
+            else
+                glDrawArraysInstanced(draw_type, offset, static_cast<int>(3*model->polygon_count()), static_cast<int>(instances));
         else
-            glDrawArraysInstanced(draw_type, static_cast<int>(offset), static_cast<int>(model->polygon_count()), static_cast<int>(instances));
-
-        VertexGL::unbind();
-
-        ShaderGL::unbind();
-
-        for(const auto& texture : textures) texture->unbind();
+            if(instances == 1)
+                glDrawElements(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0);
+            else
+                glDrawElementsInstanced(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0, static_cast<int>(instances));
     }
 }

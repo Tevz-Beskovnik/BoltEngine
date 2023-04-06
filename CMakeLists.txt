@@ -12,11 +12,11 @@ file (GLOB_RECURSE BoltEngine_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
 set (
         BoltEngine_HEADER_FILES
-        src/OpenGL/shader_gl.cpp
-        src/Vulkan/shader_vk.cpp
-        src/OpenGL/texture_gl.cpp
-        src/OpenGL/renderer_gl.cpp
-        src/render/entity.cpp src/Vulkan/renderer_vk.cpp)
+        src/rendering/OpenGL/shader_gl.cpp
+        src/rendering/Vulkan/shader_vk.cpp
+        src/rendering/OpenGL/texture_gl.cpp
+        src/rendering/OpenGL/renderer_gl.cpp
+        src/rendering/Vulkan/renderer_vk.cpp src/rendering/OpenGL/vertex_gl.cpp src/rendering/OpenGL/buffer_gl.cpp src/rendering/OpenGL/index_buffer_gl.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 
@@ -32,9 +32,9 @@ target_include_directories(
         "${CMAKE_PROJECT_NAME}"
         PUBLIC BoltEngine_HEADERS
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/core
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/render
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/Vulkan
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/OpenGL
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/rendering/render
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/rendering/Vulkan
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/rendering/OpenGL
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/model
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/io
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/model/types

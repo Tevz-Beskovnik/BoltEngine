@@ -6,6 +6,10 @@ namespace bolt
     {
         std::fstream file_open(file);
 
-        return file_open.is_open();
+        bool is_open = file_open.is_open();
+
+        file_open.close();
+
+        return is_open;
     }
 }

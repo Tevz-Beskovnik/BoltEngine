@@ -37,14 +37,6 @@ namespace bolt
         VULKAN = 1
     };
 
-    enum shader_type
-    {
-        VERTEX_SHADER,
-        FRAGMENT_SHADER,
-        GEOMETRY_SHADER,
-        COMPUTE_SHADER
-    };
-
     typedef const char* const_str;
     typedef char* basic_str;
 

@@ -31,11 +31,14 @@ namespace bolt
 
             bool set_instances(uint32_t instances);
 
+            void set_viewport(vector_2 corner, vector_2 dimensions) override;
+
             void add_texture(const std::string &path) override;
 
             void render() const override;
 
         private:
+
             uint32_t draw_type;
             uint32_t offset;
             uint32_t instances;
@@ -44,6 +47,6 @@ namespace bolt
             ref_ptr<ModelInterface> model;
             ref_ptr<ShaderGL> shader;
             std::vector<ref_ptr<TextureGL>> textures;
-            single_ptr<VertexGL> vertex;
+            ref_ptr<VertexGL> vertex;
     };
 }

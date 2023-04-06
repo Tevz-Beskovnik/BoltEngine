@@ -5,7 +5,6 @@
 namespace bolt {
     struct AttributeLayout
     {
-        const_str nameOfAttribute;
         int32_t size;
         uint32_t type;
         uint32_t normalise;
@@ -23,6 +22,8 @@ namespace bolt {
 
             virtual void rotate_model(vector_3 rotation_vector) noexcept = 0;
 
+            virtual ref_ptr<ModelInterface> add_model(const ref_ptr<ModelInterface>& model) = 0;
+
             virtual void apply_lighting() = 0;
 
             [[nodiscard]] virtual uint32_t polygon_count() const noexcept = 0;
@@ -30,5 +31,7 @@ namespace bolt {
             [[nodiscard]] virtual const std::vector<AttributeLayout>& get_attribute_layout() const noexcept = 0;
             // TODO: return vector to double!!!
             [[nodiscard]] virtual const std::vector<float>& get_drawable_vector() const noexcept = 0;
+
+            [[nodiscard]] virtual const std::vector<polygon>& get_polygons() const noexcept = 0;
     };
 }

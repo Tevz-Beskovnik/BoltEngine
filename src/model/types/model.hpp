@@ -23,7 +23,11 @@ namespace bolt
 
             [[nodiscard]] const std::vector<AttributeLayout>& get_attribute_layout() const noexcept override;
 
+            [[nodiscard]] const std::vector<polygon>& get_polygons() const noexcept override;
+
             [[nodiscard]] uint32_t polygon_count() const noexcept override;
+
+            ref_ptr<ModelInterface> add_model(const ref_ptr<ModelInterface>& model) override;
 
             void move_model(const vector_3& position) noexcept override;
 
@@ -37,6 +41,7 @@ namespace bolt
             std::vector<polygon> mesh;
             std::vector<float> drawable_vector;
             std::vector<AttributeLayout> attribute_layout;
+            ref_ptr<Model> instance;
             RGB color;
 
             void recalculate_normals();
