@@ -2,22 +2,6 @@
 
 namespace bolt
 {
-    BufferGL::BufferGL(const std::vector<float>& buffer)
-    {
-        BOLT_MSG_DEBUG("creating VBO")
-
-        glGenBuffers(1, &this->buffer);
-        bind();
-        glBufferData(GL_ARRAY_BUFFER, buffer.size()*sizeof(float), buffer.data(), GL_STATIC_DRAW);
-        unbind();
-        BOLT_MSG_DEBUG("created VBO")
-    }
-
-    ref_ptr<BufferGL> BufferGL::create(const std::vector<float>& buffer)
-    {
-        return create_ref<BufferGL>(buffer);
-    }
-
     BufferGL::~BufferGL()
     {
         delete_buffer();

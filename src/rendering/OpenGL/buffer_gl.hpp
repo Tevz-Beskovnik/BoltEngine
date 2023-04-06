@@ -8,9 +8,24 @@ namespace bolt
     class BufferGL
     {
         public:
-            explicit BufferGL(const std::vector<float>& buffer);
+            template<typename T> /// IF YOU USE TEMPLATES IN CLASSES AND HEADER FILES DEFINITION MUST ALSO BE WRITTEN HERE
+            explicit BufferGL(const std::vector<T>& buffer)
+                : buffer(0)
+            {
+                BOLT_MSG_DEBUG("creating VBO")
 
-            static ref_ptr<BufferGL> create(const std::vector<float>& buffer);
+                glGenBuffers(1, &this->buffer);
+                bind();
+                glBufferData(GL_ARRAY_BUFFER, buffer.size()*sizeof(T), buffer.data(), GL_STATIC_DRAW);
+                unbind();
+                BOLT_MSG_DEBUG("created VBO")
+            }
+
+            template<typename T>
+            static ref_ptr<BufferGL> create(const std::vector<T>& buffer)
+            {
+                return create_ref<BufferGL>(buffer);
+            }
 
             virtual ~BufferGL();
 
