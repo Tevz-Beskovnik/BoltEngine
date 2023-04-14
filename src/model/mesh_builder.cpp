@@ -49,21 +49,24 @@ namespace bolt
         mesh.push_back(
             {
                 .vert ={
-                    { corner.x + dimensions.x, corner.y, 0.0f },
                     { corner.x + dimensions.x, corner.y + dimensions.y, 0.0f },
+                    { corner.x + dimensions.x, corner.y, 0.0f },
                     { corner.x, corner.y + dimensions.y, 0.0f }
                 },
                 .UV = {
                     { 1.0f, 1.0f },
-                    { 1.0f, 0.0f},
-                    { 0.0f, 0.0f},
+                    { 1.0f, 0.0f },
+                    { 0.0f, 0.0f }
                 }
             }
         );
 
         BOLT_MSG_DEBUG("Mesh-builder poly count: " + std::to_string(mesh.size()))
 
-        return Model::create(mesh);
+        return Model::create({
+            .mesh = mesh,
+            .indices = {}
+        });
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_triangle(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3)
@@ -85,17 +88,22 @@ namespace bolt
             }
         );
 
-        return Model::create(mesh);
+        return Model::create({
+            .mesh = mesh,
+            .indices = {}
+        });
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_2 center, const vector_3 dimensions)
     {
-        return Model::create({});
+
+
+        return Model::create({{}, {}});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_sphere(const vector_2 center, const double radius)
     {
-        return Model::create({});
+        return Model::create({{}, {}});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::read_obj(const_str file_path)
@@ -163,21 +171,21 @@ namespace bolt
             }
         }
 
-        return Model::create(mesh);
+        return Model::create({mesh, {}});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::read_collada(const_str file_path) // TODO
     {
-        return Model::create({});
+        return Model::create({{}, {}});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::read_stl(const_str file_path) // TODO
     {
-        return Model::create({});
+        return Model::create({{}, {}});
     }
 
     [[nodiscard]] ref_ptr<Model> MeshBuilder::read_fbx(const_str file_path) // TODO
     {
-        return Model::create({});
+        return Model::create({{}, {}});
     }
 }

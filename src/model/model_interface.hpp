@@ -32,6 +32,8 @@ namespace bolt {
             // TODO: return vector to double!!!
             [[nodiscard]] virtual const std::vector<float>& get_drawable_vector() const noexcept = 0;
 
+            [[nodiscard]] virtual const std::vector<uint32_t>& get_index_buffer() const noexcept = 0;
+
             [[nodiscard]] virtual const std::vector<polygon>& get_polygons() const noexcept = 0;
     };
 }

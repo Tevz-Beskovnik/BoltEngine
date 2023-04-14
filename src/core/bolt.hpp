@@ -9,3 +9,4 @@
 #include <mesh_builder.hpp>
 #include <model.hpp>
 #include <model_interface.hpp> // for creating custom model interfaces
+#include <event.hpp>

@@ -8,18 +8,26 @@
 
 namespace bolt
 {
+    struct model_config
+    {
+        std::vector<polygon> mesh;
+        std::vector<uint32_t> indices;
+    };
+
     class Model : public ModelInterface
     {
         public:
-            explicit Model(std::vector<polygon> mesh);
+            explicit Model(model_config config);
 
             ~Model() override;
 
-            [[nodiscard]] static ref_ptr<Model> create(std::vector<polygon> mesh);
+            [[nodiscard]] static ref_ptr<Model> create(model_config config);
 
             void set_mesh(const std::vector<polygon>& mesh);
 
             [[nodiscard]] const std::vector<float>& get_drawable_vector() const noexcept override;
+
+            [[nodiscard]] const std::vector<uint32_t>& get_index_buffer() const noexcept override;
 
             [[nodiscard]] const std::vector<AttributeLayout>& get_attribute_layout() const noexcept override;
 
@@ -39,6 +47,7 @@ namespace bolt
 
         private:
             std::vector<polygon> mesh;
+            std::vector<uint32_t> indices;
             std::vector<float> drawable_vector;
             std::vector<AttributeLayout> attribute_layout;
             ref_ptr<Model> instance;

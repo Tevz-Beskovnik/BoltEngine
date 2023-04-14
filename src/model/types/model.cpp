@@ -2,8 +2,8 @@
 
 namespace bolt
 {
-    [[nodiscard]] Model::Model(std::vector<polygon> mesh)
-        :mesh(std::move(mesh)), instance(nullptr)
+    [[nodiscard]] Model::Model(model_config config)
+        :mesh(std::move(config.mesh)), indices(std::move(config.indices)), instance(nullptr)
     {
         BOLT_MSG_DEBUG("Poly count: " + std::to_string(this->mesh.size()))
         to_drawable_vector();
@@ -16,9 +16,9 @@ namespace bolt
         ;
     }
 
-    [[nodiscard]] ref_ptr<Model> Model::create(std::vector<polygon> mesh)
+    [[nodiscard]] ref_ptr<Model> Model::create(model_config config)
     {
-        ref_ptr<Model> temp = create_ref<Model>(mesh);
+        ref_ptr<Model> temp = create_ref<Model>(config);
         temp->instance = temp;
         return temp;
     }
@@ -33,6 +33,11 @@ namespace bolt
     [[nodiscard]] const std::vector<float>& Model::get_drawable_vector() const noexcept
     {
         return drawable_vector;
+    }
+
+    [[nodiscard]] const std::vector<uint32_t>& Model::get_index_buffer() const noexcept
+    {
+        return indices;
     }
 
     [[nodiscard]] const std::vector<AttributeLayout>& Model::get_attribute_layout() const noexcept

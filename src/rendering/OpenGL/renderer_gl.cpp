@@ -5,14 +5,16 @@ namespace bolt {
         :instances(config.instances == 0 ? 1 : config.instances), offset(config.offset), draw_type(config.draw_type), binding_function(config.shader_bindings), model(config.model)
     {
         this->vertex = VertexGL::create({
-            .index_buffer = nullptr,
+            .index_buffer = model->get_index_buffer().size() != 0
+                ? IndexBufferGL::create(model->get_index_buffer())
+                : nullptr,
             .verticies = model->get_drawable_vector(),
             .layouts = config.model->get_attribute_layout()
         });
 
         this->vertex->bind();
 
-        this->shader = ShaderGL::create(config.shader_config); //<---- TODO: THE ERROR IS HERE
+        this->shader = ShaderGL::create(config.shader_config);
 
         for(const auto& texture : config.texture_config)
             this->textures.push_back(TextureGL::create(texture));
