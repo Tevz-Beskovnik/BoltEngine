@@ -6,12 +6,10 @@
 
 namespace bolt
 {
-    class Layer
+    class LayerInterface
     {
         public:
-            Layer();
-
-            virtual ~Layer();
+            virtual ~LayerInterface() { ; }
 
             virtual void frame() const = 0;
 

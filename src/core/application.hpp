@@ -3,23 +3,30 @@
 #include <core.hpp>
 #include <util.hpp>
 #include <event.hpp>
+#include <window_events.hpp>
 #include <layer_interface.hpp>
+#include <window.hpp>
 
-namespace bolt {
-    class application
+namespace bolt
+{
+    class Application
     {
         public:
-            application();
+            Application();
 
-            virtual ~application();
+            virtual ~Application() { ; }
 
-            void add_layer();
+            void add_layer(ref_ptr<LayerInterface> layer);
 
-            void run();
+            void run() const;
 
             void on_event(Event& event);
 
+            bool handleWindowClose(WindowCloseEvent& e);
+
         private:
-            std::vector<ref_ptr<Layer>> layers;
+            bool running;
+
+            std::vector<ref_ptr<LayerInterface>> layers{};
     };
 }

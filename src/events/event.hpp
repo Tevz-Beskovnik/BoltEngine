@@ -5,15 +5,20 @@
 
 namespace bolt
 {
-    #define SETUP_CLASS_TYPE(type) static EventType get_static_type() { return EventType::type; } \
-                                virtual Event EventType get_type() const override { return get_static_type(); }
+    #define SETUP_EVENT_TYPE(type) static EventType get_static_type() { return EventType::type; } \
+                                    virtual EventType get_type() const override { return get_static_type(); }
 
-    #define SETUP_CLASS_CATEGORY(category) static EventCategory getStaticCategory() { return EventCategory::category }
+    #define SETUP_EVENT_CATEGORY(category) static EventCategory getStaticCategory() { return EventCategory::category; }
+
+    #define CAST_EVENT_FUNCTION(function) [this](Event& event) -> bool { return this->function(std::forward<Event&>(event)); }
 
     enum EventType
     {
         KeyUp,
         KeyPress,
+        MouseClick,
+        MouseMove,
+        WindowClose,
         WindowResize,
         WindowMove
     };
@@ -27,7 +32,9 @@ namespace bolt
     class Event
     {
         public:
-            virtual ~Event();
+            Event() { ; }
+
+            virtual ~Event() = default;
 
             bool handled = false;
 
@@ -48,7 +55,7 @@ namespace bolt
             {
                 if(event.get_type() == T::get_static_type())
                 {
-                    event.handled |= func(static_cast<T>(event));
+                    event.handled |= func(static_cast<T&>(event));
                     return true;
                 }
 
