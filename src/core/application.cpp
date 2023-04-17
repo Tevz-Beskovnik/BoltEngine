@@ -15,6 +15,8 @@ namespace bolt
     void Application::add_layer(ref_ptr<LayerInterface> layer)
     {
         layers.push_back(layer);
+
+        layer->bind_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }
 
     void Application::run() const

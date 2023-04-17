@@ -8,6 +8,8 @@ using namespace bolt;
 
 int main()
 {
+    Application app;
+
     window_config w_conf = {
         .framework = OPEN_GL,
         .width = WIDTH,
@@ -21,8 +23,6 @@ int main()
     ref_ptr<Window> window = Window::create(&w_conf);
 
     window->set_background_color(&bg);
-
-    Application app;
 
     app.add_layer(TestLayer::create(window));
 

@@ -71,7 +71,9 @@ namespace bolt
 
     void Window::window_cleanup_routine()
     {
-        if(!is_window_open()) // TODO make sure to add a away to register a callback to glfw directly
+
+
+        if(!is_window_open() && trigger != nullptr) // TODO make sure to add a away to register a callback to glfw directly
         {
             WindowCloseEvent event;
 

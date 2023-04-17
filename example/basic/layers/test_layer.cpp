@@ -60,6 +60,8 @@ void TestLayer::frame() const
 void TestLayer::bind_event_trigger(bolt::event_trigger trigger)
 {
     this->trigger = trigger;
+
+    window->register_event_trigger(trigger); // TODO: This should be done somewhere inside of app somehow (reffer to context switching TODO)
 }
 
 void TestLayer::on_event(Event& e) const
