@@ -31,6 +31,10 @@ namespace bolt
     #define ASSERT_NE(left, right, err) (left != right ? true : throw std::runtime_error(err))
     #endif
 
+    #ifndef CAST_EVENT_FUNCTION
+    #define CAST_MEMBER_FUNCTION(function) [this](auto&&... args) -> decltype(auto) { return this->function(std::forward<decltype(args)>(args)...); }
+    #endif
+
     enum render_framework
     {
         OPEN_GL = 0,

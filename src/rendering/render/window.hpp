@@ -13,6 +13,7 @@
 #include <window_interface.hpp>
 #include <window_gl.hpp>
 #include <window_vk.hpp>
+#include <window_events.hpp>
 
 namespace bolt
 {
@@ -30,13 +31,15 @@ namespace bolt
         public:
             [[nodiscard]] explicit Window(window_config* config);
 
-            [[nodiscard]] static single_ptr<Window> create(window_config* config);
+            [[nodiscard]] static ref_ptr<Window> create(window_config* config);
 
             void set_window_dims(uint16_t width, uint16_t height);
 
             void window_windowed(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
 
             void window_windowed(uint16_t width, uint16_t height);
+
+            void register_event_trigger(event_trigger trigger);
 
             void window_windowed();
 
@@ -55,7 +58,7 @@ namespace bolt
             void close();
 
         private:
-            [[nodiscard]] static bool validate_config(window_config* config);
+            event_trigger trigger;
 
             basic_str title;
 

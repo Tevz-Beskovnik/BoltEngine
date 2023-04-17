@@ -23,19 +23,12 @@ namespace bolt
             for(const auto& layer : layers) layer->frame();
     }
 
-    bool Application::handleWindowClose(WindowCloseEvent& e)
-    {
-        running = false;
-
-        return true;
-    }
-
     void Application::on_event(Event& event)
     {
         BOLT_MSG_DEBUG("Dispatching event:")
 
         EventDispatcher dispatcher(event);
-        dispatcher.dispatch<WindowCloseEvent>(CAST_EVENT_FUNCTION(Application::handleWindowClose));
+        dispatcher.dispatch<StopAppEvent>(CAST_MEMBER_FUNCTION(Application::handleAppStop));
 
         for(const auto& layer : layers)
         {
@@ -43,5 +36,13 @@ namespace bolt
 
             layer->on_event(event);
         }
+    }
+
+    bool Application::handleAppStop(StopAppEvent& e)
+    {
+        BOLT_MSG_DEBUG("Application is shutting down")
+
+        running = false;
+        return true;
     }
 }

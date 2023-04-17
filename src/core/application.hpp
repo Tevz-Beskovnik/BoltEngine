@@ -3,18 +3,18 @@
 #include <core.hpp>
 #include <util.hpp>
 #include <event.hpp>
-#include <window_events.hpp>
+#include <application_events.hpp>
 #include <layer_interface.hpp>
 #include <window.hpp>
 
 namespace bolt
 {
-    class Application
+    class Application // TODO ADD MULTIPLE WINDOWS AND A WAY TO SWITCH CONTEXT BETWEEN THEM
     {
         public:
             Application();
 
-            virtual ~Application() { ; }
+            virtual ~Application() = default;
 
             void add_layer(ref_ptr<LayerInterface> layer);
 
@@ -22,7 +22,7 @@ namespace bolt
 
             void on_event(Event& event);
 
-            bool handleWindowClose(WindowCloseEvent& e);
+            bool handleAppStop(StopAppEvent& e);
 
         private:
             bool running;

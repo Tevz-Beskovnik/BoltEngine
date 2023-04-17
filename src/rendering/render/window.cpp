@@ -16,17 +16,13 @@ namespace bolt
         framework_window->set_active();
     }
 
-    [[nodiscard]] single_ptr<Window> Window::create(window_config* config)
+    [[nodiscard]] ref_ptr<Window> Window::create(window_config* config)
     {
-        if(!validate_config(config))
-            BOLT_ERROR("Window incorrectly configured!")
+        ASSERT_NE(strlen(config->title), 0, "Title cannot be null len");
+        ASSERT(!(config->height == 0 || config->width == 0), "Width and height cannot be 0");
+        ASSERT((config->framework == 0 || config->framework == 1), "Invalid window framework selected");
 
-        return create_single<Window>(config);
-    }
-
-    [[nodiscard]] bool Window::validate_config(window_config* config)
-    {
-        return (strlen(config->title) != 0 && !(config->height == 0 || config->width == 0) && (config->framework == 0 || config->framework == 1));
+        return create_ref<Window>(config);
     }
 
     void Window::set_window_dims(uint16_t new_width, uint16_t new_height)
@@ -53,6 +49,11 @@ namespace bolt
         framework_window->windowed(width, height);
     }
 
+    void Window::register_event_trigger(event_trigger trigger)
+    {
+        this->trigger = trigger;
+    }
+
     void Window::window_windowed()
     {
         framework_window->windowed(width, height);
@@ -70,6 +71,13 @@ namespace bolt
 
     void Window::window_cleanup_routine()
     {
+        if(!is_window_open()) // TODO make sure to add a away to register a callback to glfw directly
+        {
+            WindowCloseEvent event;
+
+            trigger(event);
+        }
+
         framework_window->cleanup_routine();
     }
 

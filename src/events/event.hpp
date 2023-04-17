@@ -10,12 +10,11 @@ namespace bolt
 
     #define SETUP_EVENT_CATEGORY(category) static EventCategory getStaticCategory() { return EventCategory::category; }
 
-    #define CAST_EVENT_FUNCTION(function) [this](Event& event) -> bool { return this->function(std::forward<Event&>(event)); }
-
     enum EventType
     {
         KeyUp,
         KeyPress,
+        AppStop,
         MouseClick,
         MouseMove,
         WindowClose,
@@ -26,7 +25,8 @@ namespace bolt
     enum EventCategory
     {
         WindowEvent = 0b1,
-        KeyEvent = 0b10
+        KeyEvent = 0b10,
+        AppEvent = 0b100
     };
 
     class Event
@@ -40,6 +40,8 @@ namespace bolt
 
             [[nodiscard]] virtual EventType get_type() const = 0;
     };
+
+    typedef std::function<void(Event&)> event_trigger;
 
     class EventDispatcher
     {
