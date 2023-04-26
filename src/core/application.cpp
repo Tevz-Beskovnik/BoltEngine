@@ -30,7 +30,7 @@ namespace bolt
         BOLT_MSG_DEBUG("Dispatching event:")
 
         EventDispatcher dispatcher(event);
-        dispatcher.dispatch<StopAppEvent>(CAST_MEMBER_FUNCTION(Application::handleAppStop));
+        dispatcher.dispatch<StopAppEvent>(CAST_MEMBER_FUNCTION(Application::handle_app_stop));
 
         for(const auto& layer : layers)
         {
@@ -40,7 +40,7 @@ namespace bolt
         }
     }
 
-    bool Application::handleAppStop(StopAppEvent& e)
+    bool Application::handle_app_stop(StopAppEvent& e)
     {
         BOLT_MSG_DEBUG("Application is shutting down")
 

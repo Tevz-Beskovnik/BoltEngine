@@ -22,7 +22,7 @@ namespace bolt
 
             void on_event(Event& event);
 
-            bool handleAppStop(StopAppEvent& e);
+            bool handle_app_stop(StopAppEvent& e);
 
         private:
             bool running;

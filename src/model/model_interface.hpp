@@ -29,7 +29,7 @@ namespace bolt {
             [[nodiscard]] virtual uint32_t polygon_count() const noexcept = 0;
 
             [[nodiscard]] virtual const std::vector<AttributeLayout>& get_attribute_layout() const noexcept = 0;
-            // TODO: return vector to double!!!
+            // TODO: return vector of doubles!!!
             [[nodiscard]] virtual const std::vector<float>& get_drawable_vector() const noexcept = 0;
 
             [[nodiscard]] virtual const std::vector<uint32_t>& get_index_buffer() const noexcept = 0;
