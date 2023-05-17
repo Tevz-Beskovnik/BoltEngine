@@ -29,15 +29,15 @@ namespace bolt
             void update();
 
         private:
-            vector_3 look_direction_side = {0.0f, 0.0f, 1.0f};
-            vector_3 look_direction_forward = {1.0f, 0.0f, 0.0f};
+            vector_3 look_direction_forward = {0.0f, 0.0f, 1.0f};
+            vector_3 look_direction_side = {1.0f, 0.0f, 0.0f};
             vector_3 look_direction_up = {0.0f, 1.0f, 0.0f};
 
             float forward = 0.0f;
             float sideways = 0.0f;
             float vertical = 0.0f;
 
-            matrix_4 projection_mat;
+            matrix_4 projection_matrix;
             matrix_4 view_matrix;
 
             void create_projection_matrix(uint16_t width, uint16_t height, float f_far, float f_near, float fov);

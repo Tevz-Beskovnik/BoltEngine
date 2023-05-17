@@ -14,6 +14,7 @@
 #include <colors.hpp>
 #include <util.hpp>
 #include <window_interface.hpp>
+#include <keyboard_events.hpp>
 
 namespace bolt
 {

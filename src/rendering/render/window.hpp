@@ -53,9 +53,9 @@ namespace bolt
 
             void get_size(uint16_t *width, uint16_t *height);
 
-            [[nodiscard]] bool is_window_open();
+            [[nodiscard]] bool is_window_open() const;
 
-            void close();
+            void close() const;
 
         private:
             event_trigger trigger;

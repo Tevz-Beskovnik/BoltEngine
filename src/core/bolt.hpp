@@ -19,3 +19,5 @@
 #include <event.hpp>
 #include <window_events.hpp>
 #include <application_events.hpp>
+#include <camera_events.hpp>
+#include <keyboard_events.hpp>

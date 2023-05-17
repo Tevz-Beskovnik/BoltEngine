@@ -71,8 +71,6 @@ namespace bolt
 
     void Window::window_cleanup_routine()
     {
-
-
         if(!is_window_open() && trigger != nullptr) // TODO make sure to add a away to register a callback to glfw directly
         {
             WindowCloseEvent event;
@@ -94,12 +92,12 @@ namespace bolt
         *set_height = height;
     }
 
-    [[nodiscard]] bool Window::is_window_open()
+    [[nodiscard]] bool Window::is_window_open() const
     {
         return framework_window->should_close();
     }
 
-    void Window::close()
+    void Window::close() const
     {
         framework_window->close();
     }

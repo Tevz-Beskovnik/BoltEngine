@@ -2,8 +2,9 @@
 
 #include <core.hpp>
 #include <util.hpp>
+#include <event.hpp>
 
-namespace bolt 
+namespace bolt
 {
     class WindowInterface
     {

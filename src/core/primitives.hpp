@@ -255,6 +255,35 @@ namespace bolt
 	        };
         }
 
+        [[nodiscard]] static matrix_4 point_at_matrix(const vector_3& pos, const vector_3& target, const vector_3& up)
+        {
+            vector_3 target_temp = target - pos;
+            vector_3 new_forward = target_temp.normalize();
+            vector_3 a = new_forward * (up | new_forward);
+            vector_3 up_temp = up - a;
+            vector_3 newUp = up_temp.normalize();
+            vector_3 newRight = newUp % new_forward;
+
+            matrix_4 return_matrix;
+            return_matrix.m[0][0] = newRight.x;	return_matrix.m[0][1] = newRight.y;	return_matrix.m[0][2] = newRight.z;	return_matrix.m[0][3] = 0.0f;
+            return_matrix.m[1][0] = newUp.x;		return_matrix.m[1][1] = newUp.y;		return_matrix.m[1][2] = newUp.z;		return_matrix.m[1][3] = 0.0f;
+            return_matrix.m[2][0] = new_forward.x;	return_matrix.m[2][1] = new_forward.y;	return_matrix.m[2][2] = new_forward.z;	return_matrix.m[2][3] = 0.0f;
+            return_matrix.m[3][0] = pos.x;			return_matrix.m[3][1] = pos.y;			return_matrix.m[3][2] = pos.z;			return_matrix.m[3][3] = 1.0f;
+            return return_matrix;
+        }
+
+        [[nodiscard]] static matrix_4 view_matrix(const matrix_4& projection_matrix, const vector_3& pos, const vector_3& target, const vector_3& up, const vector_3& rotations)
+        {
+            matrix_4 camera_rotation_x = matrix_4::rotation_x(rotations.x);
+            matrix_4 camera_rotation_y = matrix_4::rotation_y(rotations.y);
+            matrix_4 camera_rotation_z = matrix_4::rotation_z(rotations.z);
+            matrix_4 multiplied_rotations = (camera_rotation_x * camera_rotation_y * camera_rotation_z) * matrix_4::point_at_matrix(pos, target, up);
+
+            matrix_4 view = multiplied_rotations.quick_inverse();
+
+            return view * projection_matrix;
+        }
+
         [[nodiscard]] inline matrix_4 quick_inverse()
         {
             matrix_4 return_matrix;

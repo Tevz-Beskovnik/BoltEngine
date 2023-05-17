@@ -14,19 +14,24 @@ namespace bolt
     {
         KeyUp,
         KeyPress,
+        KeyToggle,
         AppStop,
         MouseClick,
         MouseMove,
         WindowClose,
         WindowResize,
-        WindowMove
+        WindowMove,
+        CameraUpdate,
+        CameraMove,
+        CameraRotate,
     };
 
     enum EventCategory
     {
         WindowEvent = 0b1,
         KeyEvent = 0b10,
-        AppEvent = 0b100
+        AppEvent = 0b100,
+        CameraEvent = 0b1000
     };
 
     class Event
