@@ -8,7 +8,7 @@ namespace bolt
         if (!glfwInit())
             BOLT_ERROR(std::runtime_error("Failed to initialise GLFW"))
 
-        BOLT_MSG_DEBUG("GLFW initialised")
+        BOLT_LOG_INFO("GLFW initialised")
 
         glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -16,7 +16,7 @@ namespace bolt
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        BOLT_MSG_DEBUG("Creating window")
+        BOLT_LOG_INFO("Creating window")
 
         window = glfwCreateWindow((int)width, (int)height, title, NULL, NULL);
 
@@ -28,7 +28,7 @@ namespace bolt
 
         glfwMakeContextCurrent(window);
 
-        BOLT_MSG_DEBUG("Set context to window")
+        BOLT_LOG_INFO("Set context to window")
 
         if(glewInit() != GLEW_OK)
             BOLT_ERROR("GLEW failed to init")
@@ -38,19 +38,19 @@ namespace bolt
 
     [[nodiscard]] single_ptr<WindowGL> WindowGL::create(uint16_t width, uint16_t height, const_str title)
     {
-        BOLT_MSG_DEBUG("Creating window")
+        BOLT_LOG_INFO("Creating window")
         return create_single<WindowGL>(width, height, title);
     }
 
     void WindowGL::resize_window(uint16_t width, uint16_t height)
     {
-        BOLT_MSG_DEBUG("Resizing window")
+        BOLT_LOG_INFO("Resizing window")
         glfwSetWindowSize(window, width, height);
     }
 
     void WindowGL::fullscreen()
     {
-        BOLT_MSG_DEBUG("Seting window to fullscreen")
+        BOLT_LOG_INFO("Seting window to fullscreen")
 
         int width, height;
 
@@ -69,7 +69,7 @@ namespace bolt
 
     void WindowGL::windowed(uint16_t width, uint16_t height)
     {
-        BOLT_MSG_DEBUG("Seting window to windowed")
+        BOLT_LOG_INFO("Seting window to windowed")
         glfwSetWindowMonitor(
             window,
             NULL,
@@ -83,7 +83,7 @@ namespace bolt
 
     void WindowGL::windowed(uint16_t width, uint16_t height, uint16_t x, uint16_t y)
     {
-        BOLT_MSG_DEBUG("Seting window to windowed")
+        BOLT_LOG_INFO("Seting window to windowed")
         glfwSetWindowMonitor(
             window,
             NULL,
@@ -122,7 +122,7 @@ namespace bolt
     {
         glfwMakeContextCurrent(window);
 
-        BOLT_MSG_DEBUG("Set context to window")
+        BOLT_LOG_INFO("Set context to window")
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
@@ -130,29 +130,12 @@ namespace bolt
         glCullFace(GL_FRONT);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        BOLT_MSG_DEBUG("GLEW initialised")
+        BOLT_LOG_INFO("GLEW initialised")
     }
 
     [[nodiscard]] bool WindowGL::should_close()
     {
         return !glfwWindowShouldClose(window);
-    }
-
-    void WindowGL::register_key_callback(KeyCallback key_event_callback)
-    {
-        this->key_event_callback = key_event_callback;
-
-    }
-
-    void WindowGL::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) const
-    {
-        KeyPressEvent press;
-        press.key = key;
-        press.action = action;
-        press.scancode = scancode;
-        press.mods = mods;
-
-        key_event_callback(&press);
     }
 
     void WindowGL::close()

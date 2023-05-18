@@ -19,7 +19,7 @@ namespace bolt
 
     inline void BufferGL::delete_buffer() const
     {
-        BOLT_MSG_DEBUG("Deleting VBO")
+        BOLT_LOG_INFO("Deleting VBO")
         glDeleteBuffers(1, &buffer);
     }
 }

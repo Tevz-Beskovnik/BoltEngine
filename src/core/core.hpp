@@ -15,6 +15,12 @@
 #include <memory>
 #include <map>
 #include <stdexcept>
+#include <cstdio>
+
+#ifdef BOLT_DEBUG
+#include <chrono>
+#include <ctime>
+#endif
 
 // EXTERNAL
 #include <GL/glew.h>

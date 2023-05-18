@@ -9,7 +9,7 @@ namespace bolt
 
     [[nodiscard]] single_ptr<WindowVK> WindowVK::create(uint16_t width, uint16_t height, const_str title)
     {
-        BOLT_MSG_DEBUG("Creating window")
+        BOLT_LOG_INFO("Creating window")
         return create_single<WindowVK>(width, height, title);
     }
 

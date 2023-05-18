@@ -4,14 +4,14 @@ namespace bolt
 {
     IndexBufferGL::IndexBufferGL(const std::vector<uint32_t>& indices)
     {
-        BOLT_MSG_DEBUG("Generating index buffer")
+        BOLT_LOG_INFO("Generating index buffer")
 
         glGenBuffers(1, &buffer);
         bind();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
         unbind();
 
-        BOLT_MSG_DEBUG("Generated index buffer")
+        BOLT_LOG_INFO("Generated index buffer")
     }
 
     ref_ptr<IndexBufferGL> IndexBufferGL::create(const std::vector<uint32_t>& indices)
@@ -36,7 +36,7 @@ namespace bolt
 
     void IndexBufferGL::delete_buffer() const
     {
-        BOLT_MSG_DEBUG("Deleting Index buffer")
+        BOLT_LOG_INFO("Deleting Index buffer")
         glDeleteBuffers(1, &buffer);
     }
 }

@@ -2,22 +2,10 @@
 
 #include <core.hpp>
 #include <colors.hpp>
+#include <log.hpp>
 
 namespace bolt
 {
-    #ifdef BOLT_DEBUG
-        #define BOLT_MSG_DEBUG(bolt_msg_dbg) COLOR(GREEN_FG, BLACK_BG) std::cout << "DEBUG: " << bolt_msg_dbg << std::endl;
-    #else
-        #define BOLT_MSG_DEBUG(string)
-    #endif
-    // TODO: Wrap this all up to not be shown in prod
-    #define BOLT_MSG_LOG(bolt_msg_log) COLOR(BLUE_FG, BLACK_BG) std::cout << "LOG: " << bolt_msg_log << std::endl;
-
-    #define BOLT_MSG_ERROR(bolt_msg_err) COLOR(RED_FG, BLACK_BG) std::cout << "ERROR: " << bolt_msg_err << std::endl;
-
-    #define BOLT_ERROR(err) throw std::runtime_error(err);
-    //
-
     // assertion definitions
     #ifndef ASSERT
     #define ASSERT(x, err) (x == true ? true : throw std::runtime_error(err))

@@ -61,7 +61,7 @@ namespace bolt
             }
         );
 
-        BOLT_MSG_DEBUG("Mesh-builder poly count: " + std::to_string(mesh.size()))
+        BOLT_LOG_INFO("Mesh-builder poly count: " + std::to_string(mesh.size()))
 
         return Model::create({
             .mesh = mesh,

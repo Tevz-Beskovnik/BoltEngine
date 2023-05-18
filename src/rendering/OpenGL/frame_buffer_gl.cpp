@@ -46,7 +46,7 @@ namespace bolt
 
     void FrameBufferGL::delete_frame_buffer() const
     {
-        BOLT_MSG_DEBUG("Deleting frame buffer")
+        BOLT_LOG_INFO("Deleting frame buffer")
         glDeleteFramebuffers(1, &FBO);
     }
 }
