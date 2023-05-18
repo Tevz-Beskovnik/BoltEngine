@@ -16,6 +16,25 @@ namespace bolt
         #define BOLT_LOG_ERROR(msg) LogUtil::error(msg);
         #define BOLT_LOG_WARNING(msg) LogUtil::warning(msg);
         #define BOLT_LOG_INFO(msg) LogUtil::info(msg);
+
+        class LogUtil
+        {
+            public:
+                LogUtil() = delete;
+                LogUtil(const LogUtil&) = delete;
+
+                static void initLogs();
+
+                static void error(std::string);
+
+                static void warning(std::string);
+
+                static void info(std::string);
+
+            public:
+                static uint32_t raw_time;
+                static std::string file_loc;
+        };
     #else
         #define BOLT_MSG_DEBUG(string)
         #define BOLT_MSG_LOG(bolt_msg_log)
@@ -26,23 +45,4 @@ namespace bolt
         #define BOLT_LOG_WARNING(msg)
         #define BOLT_LOG_INFO(msg)
     #endif
-
-    class LogUtil
-    {
-        public:
-            LogUtil() = delete;
-            LogUtil(const LogUtil&) = delete;
-
-            static void initLogs();
-
-            static void error(std::string);
-
-            static void warning(std::string);
-
-            static void info(std::string);
-
-        public:
-            static uint32_t time;
-            static std::string file_loc;
-    };
 }
