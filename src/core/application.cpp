@@ -9,7 +9,7 @@ namespace bolt
     Application::Application()
         :running(true)
     {
-        ;
+        LogUtil::initLogs();
     }
 
     void Application::add_layer(ref_ptr<LayerInterface> layer)

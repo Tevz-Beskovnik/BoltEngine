@@ -15,6 +15,8 @@
 #include <memory>
 #include <map>
 #include <stdexcept>
+#include <cstdio>
+#include <chrono>
 
 // EXTERNAL
 #include <GL/glew.h>

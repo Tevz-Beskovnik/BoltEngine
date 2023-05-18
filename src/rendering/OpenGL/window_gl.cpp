@@ -138,23 +138,6 @@ namespace bolt
         return !glfwWindowShouldClose(window);
     }
 
-    void WindowGL::register_key_callback(KeyCallback key_event_callback)
-    {
-        this->key_event_callback = key_event_callback;
-
-    }
-
-    void WindowGL::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) const
-    {
-        KeyPressEvent press;
-        press.key = key;
-        press.action = action;
-        press.scancode = scancode;
-        press.mods = mods;
-
-        key_event_callback(&press);
-    }
-
     void WindowGL::close()
     {
         glfwDestroyWindow(window);
