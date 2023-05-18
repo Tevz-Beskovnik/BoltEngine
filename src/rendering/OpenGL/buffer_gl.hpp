@@ -12,13 +12,13 @@ namespace bolt
             explicit BufferGL(const std::vector<T>& buffer)
                 : buffer(0)
             {
-                BOLT_MSG_DEBUG("creating VBO")
+                BOLT_LOG_INFO("creating VBO")
 
                 glGenBuffers(1, &this->buffer);
                 bind();
                 glBufferData(GL_ARRAY_BUFFER, buffer.size()*sizeof(T), buffer.data(), GL_STATIC_DRAW);
                 unbind();
-                BOLT_MSG_DEBUG("created VBO")
+                BOLT_LOG_INFO("created VBO")
             }
 
             template<typename T>

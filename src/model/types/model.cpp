@@ -5,7 +5,7 @@ namespace bolt
     [[nodiscard]] Model::Model(model_config config)
         :mesh(std::move(config.mesh)), indices(std::move(config.indices)), instance(nullptr)
     {
-        BOLT_MSG_DEBUG("Poly count: " + std::to_string(this->mesh.size()))
+        BOLT_LOG_INFO("Poly count: " + std::to_string(this->mesh.size()))
         to_drawable_vector();
 
         set_attribute_layout();

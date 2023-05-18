@@ -41,6 +41,5 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/events
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/layers
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/scene
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/exceptions
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )

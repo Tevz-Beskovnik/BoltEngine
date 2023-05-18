@@ -4,7 +4,7 @@ namespace bolt {
     VertexGL::VertexGL(vertex_config config)
         :vertex_buffer_index(0), index_buffer(config.index_buffer)
     {
-        BOLT_MSG_DEBUG("Creating VAO")
+        BOLT_LOG_INFO("Creating VAO")
 
         glGenVertexArrays(1, &vertex_array_object);
 
@@ -17,7 +17,7 @@ namespace bolt {
 
         buffer->bind();
 
-        BOLT_MSG_DEBUG("Bound VAO and buffer")
+        BOLT_LOG_INFO("Bound VAO and buffer")
 
         for(const auto& layout : config.layouts)
         {
@@ -32,7 +32,7 @@ namespace bolt {
 
             glEnableVertexAttribArray(vertex_buffer_index);
 
-            BOLT_MSG_DEBUG("Binding index: " + std::to_string(vertex_buffer_index))
+            BOLT_LOG_INFO("Binding index: " + std::to_string(vertex_buffer_index))
 
             vertex_buffer_index++;
         }
@@ -41,7 +41,7 @@ namespace bolt {
 
         glBindVertexArray(0);
 
-        BOLT_MSG_DEBUG("Created VAO")
+        BOLT_LOG_INFO("Created VAO")
     }
 
     VertexGL::~VertexGL()
@@ -71,7 +71,7 @@ namespace bolt {
 
     void VertexGL::delete_vertex_array() const
     {
-        BOLT_MSG_DEBUG("Deleting VAO")
+        BOLT_LOG_INFO("Deleting VAO")
         glDeleteVertexArrays(1, &vertex_array_object);
     }
 };

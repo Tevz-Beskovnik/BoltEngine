@@ -4,7 +4,7 @@ namespace bolt
 {
     [[nodiscard]] ShaderGL::ShaderGL(std::vector<shader_config_gl> config)
     {
-        BOLT_MSG_DEBUG("Creating shader program")
+        BOLT_LOG_INFO("Creating shader program")
 
         for(auto& conf : config)
         {
@@ -16,7 +16,7 @@ namespace bolt
             compile_shader(conf.type);
         }
 
-        BOLT_MSG_DEBUG("Linking shader")
+        BOLT_LOG_INFO("Linking shader")
 
         program = glCreateProgram();
         for(auto& shader : delete_queue)
@@ -37,19 +37,19 @@ namespace bolt
 
             glDeleteProgram(program);
 
-            BOLT_MSG_ERROR(message)
+            BOLT_LOG_ERROR(message)
             BOLT_ERROR("Program failed to validate")
         }
 
         for(auto& shader : delete_queue)
             glDeleteShader(shader);
 
-        BOLT_MSG_DEBUG("Linking finished");
+        BOLT_LOG_INFO("Linking finished");
     }
 
     ShaderGL::~ShaderGL()
     {
-        BOLT_MSG_DEBUG("Deleting shader program")
+        BOLT_LOG_INFO("Deleting shader program")
         glDeleteProgram(program);
     }
 
@@ -97,8 +97,8 @@ namespace bolt
         const_str c_str_shader = shader_string.c_str();
         uint32_t shader = glCreateShader(type);
 
-        BOLT_MSG_DEBUG("Compiling shader:")
-        BOLT_MSG_DEBUG(c_str_shader)
+        BOLT_LOG_INFO("Compiling shader:")
+        BOLT_LOG_INFO(c_str_shader)
 
         glShaderSource(shader, 1, &c_str_shader, NULL);
         glCompileShader(shader);
@@ -116,12 +116,12 @@ namespace bolt
 
             glDeleteShader(shader);
 
-            BOLT_MSG_ERROR(message)
+            BOLT_LOG_ERROR(message)
             BOLT_ERROR("Failed to compile shader")
         }
 
         delete_queue.push_back(shader);
 
-        BOLT_MSG_DEBUG("Shader compiled")
+        BOLT_LOG_INFO("Shader compiled")
     }
 }

@@ -27,7 +27,7 @@ namespace bolt
 
     void Application::on_event(Event& event)
     {
-        BOLT_MSG_DEBUG("Dispatching event:")
+        BOLT_LOG_INFO("Dispatching event:")
 
         EventDispatcher dispatcher(event);
         dispatcher.dispatch<StopAppEvent>(CAST_MEMBER_FUNCTION(Application::handle_app_stop));
@@ -42,7 +42,7 @@ namespace bolt
 
     bool Application::handle_app_stop(StopAppEvent& e)
     {
-        BOLT_MSG_DEBUG("Application is shutting down")
+        BOLT_LOG_INFO("Application is shutting down")
 
         running = false;
         return true;
