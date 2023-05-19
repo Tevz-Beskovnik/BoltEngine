@@ -19,11 +19,9 @@ namespace bolt
         #define BOLT_LOG_INFO(msg) LogUtil::log(LogType::INFO, msg);
     #else
         #define BOLT_MSG_DEBUG(string)
-        #define BOLT_MSG_LOG(bolt_msg_log)
         #define BOLT_MSG_ERROR(bolt_msg_err)
         #define BOLT_ERROR(err)
 
-        #define BOLT_LOG_ERROR(msg)
         #define BOLT_LOG_WARNING(msg)
         #define BOLT_LOG_INFO(msg)
     #endif

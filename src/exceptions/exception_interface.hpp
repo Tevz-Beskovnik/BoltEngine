@@ -4,9 +4,9 @@
 
 namespace bolt
 {
-    class ExceptionInterface
+class ExceptionInterface : public std::exception
     {
         public:
-            [[nodiscard]] virtual std::string get_error() const = 0;
+            [[nodiscard]] virtual const char* what() const noexcept = 0;
     };
 }

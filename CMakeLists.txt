@@ -16,7 +16,7 @@ set (
         src/rendering/Vulkan/shader_vk.cpp
         src/rendering/OpenGL/texture_gl.cpp
         src/rendering/OpenGL/renderer_gl.cpp
-        src/rendering/Vulkan/renderer_vk.cpp src/rendering/OpenGL/vertex_gl.cpp src/rendering/OpenGL/buffer_gl.cpp src/rendering/OpenGL/index_buffer_gl.cpp src/rendering/OpenGL/frame_buffer_gl.cpp src/core/application.cpp example/basic/layers/test_layer.cpp src/scene/camera.cpp src/core/log.cpp src/exceptions/bolt_renderer_exception.cpp)
+        src/rendering/Vulkan/renderer_vk.cpp src/rendering/OpenGL/vertex_gl.cpp src/rendering/OpenGL/buffer_gl.cpp src/rendering/OpenGL/index_buffer_gl.cpp src/rendering/OpenGL/frame_buffer_gl.cpp src/core/application.cpp example/basic/layers/test_layer.cpp src/scene/camera.cpp src/core/log.cpp src/exceptions/bolt_renderer_exception.cpp src/exceptions/wrong_file_extension_exception.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 

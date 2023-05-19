@@ -6,13 +6,14 @@
 
 namespace bolt
 {
-    BoltRendererException::BoltRendererException(std::string error, std::string file_location)
+    RendererException::RendererException(std::string error, source_location s)
+        : error(error), file_location(std::string{"["} + s.function_name() + "#" + std::to_string(s.line()) + "]"), out(error + " " + file_location)
     {
-
+        ;
     }
 
-    [[nodiscard]] std::string BoltRendererException::get_error() const
+    [[nodiscard]] const char* RendererException::what() const noexcept
     {
-
+        return out.c_str();
     }
 }
