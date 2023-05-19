@@ -6,7 +6,7 @@ namespace bolt
         :background_color(new RGB()), background_color_owned(true)
     {
         if (!glfwInit())
-            BOLT_ERROR(std::runtime_error("Failed to initialise GLFW"))
+            BOLT_ERROR(SetupException("Failed to initialise GLFW"))
 
         BOLT_LOG_INFO("GLFW initialised")
 
@@ -23,7 +23,7 @@ namespace bolt
         if(window == NULL)
         {
             glfwTerminate();
-            BOLT_ERROR("Failed to initialize window")
+            BOLT_ERROR(SetupException("Failed to initialize window"))
         }
 
         glfwMakeContextCurrent(window);
@@ -31,7 +31,7 @@ namespace bolt
         BOLT_LOG_INFO("Set context to window")
 
         if(glewInit() != GLEW_OK)
-            BOLT_ERROR("GLEW failed to init")
+            BOLT_ERROR(SetupException("GLEW failed to init"))
 
 
     }

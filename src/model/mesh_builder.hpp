@@ -5,6 +5,7 @@
 #include <colors.hpp>
 #include <primitives.hpp>
 #include <file_system.hpp>
+#include <wrong_file_extension_exception.hpp>
 
 namespace bolt
 {

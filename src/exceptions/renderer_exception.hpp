@@ -6,9 +6,10 @@
 
 namespace bolt
 {
-    class WrongFileExtensionException : public ExceptionInterface {
+    class RendererException : public ExceptionInterface
+    {
         public:
-            explicit WrongFileExtensionException(std::string error, source_location s = source_location::current());
+            explicit RendererException(std::string error, source_location s = source_location::current());
 
             [[nodiscard]] const char* what() const noexcept override;
 

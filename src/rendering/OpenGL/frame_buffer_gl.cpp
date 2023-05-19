@@ -9,7 +9,7 @@ namespace bolt
         bind();
 
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-            BOLT_ERROR("Failed to create framebuffer object")
+            BOLT_ERROR(RendererException("Failed to create framebuffer object"))
 
         // TODO replace this with the texture class
         glGenTextures(1, &fbo_texture);

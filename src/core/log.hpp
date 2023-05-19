@@ -13,7 +13,7 @@ namespace bolt
     #ifdef BOLT_DEBUG
         #define BOLT_MSG_DEBUG(bolt_msg_dbg) COLOR(GREEN_FG, BLACK_BG) std::cout << "DEBUG: " << bolt_msg_dbg << std::endl;
         #define BOLT_MSG_ERROR(bolt_msg_err) COLOR(RED_FG, BLACK_BG) std::cout << "ERROR: " << bolt_msg_err << std::endl;
-        #define BOLT_ERROR(err) throw std::runtime_error(err);
+        #define BOLT_ERROR(err) throw err;
 
         #define BOLT_LOG_WARNING(msg) LogUtil::log(LogType::WARNING, msg);
         #define BOLT_LOG_INFO(msg) LogUtil::log(LogType::INFO, msg);
