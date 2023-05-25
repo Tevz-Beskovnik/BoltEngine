@@ -24,8 +24,6 @@ namespace bolt
 
             void frame_routine() override;
 
-            void set_event_caller(EventCallerManagedPtr caller) override;
-
             void cleanup_routine() override;
 
             void set_background_color(RGB* color) override { background_color = color; };

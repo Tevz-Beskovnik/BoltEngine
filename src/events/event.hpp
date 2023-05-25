@@ -26,7 +26,7 @@ namespace bolt
         CameraRotate,
     };
 
-    enum EventCategory : uint32_t
+    enum EventCategory
     {
         WindowEvent = 0b1,
         KeyEvent = 0b10,

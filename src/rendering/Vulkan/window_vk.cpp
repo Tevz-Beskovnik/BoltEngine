@@ -38,11 +38,6 @@ namespace bolt
         ;
     }
 
-    void WindowVK::set_event_caller(EventCallerManagedPtr caller)
-    {
-        ;
-    }
-
     void WindowVK::cleanup_routine()
     {
         ;

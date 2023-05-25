@@ -3,12 +3,9 @@
 #include <core.hpp>
 #include <util.hpp>
 #include <event.hpp>
-#include <event_caller.hpp>
 
 namespace bolt
 {
-    typedef EventCaller* EventCallerManagedPtr;
-
     class WindowInterface
     {
         public:
@@ -23,8 +20,6 @@ namespace bolt
             virtual void windowed(uint16_t width, uint16_t height, uint16_t x, uint16_t y) = 0;
 
             virtual void frame_routine() = 0;
-
-            virtual void set_event_caller(EventCallerManagedPtr caller) = 0;
 
             virtual void cleanup_routine() = 0;
 
