@@ -23,7 +23,7 @@ namespace bolt
             case model_standard::FBX:
                 return read_fbx(file_path);
             default:
-                BOLT_ERROR("Incorrect file standard specified")
+                BOLT_ERROR(WrongFileExtensionException("Incorrect file standard specified"))
         }
     }
 

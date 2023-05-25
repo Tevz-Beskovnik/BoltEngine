@@ -3,6 +3,9 @@
 #ifndef PI
 #define PI 3.14159265358979323846
 #endif // PI
+
+#define ENUM_TO_STRING(e) #e
+
 // PRIMARY
 #include <iostream>
 #include <cmath>
@@ -16,11 +19,9 @@
 #include <map>
 #include <stdexcept>
 #include <cstdio>
-
-#ifdef BOLT_DEBUG
 #include <chrono>
 #include <ctime>
-#endif
+#include <source_location.hpp>
 
 // EXTERNAL
 #include <GL/glew.h>

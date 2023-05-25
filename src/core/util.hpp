@@ -2,21 +2,22 @@
 
 #include <core.hpp>
 #include <colors.hpp>
+#include <assertion_exception.hpp>
 #include <log.hpp>
 
 namespace bolt
 {
     // assertion definitions
     #ifndef ASSERT
-    #define ASSERT(x, err) (x == true ? true : throw std::runtime_error(err))
+    #define ASSERT(x, err) (x == true ? true : throw AssertionException(err))
     #endif
 
     #ifndef ASSERT_EQ
-    #define ASSERT_EQ(left, right, err) (left == right ? true : throw std::runtime_error(err))
+    #define ASSERT_EQ(left, right, err) (left == right ? true : throw AssertionException(err))
     #endif
 
     #ifndef ASSERT_NE
-    #define ASSERT_NE(left, right, err) (left != right ? true : throw std::runtime_error(err))
+    #define ASSERT_NE(left, right, err) (left != right ? true : throw AssertionException(err))
     #endif
 
     #ifndef CAST_EVENT_FUNCTION

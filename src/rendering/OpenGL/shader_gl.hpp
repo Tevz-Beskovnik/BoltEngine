@@ -3,6 +3,7 @@
 #include <core.hpp>
 #include <util.hpp>
 #include <file_system.hpp>
+#include <renderer_exception.hpp>
 
 namespace bolt
 {
@@ -15,7 +16,7 @@ namespace bolt
     class ShaderGL
     {
         public:
-            ShaderGL(std::vector<shader_config_gl> config);
+            explicit ShaderGL(std::vector<shader_config_gl> config);
 
             virtual ~ShaderGL();
 

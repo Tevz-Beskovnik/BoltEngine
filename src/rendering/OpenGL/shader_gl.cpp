@@ -38,7 +38,7 @@ namespace bolt
             glDeleteProgram(program);
 
             BOLT_LOG_ERROR(message)
-            BOLT_ERROR("Program failed to validate")
+            BOLT_ERROR(RendererException("Program failed to validate"))
         }
 
         for(auto& shader : delete_queue)

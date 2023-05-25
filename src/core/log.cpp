@@ -2,8 +2,13 @@
 
 namespace bolt
 {
-    #ifdef BOLT_DEBUG
-    uint32_t LogUtil::raw_time = std::chrono::system_clock::now().time_since_epoch().count();
+    const char* log_type_strings[] = {
+        ENUM_TO_STRING(INFO),
+        ENUM_TO_STRING(WARNING),
+        ENUM_TO_STRING(ERROR)
+    };
+
+    time_t LogUtil::raw_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string LogUtil::file_loc = std::string{BOLT_LOG_FILE} + "/log" + std::to_string(LogUtil::raw_time) + ".log";
 
     void LogUtil::initLogs()
@@ -14,7 +19,7 @@ namespace bolt
         file.close();
     }
 
-    void LogUtil::error(std::string err)
+    void LogUtil::log(LogType t, std::string err, source_location s)
     {
         time_t rawtime;
         struct tm * timeinfo;
@@ -27,45 +32,12 @@ namespace bolt
 
         FILE* f;
         f = fopen(file_loc.c_str(), "ab");
-        std::string out = std::string(buffer) + " ERROR: " + err + '\n';
+        std::string out = std::string(buffer) + " " +
+            log_type_strings[t] +
+            " [" + s.function_name() + "#" + std::to_string(s.line()) + "] " +
+            err +
+            '\n';
         fwrite(out.c_str(), 1, out.size()*sizeof(char), f);
         fclose(f);
     }
-
-    void LogUtil::warning(std::string warning)
-    {
-        time_t rawtime;
-        struct tm * timeinfo;
-        char buffer[80];
-
-        time(&rawtime);
-        timeinfo = localtime(&rawtime);
-
-        strftime(buffer,sizeof(buffer),"%d-%m-%Y %H:%M:%S",timeinfo);
-
-        FILE* f;
-        f = fopen(file_loc.c_str(), "ab");
-        std::string out = std::string(buffer) + " WARNING: " + warning + '\n';
-        fwrite(out.c_str(), 1, out.size()*sizeof(char), f);
-        fclose(f);
-    }
-
-    void LogUtil::info(std::string info)
-    {
-        time_t rawtime;
-        struct tm * timeinfo;
-        char buffer[80];
-
-        time(&rawtime);
-        timeinfo = localtime(&rawtime);
-
-        strftime(buffer,sizeof(buffer),"%d-%m-%Y %H:%M:%S",timeinfo);
-
-        FILE* f;
-        f = fopen(file_loc.c_str(), "ab");
-        std::string out = std::string(buffer) + " INFO: " + info + '\n';
-        fwrite(out.c_str(), 1, out.size()*sizeof(char), f);
-        fclose(f);
-    }
-    #endif
 }

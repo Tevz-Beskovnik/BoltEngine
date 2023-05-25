@@ -15,6 +15,7 @@
 #include <util.hpp>
 #include <window_interface.hpp>
 #include <keyboard_events.hpp>
+#include <setup_exception.hpp>
 
 namespace bolt
 {

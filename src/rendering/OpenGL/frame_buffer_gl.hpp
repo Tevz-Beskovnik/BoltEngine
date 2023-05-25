@@ -2,6 +2,7 @@
 
 #include <core.hpp>
 #include <util.hpp>
+#include <renderer_exception.hpp>
 
 namespace bolt
 {
