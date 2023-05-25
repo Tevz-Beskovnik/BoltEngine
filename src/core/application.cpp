@@ -19,10 +19,20 @@ namespace bolt
         layer->bind_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }
 
+    void Application::add_camera(ref_ptr<CameraBase> camera)
+    {
+        cameras.push_back(camera);
+
+        camera->set_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
+    }
+
     void Application::run() const
     {
         while(running)
+        {
             for(const auto& layer : layers) layer->frame();
+            for(const auto& camera : cameras) camera->update();
+        }
     }
 
     void Application::on_event(Event& event)
@@ -37,6 +47,13 @@ namespace bolt
             if(event.handled) break;
 
             layer->on_event(event);
+        }
+
+        for(const auto& camera : cameras)
+        {
+            if(event.handled) break;
+
+            camera->on_event(event);
         }
     }
 

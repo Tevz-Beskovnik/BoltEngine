@@ -3,7 +3,7 @@
 namespace bolt
 {
     [[nodiscard]] Window::Window(window_config* config)
-        : width(config->width), height(config->height), title((basic_str)config->title)
+        : width(config->width), height(config->height), title((basic_str)config->title), caller(nullptr)
     {
         if(config->framework == OPEN_GL)
             framework_window = WindowGL::create(width, height, title);
@@ -14,6 +14,11 @@ namespace bolt
             framework_window->fullscreen();
 
         framework_window->set_active();
+    }
+
+    Window::~Window()
+    {
+        delete caller;
     }
 
     [[nodiscard]] ref_ptr<Window> Window::create(window_config* config)
@@ -52,6 +57,10 @@ namespace bolt
     void Window::register_event_trigger(event_trigger trigger)
     {
         this->trigger = trigger;
+
+        caller = new EventCaller(trigger);
+
+        framework_window->set_event_caller(caller);
     }
 
     void Window::window_windowed()
@@ -71,13 +80,6 @@ namespace bolt
 
     void Window::window_cleanup_routine()
     {
-        if(!is_window_open() && trigger != nullptr) // TODO make sure to add a away to register a callback to glfw directly
-        {
-            WindowCloseEvent event;
-
-            trigger(event);
-        }
-
         framework_window->cleanup_routine();
     }
 

@@ -1,24 +1,38 @@
-#include <camera.hpp>
+#include <camera_base.hpp>
 
 namespace bolt
 {
-    Camera::Camera(camera_conf config)
+    CameraBase::CameraBase(camera_conf config)
         : position(config.positon), pointing(config.pointing)
     {
         create_projection_matrix(config.width, config.height, config.f_far, config.f_near, config.fov);
     }
 
-    [[nodiscard]] ref_ptr<Camera> Camera::create(camera_conf config)
+    [[nodiscard]] ref_ptr<CameraBase> CameraBase::create(camera_conf config)
     {
-        return create_ref<Camera>(config);
+        return create_ref<CameraBase>(config);
     }
 
-    void Camera::update()
+    void CameraBase::set_event_trigger(event_trigger trigger)
+    {
+        this->trigger = trigger;
+    }
+
+    void CameraBase::update()
     {
         update_view_matrix();
+
+        class CameraUpdate ev(view_matrix, id);
+
+        trigger(ev);
     }
 
-    void Camera::create_projection_matrix(uint16_t width, uint16_t height, float f_far, float f_near, float fov)
+    void CameraBase::on_event(Event& e)
+    {
+        ;
+    }
+
+    void CameraBase::create_projection_matrix(uint16_t width, uint16_t height, float f_far, float f_near, float fov)
     {
         const float fov_rad = 1 / tanf(fov * 0.5f / 180.0f * (float)PI);
 
@@ -32,7 +46,7 @@ namespace bolt
         };
     }
 
-    void Camera::update_view_matrix()
+    void CameraBase::update_view_matrix()
     {
         position = position + (look_direction_forward * forward) + (look_direction_side * sideways) + (look_direction_up * vertical);
 
