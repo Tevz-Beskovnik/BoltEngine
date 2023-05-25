@@ -6,7 +6,7 @@ using namespace bolt;
 #define WIDTH 800
 #define HEIGHT 600
 
-int main()
+int main() // todo start handeling exceptions
 {
     Application app;
 

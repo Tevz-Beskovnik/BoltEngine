@@ -13,4 +13,15 @@ namespace bolt
 
             SETUP_EVENT_CATEGORY(WindowEvent)
     };
+
+    class WindowResizeEvent : public Event
+    {
+        public:
+            uint32_t width;
+            uint32_t height;
+
+            SETUP_EVENT_TYPE(WindowResize)
+
+            SETUP_EVENT_CATEGORY(WindowEvent)
+    };
 }

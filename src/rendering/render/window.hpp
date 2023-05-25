@@ -14,6 +14,7 @@
 #include <window_gl.hpp>
 #include <window_vk.hpp>
 #include <window_events.hpp>
+#include <event_caller.hpp>
 
 namespace bolt
 {
@@ -30,6 +31,8 @@ namespace bolt
     {
         public:
             [[nodiscard]] explicit Window(window_config* config);
+
+            ~Window();
 
             [[nodiscard]] static ref_ptr<Window> create(window_config* config);
 
@@ -58,6 +61,8 @@ namespace bolt
             void close() const;
 
         private:
+            EventCallerManagedPtr caller;
+
             event_trigger trigger;
 
             basic_str title;

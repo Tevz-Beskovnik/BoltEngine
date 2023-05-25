@@ -102,6 +102,25 @@ namespace bolt
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
+    void WindowGL::set_event_caller(EventCallerManagedPtr caller)
+    {
+        this->caller = caller;
+
+        glfwSetWindowUserPointer(window, caller);
+
+        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            static_cast<EventCallerManagedPtr>(glfwGetWindowUserPointer(window))->call_keyboard_event(key, scancode, action, mods);
+        });
+
+        glfwSetWindowCloseCallback(window, [](GLFWwindow* window){
+            static_cast<EventCallerManagedPtr>(glfwGetWindowUserPointer(window))->call_window_close_event();
+        });
+
+        glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height){
+            static_cast<EventCallerManagedPtr>(glfwGetWindowUserPointer(window))->call_window_resize_event(width, height);
+        });
+    }
+
     void WindowGL::cleanup_routine()
     {
         glfwSwapBuffers(window);
