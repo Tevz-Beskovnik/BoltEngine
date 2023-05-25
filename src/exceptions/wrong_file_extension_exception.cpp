@@ -7,9 +7,10 @@
 namespace bolt
 {
     WrongFileExtensionException::WrongFileExtensionException(std::string error, source_location s)
-        : error(error), file_location(std::string{"["} + s.function_name() + "#" + std::to_string(s.line()) + "]"), out(error + " " + file_location)
+        : error(error), file_location(std::string{"["} + s.function_name() + "#" + std::to_string(s.line()) + "]"), out(error + " " + file_location),
+          LogException(error + " " + std::string{"["} + s.function_name() + "#" + std::to_string(s.line()) + "]")
     {
-        BOLT_LOG_ERROR(out)
+        ;
     }
 
     [[nodiscard]] const char* WrongFileExtensionException::what() const noexcept

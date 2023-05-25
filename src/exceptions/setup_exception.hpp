@@ -2,11 +2,11 @@
 
 #include <core.hpp>
 #include <util.hpp>
-#include <exception_interface.hpp>
+#include <log_exception.hpp>
 
 namespace bolt
 {
-    class SetupException : public ExceptionInterface {
+    class SetupException : public LogException {
     public:
         explicit SetupException(std::string error, source_location s = source_location::current());
 

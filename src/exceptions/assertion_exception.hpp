@@ -2,11 +2,12 @@
 
 #include <core.hpp>
 #include <log.hpp>
-#include <exception_interface.hpp>
+#include <log_exception.hpp>
 
 namespace bolt
 {
-    class AssertionException : public ExceptionInterface {
+    class AssertionException : public LogException
+    {
         public:
             explicit AssertionException(std::string error, source_location s = source_location::current());
 

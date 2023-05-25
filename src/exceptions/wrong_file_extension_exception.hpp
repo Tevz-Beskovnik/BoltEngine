@@ -2,11 +2,11 @@
 
 #include <core.hpp>
 #include <util.hpp>
-#include <exception_interface.hpp>
+#include <log_exception.hpp>
 
 namespace bolt
 {
-    class WrongFileExtensionException : public ExceptionInterface {
+    class WrongFileExtensionException : public LogException {
         public:
             explicit WrongFileExtensionException(std::string error, source_location s = source_location::current());
 

@@ -2,11 +2,11 @@
 
 #include <core.hpp>
 #include <util.hpp>
-#include <exception_interface.hpp>
+#include <log_exception.hpp>
 
 namespace bolt
 {
-    class RendererException : public ExceptionInterface
+    class RendererException : public LogException
     {
         public:
             explicit RendererException(std::string error, source_location s = source_location::current());
