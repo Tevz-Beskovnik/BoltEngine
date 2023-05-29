@@ -45,6 +45,8 @@ namespace bolt
 
             void apply_lighting() override;
 
+            void print() const;
+
         private:
             std::vector<polygon> mesh;
             std::vector<uint32_t> indices;

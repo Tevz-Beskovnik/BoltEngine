@@ -18,7 +18,7 @@ void binding_func(uint32_t program)
     color.set_g(color.g+1);
     color.set_b(color.b+1);
 
-    std::cout << view_mat.to_string() << std::endl;
+    //std::cout << view_mat.to_string() << std::endl;
 
     glUniform3f(uColor, color.r_dec, color.g_dec, color.b_dec);
 
@@ -38,8 +38,10 @@ TestLayer::TestLayer(ref_ptr<Window> window)
         .type = GL_FRAGMENT_SHADER
     };
 
-    auto model = MeshBuilder::read_model("/Users/tevz/Documents/programing/BoltEngine/example/models/room1.obj", OBJ); // MeshBuilder::make_triangle(0.5f, -0.5f, -0.5f, -0.5f, 0.0f, 0.5f);
+    auto model = MeshBuilder::read_model("/Users/tevz/Documents/programing/BoltEngine/example/models/cube2.obj", OBJ); // MeshBuilder::make_triangle(0.5f, -0.5f, -0.5f, -0.5f, 0.0f, 0.5f);
     model->move_model({0.0f, 0.0f, 3.0f});
+
+    model->print();
 
     render_config_gl r_conf = {
         .shader_config = {s_vert, s_frag},

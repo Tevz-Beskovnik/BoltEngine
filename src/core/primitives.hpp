@@ -91,6 +91,11 @@ namespace bolt
                 ((this->y / l) * lf + this->y * lt)
             };
         }
+
+        [[nodiscard]] inline std::string to_string() const
+        {
+            return std::to_string(x) + " " + std::to_string(y);
+        }
     };
 
     struct vector_3
@@ -193,6 +198,11 @@ namespace bolt
                 ((this->y / l) * lf + this->y * lt),
                 ((this->z / l) * lf + this->z * lt)
             };
+        }
+
+        [[nodiscard]] inline std::string to_string() const
+        {
+            return std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z);
         }
     };
     
@@ -397,5 +407,14 @@ namespace bolt
         vector_3 vert[3];
         vector_2 UV[3];
         vector_3 normal;
+
+        void print() const
+        {
+            for(uint8_t i = 0; i < 3; i++)
+            {
+                std::cout << "Vert: " << vert[i].to_string() << " UV: " << UV[i].to_string() << std::endl;
+            }
+            std::cout << "Normal: " << normal.to_string() << std::endl;
+        }
     };
 }

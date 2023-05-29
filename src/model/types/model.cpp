@@ -105,6 +105,12 @@ namespace bolt
         // TODO: write a coherent lighting system
     }
 
+    void Model::print() const
+    {
+        for(const auto& el : mesh)
+            el.print();
+    }
+
     void Model::recalculate_normals()
     {
         #pragma omp parallel for

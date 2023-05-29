@@ -113,25 +113,26 @@ namespace bolt
 
         ASSERT(file.is_open(), "Can't open file");
 
-        std::vector<vector_3> verticies;
+        // Local cache of verts
+        std::vector<vector_3> verts;
         std::vector<vector_3> normals;
         std::vector<vector_2> UVs;
 
         while (!file.eof())
         {
             char line[128];
-            char junk;
-
             file.getline(line, 128);
 
             std::stringstream s;
             s << line;
 
+            char junk;
+
             if (line[0] == 'v' && line[1] != 'n' && line[1] != 't')
             {
                 vector_3 v;
                 s >> junk >> v.x >> v.y >> v.z;
-                verticies.push_back(v);
+                verts.push_back(v);
             }
 
             if (line[0] == 'v' && line[1] == 't')
@@ -153,20 +154,20 @@ namespace bolt
                 int f[3];
                 int vn;
                 int uv[3];
-                if (UVs.empty() && normals.empty())
+                if (UVs.empty() == false && normals.empty() == false)
                 {
                     s >> junk >> f[0] >> junk >> uv[0] >> junk >> vn >> f[1] >> junk >> uv[1] >> junk >> vn >> f[2] >> junk >> uv[2] >> junk >> vn;
-                    mesh.push_back({{verticies[f[0] - 1], verticies[f[1] - 1], verticies[f[2] - 1] }, {UVs[uv[0] - 1], UVs[uv[1] - 1], UVs[uv[2] - 1] }, normals[vn - 1] });
+                    mesh.push_back({ { verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] }, { UVs[uv[0] - 1], UVs[uv[1] - 1], UVs[uv[2] - 1] }, normals[vn - 1] });
                 }
-                else if(normals.empty())
+                else if(normals.empty() == false)
                 {
                     s >> junk >> f[0] >> junk >> junk >> vn >> f[1] >> junk >> junk >> vn >> f[2] >> junk >> junk >> vn;
-                    mesh.push_back({{verticies[f[0] - 1], verticies[f[1] - 1], verticies[f[2] - 1] }, {0.0f }, normals[vn - 1] });
+                    mesh.push_back({ { verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] }, { 0.0f }, normals[vn-1] });
                 }
                 else
                 {
                     s >> junk >> f[0] >> f[1] >> f[2];
-                    mesh.push_back({{verticies[f[0] - 1], verticies[f[1] - 1], verticies[f[2] - 1] }, {0.0f }, 1.0f, 0.0f, 0.0f });
+                    mesh.push_back({ { verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] }, { 0.0f }, 1.0f, 0.0f, 0.0f });
                 }
             }
         }
