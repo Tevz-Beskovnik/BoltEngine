@@ -91,6 +91,8 @@ namespace bolt
 
             mesh[i].normal = Model::calculate_normal(mesh[i]);
         }
+
+        to_drawable_vector();
     }
 
     void Model::rotate_model(vector_3 rotation_vector) noexcept

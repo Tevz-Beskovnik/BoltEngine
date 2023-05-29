@@ -20,6 +20,8 @@ class TestLayer : public LayerInterface {
 
         [[nodiscard]] bool handle_window_close(WindowCloseEvent& e) const;
 
+        [[nodiscard]] bool handle_view_mat(class CameraUpdate& e) const;
+
     private:
         event_trigger trigger;
         ref_ptr<Window> window;

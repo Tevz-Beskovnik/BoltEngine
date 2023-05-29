@@ -20,6 +20,8 @@ namespace bolt
 
         window = glfwCreateWindow((int)width, (int)height, title, NULL, NULL);
 
+        Keyboard::set_window(window);
+
         if(window == NULL)
         {
             glfwTerminate();
@@ -108,9 +110,10 @@ namespace bolt
 
         glfwSetWindowUserPointer(window, caller);
 
-        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+        // TODO decide what kind of input handeling to use direct or event based
+        /*glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
             static_cast<EventCallerManagedPtr>(glfwGetWindowUserPointer(window))->call_keyboard_event(key, scancode, action, mods);
-        });
+        });*/
 
         glfwSetWindowCloseCallback(window, [](GLFWwindow* window){
             static_cast<EventCallerManagedPtr>(glfwGetWindowUserPointer(window))->call_window_close_event();

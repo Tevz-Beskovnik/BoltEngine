@@ -2,14 +2,14 @@
 
 namespace bolt
 {
+    time_t LogUtil::raw_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    std::string LogUtil::file_loc = std::string{BOLT_LOG_FILE} + "/log" + std::to_string(LogUtil::raw_time) + ".log";
+
     const char* log_type_strings[] = {
         ENUM_TO_STRING(INFO),
         ENUM_TO_STRING(WARNING),
         ENUM_TO_STRING(ERROR)
     };
-
-    time_t LogUtil::raw_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    std::string LogUtil::file_loc = std::string{BOLT_LOG_FILE} + "/log" + std::to_string(LogUtil::raw_time) + ".log";
 
     void LogUtil::initLogs()
     {
@@ -19,7 +19,7 @@ namespace bolt
         file.close();
     }
 
-    void LogUtil::log(LogType t, std::string err, source_location s)
+    void LogUtil::log(LogType t, const std::string& err, source_location s)
     {
         time_t rawtime;
         struct tm * timeinfo;

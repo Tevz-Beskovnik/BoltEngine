@@ -25,7 +25,7 @@ namespace bolt
 
             [[nodiscard]] static ref_ptr<Model> make_triangle(double x1, double y1, double x2, double y2, double x3, double y3);
 
-            [[nodiscard]] static ref_ptr<Model> make_cube(vector_2 center, vector_3 dimensions);
+            [[nodiscard]] static ref_ptr<Model> make_cube(vector_3 center, vector_3 dimensions);
 
             [[nodiscard]] static ref_ptr<Model> make_sphere(vector_2 center, double radius);
 

@@ -3,7 +3,7 @@
 namespace bolt
 {
     CameraBase::CameraBase(camera_conf config)
-        : position(config.positon), pointing(config.pointing)
+        : position(config.position), pointing(config.pointing), id(config.id)
     {
         create_projection_matrix(config.width, config.height, config.f_far, config.f_near, config.fov);
     }
@@ -18,13 +18,27 @@ namespace bolt
         this->trigger = trigger;
     }
 
+    void CameraBase::set_config(camera_conf config)
+    {
+        this->position = config.position;
+        this->pointing = config.pointing;
+        this->id = config.id;
+        create_projection_matrix(config.width, config.height, config.f_far, config.f_near, config.fov);
+    }
+
     void CameraBase::update()
     {
+        matrix_4 previous_view_matrix = view_matrix;
+
         update_view_matrix();
 
         class CameraUpdate ev(view_matrix, id);
 
-        trigger(ev);
+        if(previous_view_matrix != view_matrix) // if they are diffrent we want to dispatch a event to tell everyone to update
+        {
+            BOLT_LOG_INFO("Camera update")
+            trigger(ev);
+        }
     }
 
     void CameraBase::on_event(Event& e)
@@ -57,6 +71,8 @@ namespace bolt
         look_direction_forward = camera_rotation * target_f;
         look_direction_side = camera_rotation * vector_3{1.0f, 0.0f, 0.0f};
         look_direction_up = camera_rotation * vector_3{0.0f, 1.0f, 0.0f};
+
+        target_f = position + look_direction_forward;
 
         view_matrix = matrix_4::view_matrix(projection_matrix, position, target_f, {0.0f, 1.0f, 0.0f}, pointing);
     }

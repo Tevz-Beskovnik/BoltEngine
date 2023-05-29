@@ -41,7 +41,7 @@ namespace bolt
 
             static void initLogs();
 
-            static void log(LogType, std::string, source_location s = source_location::current());
+            static void log(LogType, const std::string&, source_location s = source_location::current());
 
         public:
             static time_t raw_time;

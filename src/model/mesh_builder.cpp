@@ -94,7 +94,7 @@ namespace bolt
         });
     }
 
-    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_2 center, const vector_3 dimensions)
+    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_3 center, const vector_3 dimensions)
     {
 
 
@@ -111,7 +111,7 @@ namespace bolt
         std::ifstream file(file_path);
         std::vector<polygon> mesh;
 
-        ASSERT(!file.is_open(), "Can't open file");
+        ASSERT(file.is_open(), "Can't open file");
 
         std::vector<vector_3> verticies;
         std::vector<vector_3> normals;

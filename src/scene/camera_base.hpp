@@ -9,7 +9,7 @@ namespace bolt
 {
     struct camera_conf {
         uint32_t id;
-        vector_3 positon = {0.0f, 0.0f, 0.0f};
+        vector_3 position = {0.0f, 0.0f, 0.0f};
         vector_3 pointing = {0.0f, 0.0f, 0.0f};
         uint16_t width;
         uint16_t height;
@@ -24,9 +24,15 @@ namespace bolt
             vector_3 position;
             vector_3 pointing;
 
-            CameraBase(camera_conf config);
+            CameraBase() = default;
+
+            virtual ~CameraBase() = default;
+
+            explicit CameraBase(camera_conf config);
 
             void set_event_trigger(event_trigger trigger);
+
+            void set_config(camera_conf config);
 
             [[nodiscard]] static ref_ptr<CameraBase> create(camera_conf config);
 
@@ -34,7 +40,7 @@ namespace bolt
 
             virtual void on_event(Event& e);
 
-        private:
+        protected:
             uint32_t id;
 
             vector_3 look_direction_forward = {0.0f, 0.0f, 1.0f};
@@ -45,6 +51,7 @@ namespace bolt
             float sideways = 0.0f;
             float vertical = 0.0f;
 
+        private:
             matrix_4 projection_matrix;
             matrix_4 view_matrix;
 
