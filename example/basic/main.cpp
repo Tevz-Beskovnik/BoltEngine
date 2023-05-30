@@ -27,6 +27,8 @@ int main() // todo start handeling exceptions
 
     app.add_layer(TestLayer::create(window));
 
+    window->hide_cursor();
+
     app.add_camera(TestCamera::create(WIDTH, HEIGHT));
 
     app.run();

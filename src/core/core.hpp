@@ -26,3 +26,6 @@
 // EXTERNAL
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <imgui.h>
+#include <imgui_impl_glfw.hpp>
+#include <imgui_impl_opengl3.hpp>

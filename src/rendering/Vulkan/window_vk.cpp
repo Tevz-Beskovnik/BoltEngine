@@ -48,6 +48,11 @@ namespace bolt
         ;
     }
 
+    void WindowVK::hide_cursor() const
+    {
+        ;
+    }
+
     void WindowVK::set_active()
     {
         ;

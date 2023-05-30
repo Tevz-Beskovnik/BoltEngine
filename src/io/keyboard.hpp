@@ -1,7 +1,9 @@
 #pragma once
 
 #include <core.hpp>
+#include <util.hpp>
 #include <window_interface.hpp>
+#include <util.hpp>
 
 namespace bolt
 {
@@ -138,8 +140,6 @@ namespace bolt
         RightSuper          = 347,
         Menu                = 348
     };
-
-    typedef GLFWwindow* ManagedWindowPtr;
 
     class Keyboard
     {

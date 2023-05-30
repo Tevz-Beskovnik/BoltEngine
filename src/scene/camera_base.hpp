@@ -24,6 +24,10 @@ namespace bolt
             vector_3 position;
             vector_3 pointing;
 
+            float forward = 0.0f;
+            float sideways = 0.0f;
+            float vertical = 0.0f;
+
             CameraBase() = default;
 
             virtual ~CameraBase() = default;
@@ -33,8 +37,6 @@ namespace bolt
             void set_event_trigger(event_trigger trigger);
 
             void set_config(camera_conf config);
-
-            [[nodiscard]] static ref_ptr<CameraBase> create(camera_conf config);
 
             virtual void update();
 
@@ -47,18 +49,15 @@ namespace bolt
             vector_3 look_direction_side = {1.0f, 0.0f, 0.0f};
             vector_3 look_direction_up = {0.0f, 1.0f, 0.0f};
 
-            float forward = 0.0f;
-            float sideways = 0.0f;
-            float vertical = 0.0f;
-
-        private:
             matrix_4 projection_matrix;
             matrix_4 view_matrix;
 
-            event_trigger trigger;
+            virtual void update_view_matrix() = 0;
 
             void create_projection_matrix(uint16_t width, uint16_t height, float f_far, float f_near, float fov);
 
-            void update_view_matrix();
+        private:
+
+            event_trigger trigger;
     };
 }

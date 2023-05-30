@@ -34,6 +34,7 @@ namespace bolt
         VULKAN = 1
     };
 
+    typedef GLFWwindow* ManagedWindowPtr;
     typedef const char* const_str;
     typedef char* basic_str;
 

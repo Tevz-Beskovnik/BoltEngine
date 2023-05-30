@@ -21,6 +21,7 @@ namespace bolt
         window = glfwCreateWindow((int)width, (int)height, title, NULL, NULL);
 
         Keyboard::set_window(window);
+        Mouse::set_window(window);
 
         if(window == NULL)
         {
@@ -35,7 +36,13 @@ namespace bolt
         if(glewInit() != GLEW_OK)
             BOLT_ERROR(SetupException("GLEW failed to init"))
 
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
+        //ImGui::StyleColorsLight();
 
+        // Setup Platform/Renderer backends
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 150");
     }
 
     [[nodiscard]] single_ptr<WindowGL> WindowGL::create(uint16_t width, uint16_t height, const_str title)
@@ -99,6 +106,12 @@ namespace bolt
 
     void WindowGL::frame_routine()
     {
+        glfwPollEvents();
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
         glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -127,8 +140,6 @@ namespace bolt
     void WindowGL::cleanup_routine()
     {
         glfwSwapBuffers(window);
-
-        glfwPollEvents();
     }
 
     void WindowGL::set_background_color(RGB* color)
@@ -138,6 +149,11 @@ namespace bolt
 
         background_color = color;
         background_color_owned = false;
+    }
+
+    void WindowGL::hide_cursor() const
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 
     void WindowGL::set_active()

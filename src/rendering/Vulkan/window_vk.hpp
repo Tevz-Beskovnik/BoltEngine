@@ -30,6 +30,8 @@ namespace bolt
 
             void set_background_color(RGB* color) override { background_color = color; };
 
+            void hide_cursor() const override;
+
             void set_active() override;
 
             [[nodiscard]] bool should_close() override;

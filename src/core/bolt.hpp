@@ -23,3 +23,4 @@
 #include <camera_events.hpp>
 #include <keyboard_events.hpp>
 #include <keyboard.hpp>
+#include <mouse.hpp>

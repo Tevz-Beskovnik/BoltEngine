@@ -23,11 +23,11 @@ namespace bolt
 
             [[nodiscard]] static ref_ptr<Model> make_quad(vector_2 corner, vector_2 dimensions);
 
-            [[nodiscard]] static ref_ptr<Model> make_triangle(double x1, double y1, double x2, double y2, double x3, double y3);
+            [[nodiscard]] static ref_ptr<Model> make_triangle(float x1, float y1, float x2, float y2, float x3, float y3);
 
-            [[nodiscard]] static ref_ptr<Model> make_cube(vector_3 center, vector_3 dimensions);
+            [[nodiscard]] static ref_ptr<Model> make_cube(vector_3 dimensions);
 
-            [[nodiscard]] static ref_ptr<Model> make_sphere(vector_2 center, double radius);
+            [[nodiscard]] static ref_ptr<Model> make_sphere(vector_2 center, float radius);
 
         private:
             MeshBuilder();

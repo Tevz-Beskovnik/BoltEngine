@@ -56,6 +56,8 @@ namespace bolt
 
             void get_size(uint16_t *width, uint16_t *height);
 
+            void hide_cursor() const;
+
             [[nodiscard]] bool is_window_open() const;
 
             void close() const;

@@ -30,6 +30,8 @@ namespace bolt
 
             virtual void set_background_color(RGB* color) = 0;
 
+            virtual void hide_cursor() const = 0;
+
             virtual void set_active() = 0;
 
             virtual bool should_close() = 0;

@@ -69,7 +69,7 @@ namespace bolt
         });
     }
 
-    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_triangle(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3)
+    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_triangle(const float x1, const float y1, const float x2, const float y2, const float x3, const float y3)
     {
         std::vector<polygon> mesh;
 
@@ -94,14 +94,122 @@ namespace bolt
         });
     }
 
-    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_3 center, const vector_3 dimensions)
+    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_3 dimensions)
     {
+        std::vector<polygon> mesh;
 
+        mesh.push_back({
+                           .vert={{0, 1*dimensions.y, 0},
+                                  {1*dimensions.x, 1*dimensions.y, 1*dimensions.z},
+                                  {1*dimensions.x, 1*dimensions.y, 0}},
+                           .UV = {{1.000000, 0.500000},
+                                  {0.625000, 0.750000},
+                                  {0.625000, 0.500000}}
+        });
 
-        return Model::create({{}, {}});
+        mesh.push_back({
+                           .vert={{1*dimensions.x, 1*dimensions.y, 1*dimensions.z},
+                                  {0, 0, 1*dimensions.z},
+                                  {1*dimensions.x, 0, 1*dimensions.z}},
+                           .UV={{0.625000, 0.750000},
+                                {0.375000, 1.000000},
+                                {0.375000, 0.750000}}
+        });
+
+        mesh.push_back({
+                           .vert={{0, 1*dimensions.y, 1*dimensions.z},
+                                  {0, 0, 0},
+                                  {0, 0, 1*dimensions.z}},
+                           .UV={{0.625000, 0.000000},
+                                {0.375000, 0.250000},
+                                {0.375000, 0.000000}}
+        });
+
+        mesh.push_back({
+                           .vert={{1*dimensions.x, 0, 0},
+                                  {0, 0, 1*dimensions.z},
+                                  {0, 0, 0}},
+                           .UV={{0.375000, 0.500000},
+                                {0.125000, 0.750000},
+                                {0.125000, 0.500000}}
+        });
+
+        mesh.push_back({
+                           .vert={{1*dimensions.x, 1*dimensions.y, 0},
+                                  {1*dimensions.x, 0, 1*dimensions.z},
+                                  {1*dimensions.x, 0, 0}},
+                           .UV={{0.625000, 0.500000},
+                                {0.375000, 0.750000},
+                                {0.375000, 0.500000}}
+        });
+
+        mesh.push_back({
+                           .vert={{0, 1*dimensions.y, 0},
+                                  {1*dimensions.x, 0, 0},
+                                  {0, 0, 0}},
+                           .UV={{0.625000, 0.250000},
+                                {0.375000, 0.500000},
+                                {0.375000, 0.250000}}
+        });
+
+        mesh.push_back({
+                           .vert={{0, 1*dimensions.y, 0},
+                                  {0, 1*dimensions.y, 1*dimensions.z},
+                                  {1*dimensions.x, 1*dimensions.y, 1*dimensions.z}},
+                           .UV={{1.000000, 0.500000},
+                                {0.875000, 0.750000},
+                                {0.625000, 0.750000}}
+        });
+
+        mesh.push_back({
+                           .vert={{1*dimensions.x, 1*dimensions.y, 1*dimensions.z},
+                                  {0, 1*dimensions.y, 1*dimensions.z},
+                                  {0, 0, 1*dimensions.z}},
+                           .UV={{0.625000, 0.750000},
+                                {0.625000, 1.000000},
+                                {0.375000, 1.000000}}
+        });
+
+        mesh.push_back({
+                           .vert={{0, 1*dimensions.y, 1*dimensions.z},
+                                  {0, 1*dimensions.y, 0},
+                                  {0, 0, 0}},
+                           .UV={{0.625000, 0.000000},
+                                {0.625000, 0.250000},
+                                {0.375000, 0.250000}}
+        });
+
+        mesh.push_back({
+                           .vert={{1*dimensions.x, 0, 0},
+                                  {1*dimensions.x, 0, 1*dimensions.z},
+                                  {0, 0, 1*dimensions.z}},
+                           .UV={{0.375000, 0.500000},
+                                {0.375000, 0.750000},
+                                {0.125000, 0.750000}}
+        });
+
+        mesh.push_back({
+                           .vert={{1*dimensions.x, 1*dimensions.y, 0},
+                                  {1*dimensions.x, 1*dimensions.y, 1*dimensions.z},
+                                  {1*dimensions.x, 0, 1*dimensions.z}},
+                           .UV={{0.625000, 0.500000},
+                                {0.625000, 0.750000},
+                                {0.375000, 0.750000}}
+        });
+
+        mesh.push_back({
+                           .vert={{0, 1*dimensions.y, 0},
+                                  {1*dimensions.x, 1*dimensions.y, 0},
+                                  {1*dimensions.x, 0, 0}},
+                           .UV={{0.625000, 0.250000},
+                                {0.625000, 0.500000},
+                                {0.375000, 0.500000}}
+        });
+
+        return Model::create({mesh, {}});
     }
 
-    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_sphere(const vector_2 center, const double radius)
+    [[nodiscard]] ref_ptr<Model> MeshBuilder::make_sphere(const vector_2 center, const float radius)
     {
         return Model::create({{}, {}});
     }

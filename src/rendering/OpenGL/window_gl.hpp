@@ -6,6 +6,8 @@
  * TODO: add possiblity for opening in wondowed mode or opening to primary monitor (current opening to primary montior)
  * 
  * TODO: reserch resource share for windows
+ *
+ * TODO: THROW AWAY THE WINDOW INTERFACE AND USE THIS AS DEFAULT VULKAN USES FUCKING GLFW
 */
 
 #pragma once
@@ -17,6 +19,7 @@
 #include <keyboard_events.hpp>
 #include <setup_exception.hpp>
 #include <keyboard.hpp>
+#include <mouse.hpp>
 
 namespace bolt
 {
@@ -42,6 +45,8 @@ namespace bolt
             void cleanup_routine() override;
 
             void set_background_color(RGB* color) override;
+
+            void hide_cursor() const override;
 
             void set_active() override;
 

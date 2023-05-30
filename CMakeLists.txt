@@ -16,13 +16,13 @@ set (
         src/rendering/Vulkan/shader_vk.cpp
         src/rendering/OpenGL/texture_gl.cpp
         src/rendering/OpenGL/renderer_gl.cpp
-        src/rendering/Vulkan/renderer_vk.cpp src/rendering/OpenGL/vertex_gl.cpp src/rendering/OpenGL/buffer_gl.cpp src/rendering/OpenGL/index_buffer_gl.cpp src/rendering/OpenGL/frame_buffer_gl.cpp src/core/application.cpp example/basic/layers/test_layer.cpp src/scene/camera_base.cpp src/core/log.cpp src/exceptions/renderer_exception.cpp src/exceptions/wrong_file_extension_exception.cpp src/exceptions/setup_exception.cpp src/exceptions/assertion_exception.cpp src/exceptions/log_exception.cpp src/events/event_caller.cpp src/io/keyboard.cpp example/basic/camera/test_camera.cpp)
+        src/rendering/Vulkan/renderer_vk.cpp src/rendering/OpenGL/vertex_gl.cpp src/rendering/OpenGL/buffer_gl.cpp src/rendering/OpenGL/index_buffer_gl.cpp src/rendering/OpenGL/frame_buffer_gl.cpp src/core/application.cpp example/basic/layers/test_layer.cpp src/scene/camera_base.cpp src/core/log.cpp src/exceptions/renderer_exception.cpp src/exceptions/wrong_file_extension_exception.cpp src/exceptions/setup_exception.cpp src/exceptions/assertion_exception.cpp src/exceptions/log_exception.cpp src/events/event_caller.cpp src/io/keyboard.cpp example/basic/camera/test_camera.cpp src/core/imgui_impl_glfw.cpp src/core/imgui_impl_opengl3.cpp src/io/mouse.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC BOLT_DEBUG) # comment out for release build
 
-target_link_libraries("${CMAKE_PROJECT_NAME}" CONAN_PKG::glfw CONAN_PKG::glew)
+target_link_libraries("${CMAKE_PROJECT_NAME}" CONAN_PKG::glfw CONAN_PKG::glew CONAN_PKG::imgui)
 
 set(BoltEngine_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src

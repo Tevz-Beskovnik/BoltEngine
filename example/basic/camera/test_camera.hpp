@@ -14,4 +14,9 @@ class TestCamera : public CameraBase
         [[nodiscard]] static ref_ptr<TestCamera> create(uint16_t w, uint16_t h);
 
         void update() override;
+
+        void update_view_matrix() override;
+
+    private:
+        vector_2 last_cursor_position{0,0};
 };

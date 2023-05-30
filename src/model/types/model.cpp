@@ -131,7 +131,7 @@ namespace bolt
             U.x * V.y - U.y * V.x
         };
 
-        return normal;
+        return normal.normalize();
     }
 
     void Model::to_drawable_vector()

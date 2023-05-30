@@ -94,6 +94,11 @@ namespace bolt
         *set_height = height;
     }
 
+    void Window::hide_cursor() const
+    {
+        framework_window->hide_cursor();
+    }
+
     [[nodiscard]] bool Window::is_window_open() const
     {
         return framework_window->should_close();
