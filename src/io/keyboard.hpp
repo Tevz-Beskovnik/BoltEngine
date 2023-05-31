@@ -2,11 +2,12 @@
 
 #include <core.hpp>
 #include <util.hpp>
-#include <window_interface.hpp>
 #include <util.hpp>
 
 namespace bolt
 {
+    typedef GLFWwindow* ManagedWindowPtr;
+
     enum Key : uint32_t
     { // taken from hazel keyCodes.h
         Space               = 32,

@@ -12,7 +12,6 @@ int main() // todo start handeling exceptions
     Application app;
 
     window_config w_conf = {
-        .framework = OPEN_GL,
         .width = WIDTH,
         .height = HEIGHT,
         .title = "Title",
@@ -21,7 +20,7 @@ int main() // todo start handeling exceptions
 
     RGB bg(65, 134, 244);
 
-    ref_ptr<Window> window = Window::create(&w_conf);
+    ref_ptr<Window> window = Window::create(w_conf);
 
     window->set_background_color(&bg);
 

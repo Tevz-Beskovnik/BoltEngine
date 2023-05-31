@@ -2,18 +2,52 @@
 
 namespace bolt
 {
-    [[nodiscard]] Window::Window(window_config* config)
-        : width(config->width), height(config->height), title((basic_str)config->title), caller(nullptr)
+    [[nodiscard]] Window::Window(const window_config& config)
+        :background_color(new RGB()), background_color_owned(true), width(config.width), height(config.height), title((basic_str)config.title)
     {
-        if(config->framework == OPEN_GL)
-            framework_window = WindowGL::create(width, height, title);
-        else if(config->framework == VULKAN)
-            framework_window = WindowVK::create(width, height, title);
+        if (!glfwInit())
+            BOLT_ERROR(SetupException("Failed to initialise GLFW"))
 
-        if(config->fullscreen)
-            framework_window->fullscreen();
+        BOLT_LOG_INFO("GLFW initialised")
 
-        framework_window->set_active();
+        glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+        BOLT_LOG_INFO("Creating window")
+
+        window = glfwCreateWindow((int)width, (int)height, title, NULL, NULL);
+
+        Keyboard::set_window(window);
+        Mouse::set_window(window);
+
+        if(window == NULL)
+        {
+            glfwTerminate();
+            BOLT_ERROR(SetupException("Failed to initialize window"))
+        }
+
+        glfwMakeContextCurrent(window);
+
+        BOLT_LOG_INFO("Set context to window")
+
+        if(glewInit() != GLEW_OK)
+            BOLT_ERROR(SetupException("GLEW failed to init"))
+
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
+        //ImGui::StyleColorsLight();
+
+        // Setup Platform/Renderer backends
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 150");
+
+        set_active();
+
+        if(config.fullscreen)
+            fullscreen();
     }
 
     Window::~Window()
@@ -21,37 +55,92 @@ namespace bolt
         delete caller;
     }
 
-    [[nodiscard]] ref_ptr<Window> Window::create(window_config* config)
+    [[nodiscard]] ref_ptr<Window> Window::create(const window_config& config)
     {
-        ASSERT_NE(strlen(config->title), 0, "Title cannot be null len");
-        ASSERT(!(config->height == 0 || config->width == 0), "Width and height cannot be 0");
-        ASSERT((config->framework == 0 || config->framework == 1), "Invalid window framework selected");
+        ASSERT_NE(strlen(config.title), 0, "Title cannot be null len");
+        ASSERT(!(config.height == 0 || config.width == 0), "Width and height cannot be 0");
 
         return create_ref<Window>(config);
     }
 
-    void Window::set_window_dims(uint16_t new_width, uint16_t new_height)
+    void Window::resize_window(uint16_t width, uint16_t height)
     {
-        width = new_width;
-        height = new_height;
-
-        framework_window->resize_window(width, height);
+        this->width = width;
+        this->height = height;
+        BOLT_LOG_INFO("Resizing window");
+        glfwSetWindowSize(window, width, height);
     }
 
-    void Window::window_windowed(uint16_t x, uint16_t y, uint16_t new_width, uint16_t new_height)
+    void Window::get_size(uint16_t *set_width, uint16_t *set_height) const
     {
-        width = new_width;
-        height = new_height;
-
-        framework_window->windowed(width, height, x, y);
+        *set_width = width;
+        *set_height = height;
     }
 
-    void Window::window_windowed(uint16_t new_width, uint16_t new_height)
+    void Window::fullscreen()
     {
-        width = new_width;
-        height = new_height;
+        BOLT_LOG_INFO("Seting window to fullscreen")
 
-        framework_window->windowed(width, height);
+        int width, height;
+
+        glfwGetWindowSize(window , &width, &height);
+
+        glfwSetWindowMonitor(
+            window,
+            glfwGetPrimaryMonitor(),
+            0,
+            0,
+            width,
+            height,
+            GLFW_DONT_CARE
+        );
+    }
+
+    void Window::windowed(uint16_t width, uint16_t height)
+    {
+        this->width = width;
+        this->height = height;
+
+        BOLT_LOG_INFO("Seting window to windowed")
+        glfwSetWindowMonitor(
+            window,
+            NULL,
+            0,
+            0,
+            width,
+            height,
+            GLFW_DONT_CARE
+        );
+    }
+
+    void Window::windowed(uint16_t width, uint16_t height, uint16_t x, uint16_t y)
+    {
+        this->width = width;
+        this->height = height;
+
+        BOLT_LOG_INFO("Seting window to windowed")
+        glfwSetWindowMonitor(
+            window,
+            NULL,
+            x,
+            y,
+            width,
+            height,
+            GLFW_DONT_CARE
+        );
+    }
+
+    void Window::frame_routine()
+    {
+        glfwPollEvents();
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Window::register_event_trigger(event_trigger trigger)
@@ -60,52 +149,68 @@ namespace bolt
 
         caller = new EventCaller(trigger);
 
-        framework_window->set_event_caller(caller);
+        set_event_caller();
     }
 
-    void Window::window_windowed()
+    void Window::set_event_caller()
     {
-        framework_window->windowed(width, height);
+        glfwSetWindowUserPointer(window, caller);
+
+        // TODO decide what kind of input handeling to use direct or event based
+        /*glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            static_cast<EventCallerManagedPtr>(glfwGetWindowUserPointer(window))->call_keyboard_event(key, scancode, action, mods);
+        });*/
+
+        glfwSetWindowCloseCallback(window, [](GLFWwindow* window){
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_window_close_event();
+        });
+
+        glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height){
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_window_resize_event(width, height);
+        });
     }
 
-    void Window::window_fullscreen()
+    void Window::cleanup_routine()
     {
-        framework_window->fullscreen();
-    }
-
-    void Window::window_frame_routine()
-    {
-        framework_window->frame_routine();
-    }
-
-    void Window::window_cleanup_routine()
-    {
-        framework_window->cleanup_routine();
+        glfwSwapBuffers(window);
     }
 
     void Window::set_background_color(RGB* color)
     {
-        framework_window->set_background_color(color);
-    }
+        if(background_color_owned)
+            delete background_color;
 
-    void Window::get_size(uint16_t *set_width, uint16_t *set_height)
-    {
-        *set_width = width;
-        *set_height = height;
+        background_color = color;
+        background_color_owned = false;
     }
 
     void Window::hide_cursor() const
     {
-        framework_window->hide_cursor();
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+
+    void Window::set_active()
+    {
+        glfwMakeContextCurrent(window);
+
+        BOLT_LOG_INFO("Set context to window")
+
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        glCullFace(GL_FRONT);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        BOLT_LOG_INFO("GLEW initialised")
     }
 
     [[nodiscard]] bool Window::is_window_open() const
     {
-        return framework_window->should_close();
+        return !glfwWindowShouldClose(window);
     }
 
-    void Window::close() const
+    void Window::close()
     {
-        framework_window->close();
+        glfwDestroyWindow(window);
     }
 }

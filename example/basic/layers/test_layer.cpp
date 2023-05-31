@@ -59,7 +59,7 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
 void TestLayer::frame() const
 {
-    window->window_frame_routine();
+    window->frame_routine();
 
     renderer->render();
 
@@ -79,7 +79,7 @@ void TestLayer::frame() const
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    window->window_cleanup_routine();
+    window->cleanup_routine();
 }
 
 void TestLayer::bind_event_trigger(bolt::event_trigger trigger)
