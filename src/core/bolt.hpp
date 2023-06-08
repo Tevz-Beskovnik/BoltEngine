@@ -15,6 +15,8 @@
 #include <mesh_builder.hpp>
 #include <model.hpp>
 #include <model_interface.hpp> // for creating custom model interfaces
+#include <setup_primitives.hpp> // primitive defs
+#include <line.hpp>
 
 // event system includes
 #include <event.hpp>

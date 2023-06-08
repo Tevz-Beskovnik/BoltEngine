@@ -36,7 +36,7 @@ set (
         src/imgui_impl/imgui_impl_glfw.cpp
         src/imgui_impl/imgui_impl_opengl3.cpp
         src/io/mouse.cpp
-        src/model/types/font.cpp)
+        src/model/types/font.cpp src/primitives/line/line.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 

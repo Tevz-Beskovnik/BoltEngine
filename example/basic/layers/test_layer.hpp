@@ -23,6 +23,8 @@ class TestLayer : public LayerInterface {
         [[nodiscard]] bool handle_view_mat(class CameraUpdate& e) const;
 
     private:
+        SETUP_PRIMITIVES;
+
         event_trigger trigger;
         ref_ptr<Window> window;
         ref_ptr<RendererGL> renderer;

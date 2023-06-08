@@ -10,6 +10,11 @@ static matrix_4 view_mat;
 
 static float u_time = 0.0;
 
+static int _fpsCount = 0;
+static int fps = 0; // this will store the final fps for the last second
+
+static std::chrono::time_point<std::chrono::steady_clock> lastTime = std::chrono::steady_clock::now();
+
 void binding_func(uint32_t program)
 {
     int uColor = glGetUniformLocation(program, "uColor");
@@ -31,6 +36,19 @@ void binding_func(uint32_t program)
     glUniformMatrix4fv(uViewMat, 1, GL_TRUE, &view_mat.m[0][0]);
 }
 
+void CalculateFrameRate() {
+    auto currentTime = std::chrono::steady_clock::now();
+
+    const auto elapsedTime = duration_cast<std::chrono::nanoseconds>(currentTime - lastTime).count();
+    ++_fpsCount;
+
+    if (elapsedTime > 1000000000) {
+        lastTime = currentTime;
+        fps = _fpsCount;
+        _fpsCount = 0;
+    }
+}
+
 TestLayer::TestLayer(ref_ptr<Window> window)
     :window(window)
 {
@@ -40,7 +58,7 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     };
 
     shader_config_gl s_frag {
-        .shader_location = "/Users/tevz/Documents/programing/BoltEngine/example/shaders/frag2.glsl",
+        .shader_location = "/Users/tevz/Documents/programing/BoltEngine/example/shaders/frag.glsl",
         .type = GL_FRAGMENT_SHADER
     };
 
@@ -58,6 +76,10 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     };
 
     renderer = RendererGL::create(r_conf);
+
+    CREATE_LINE_SHADER(RGB(0, 0, 0))
+
+    CREATE_LINES(vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
 }
 
 [[nodiscard]] ref_ptr<TestLayer> TestLayer::create(ref_ptr<Window> window)
@@ -67,14 +89,23 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
 void TestLayer::frame() const
 {
+    window->cleanup_routine();
     window->frame_routine();
 
     renderer->render();
+
+    DRAW_PRIMITIVES;
+
+    CalculateFrameRate();
 
     {
         ImGui::Begin("Box color editor");
 
         ImGui::Text("Adjust the color of the object");
+
+        ImGui::Text("Fps: ");
+        ImGui::SameLine();
+        ImGui::Text("%s", std::to_string(fps).c_str());
 
         ImGui::SliderFloat("red", &color.r_dec, 0, 1);
         ImGui::SliderFloat("green", &color.g_dec, 0, 1);
@@ -86,8 +117,6 @@ void TestLayer::frame() const
     ImGui::Render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    window->cleanup_routine();
 }
 
 void TestLayer::bind_event_trigger(bolt::event_trigger trigger)

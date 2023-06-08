@@ -59,7 +59,7 @@ namespace bolt {
 
         if(!vertex->has_index())
             if(instances == 1)
-                glDrawArrays(draw_type, offset, static_cast<int>(3*model->polygon_count())); // TODO switch drawing to glDrawElements if index buffer exists
+                glDrawArrays(draw_type, offset, static_cast<int>(3*model->polygon_count()));
             else
                 glDrawArraysInstanced(draw_type, offset, static_cast<int>(3*model->polygon_count()), static_cast<int>(instances));
         else

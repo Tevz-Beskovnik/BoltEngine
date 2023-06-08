@@ -16,7 +16,7 @@ namespace bolt
 
                 glGenBuffers(1, &this->buffer);
                 bind();
-                glBufferData(GL_ARRAY_BUFFER, buffer.size()*sizeof(T), buffer.data(), GL_STATIC_DRAW);
+                glBufferData(GL_ARRAY_BUFFER, buffer.size()*sizeof(T), buffer.data(), GL_DYNAMIC_DRAW);
                 unbind();
                 BOLT_LOG_INFO("created VBO")
             }
