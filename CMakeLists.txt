@@ -36,7 +36,7 @@ set (
         src/imgui_impl/imgui_impl_glfw.cpp
         src/imgui_impl/imgui_impl_opengl3.cpp
         src/io/mouse.cpp
-        src/model/types/font.cpp src/primitives/line/line.cpp src/exceptions/texture_exception.cpp)
+        src/model/types/font.cpp src/primitives/line/line.cpp src/exceptions/texture_exception.cpp src/primitives/rectangle/rectangle.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 
@@ -65,6 +65,8 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/imgui_impl
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/line
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/rectangle
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/triangle
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/camera
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )

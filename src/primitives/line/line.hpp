@@ -5,19 +5,19 @@
 #include <renderer_exception.hpp>
 #include <primitives.hpp>
 
-#define create_line_shader(color) shaders.push_back(setup_line_shader(color));
+namespace bolt
+{
+    #define create_line_shader(color) shaders.push_back(setup_line_shader(color));
 
-#define create_line_shader_custom(color, frag, vert) shaders.push_back(setup_line_shader(color, frag, vert));
+    #define create_line_shader_custom(color, frag, vert) shaders.push_back(setup_line_shader(color, frag, vert));
 
-#define create_lines(p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
+    #define create_lines(p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
                                        draw_type.push_back(GL_LINES); \
                                        glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                        glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
                                        count.push_back(buffer_size/(sizeof(float)*3)); \
                                        vertex_arrays.push_back(create_vertex_arrays(buffers));
 
-namespace bolt
-{
     uint32_t setup_line_shader(RGB color, std::string vert_file = "/Users/tevz/Documents/programing/BoltEngine/src/primitives/line/shaders/vert.glsl", std::string frag_file = "/Users/tevz/Documents/programing/BoltEngine/src/primitives/line/shaders/frag.glsl");
 
     void add_to_buffer(uint32_t current_size,uint32_t buffer, const vector_3& p1, const vector_3& p2);
