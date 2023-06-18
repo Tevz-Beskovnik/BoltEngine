@@ -64,7 +64,8 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
     texture_config_gl town_tex {
         .type = bolt::TEXTURE_2D,
-        .texture_location = "/Users/tevz/Documents/programing/BoltEngine/example/textures/lowPoly.jpg"
+        .format = bolt::PNG,
+        .texture_location = "/Users/tevz/Documents/programing/BoltEngine/example/textures/TownColor.png"
     };
 
     auto model = MeshBuilder::make_cube({2,1,6});
@@ -73,7 +74,7 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     render_config_gl r_conf = {
         .shader_config = {s_vert, s_frag},
         .texture_config = { town_tex },
-        .model = model->add_model(MeshBuilder::read_model("/Users/tevz/Documents/programing/BoltEngine/example/models/car.obj", OBJ)), // , // MeshBuilder::make_quad({-0.6f, -0.6f}, {0.5f, 0.5f})->add_model(MeshBuilder::make_quad({0.1f, 0.1f}, {0.5f, 0.5f})),
+        .model = model->add_model(MeshBuilder::read_model("/Users/tevz/Documents/programing/BoltEngine/example/models/town.obj", OBJ)), // , // MeshBuilder::make_quad({-0.6f, -0.6f}, {0.5f, 0.5f})->add_model(MeshBuilder::make_quad({0.1f, 0.1f}, {0.5f, 0.5f})),
         .shader_bindings = binding_func,
         .instances = 1,
         .draw_type = GL_TRIANGLES,
@@ -82,7 +83,7 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
     renderer = RendererGL::create(r_conf);
 
-    create_line_shader(RGB(255.0f, 0, 0))
+    create_line_shader(RGB(255.0f, 0, 255.0f, 255.0f))
 
     create_lines(vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
 }
