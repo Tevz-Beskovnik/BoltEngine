@@ -13,7 +13,6 @@ namespace bolt
         {
             vertex_shader_string += line + '\n';
         }
-        //vertex_shader_string += '\0';
 
         file.close();
 
@@ -45,19 +44,31 @@ namespace bolt
         }
 
         // fragment frag_shader
-        std::string fragment_shader_string;
+        std::string fragment_shader_string = "#version 330 core\n"
+                                             "\n"
+                                             "out vec4 FragColor;\n"
+                                             "\n"
+                                             "void main()\n"
+                                             "{\n"
+                                             "    FragColor = vec4(%f, %f, %f, %f);\n"
+                                             "}";
 
-        file.open(frag_file);
+        /*file.open(frag_file);
 
         while(std::getline(file, line))
         {
             fragment_shader_string += line + '\n';
-        }
-        //fragment_shader_string += '\0';
+        }*/
 
-        file.close();
+        char* frag_formated = new char[fragment_shader_string.size() + 40];
 
-        const_str c_str_frag = fragment_shader_string.c_str();
+        sprintf(frag_formated, fragment_shader_string.c_str(), color.r_dec, color.g_dec, color.b_dec, color.a_dec);
+
+        std::cout << color.r_dec << " " << color.g_dec << " " << color.b_dec << std::endl;
+
+        //file.close();
+
+        const_str c_str_frag = frag_formated;
 
         uint32_t frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -117,6 +128,8 @@ namespace bolt
 
         glDeleteShader(vert_shader);
         glDeleteShader(frag_shader);
+
+        delete[] frag_formated;
 
         BOLT_LOG_INFO("Shaders deleted")
 

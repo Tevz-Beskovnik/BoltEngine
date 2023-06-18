@@ -26,3 +26,10 @@
 #include <keyboard_events.hpp>
 #include <keyboard.hpp>
 #include <mouse.hpp>
+
+// exceptions
+#include <assertion_exception.hpp>
+#include <renderer_exception.hpp>
+#include <setup_exception.hpp>
+#include <texture_exception.hpp>
+#include <wrong_file_extension_exception.hpp>

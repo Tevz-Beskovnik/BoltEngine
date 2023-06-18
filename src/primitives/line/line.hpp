@@ -5,11 +5,11 @@
 #include <renderer_exception.hpp>
 #include <primitives.hpp>
 
-#define CREATE_LINE_SHADER(color) shaders.push_back(setup_line_shader(color));
+#define create_line_shader(color) shaders.push_back(setup_line_shader(color));
 
-#define CREATE_LINE_SHADER_CUSTOM(color, frag, vert) shaders.push_back(setup_line_shader(color, frag, vert));
+#define create_line_shader_custom(color, frag, vert) shaders.push_back(setup_line_shader(color, frag, vert));
 
-#define CREATE_LINES(p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
+#define create_lines(p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
                                        draw_type.push_back(GL_LINES); \
                                        glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                        glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \

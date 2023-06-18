@@ -2,6 +2,8 @@
 
 out vec4 FragColor;
 
+in vec2 oUV;
+
 uniform vec3 uColor;
 uniform float uTime;
 

@@ -44,7 +44,7 @@ namespace bolt {
         ASSERT_FILE_EXISTS(path.c_str(), "Bad texture file");
         ASSERT((textures.size() < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS), "Max number of textures binded to renderer");
 
-        this->textures.push_back(TextureGL::create({TEXTURE_2D, "neke", 0, 0})); // TODO: implement texture class
+        this->textures.push_back(TextureGL::create({TEXTURE_2D, "neke"})); // TODO: implement texture class
     }
 
     void RendererGL::render() const {
@@ -52,7 +52,12 @@ namespace bolt {
 
         vertex->bind();
 
-        for(const auto& texture : textures) texture->bind();
+        for(const auto& texture : textures)
+        {
+            texture->bind();
+
+            texture->bind_uniform(shader->get_program());
+        }
 
         if(binding_function != nullptr)
             binding_function(shader->get_program());
@@ -67,5 +72,8 @@ namespace bolt {
                 glDrawElements(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0);
             else
                 glDrawElementsInstanced(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0, static_cast<int>(instances));
+
+        for(const auto& texture : textures)
+            texture->unbind();
     }
 }

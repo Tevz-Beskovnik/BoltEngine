@@ -29,3 +29,9 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.hpp>
 #include <imgui_impl_opengl3.hpp>
+
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+#endif
+#include <stb_image.h> // stb implementation
