@@ -64,7 +64,6 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
     texture_config_gl town_tex {
         .type = bolt::TEXTURE_2D,
-        .format = bolt::PNG,
         .texture_location = "/Users/tevz/Documents/programing/BoltEngine/example/textures/TownColor.png"
     };
 
@@ -84,8 +83,18 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     renderer = RendererGL::create(r_conf);
 
     create_line_shader(RGB(255.0f, 0, 255.0f, 255.0f))
-
     create_lines(vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
+
+    create_rect_shader_t("/Users/tevz/Documents/programing/BoltEngine/example/textures/lowPoly.jpg")
+    create_rects(rectangle{
+        {
+            vector_3{}
+        },
+        {
+            vector_2{0, 0}, vector_2{0, 1},
+            vector_2{1, 0}, vector_2{1, 1}
+        }
+    })
 }
 
 [[nodiscard]] ref_ptr<TestLayer> TestLayer::create(ref_ptr<Window> window)

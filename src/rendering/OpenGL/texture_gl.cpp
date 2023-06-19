@@ -14,24 +14,27 @@ namespace bolt
 
         glGenTextures(1, &texture);
 
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(config.type, texture);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(config.type, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(config.type, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        glTexParameteri(config.type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(config.type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         if(texture_buffer)
         {
             BOLT_LOG_INFO("Binding texture buffer to active binding and generating mipmaps")
 
-            if(config.format == JPG)
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_buffer);
-            else if(config.format == PNG)
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
+            std::filesystem::path tex_file = config.texture_location;
+            if(tex_file.extension() == ".jpg")
+                glTexImage2D(config.type, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_buffer);
+            else if(tex_file.extension() == ".png")
+                glTexImage2D(config.type, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
+            else
+                throw TextureException("Unsuported file extension on texture");
 
-            glGenerateMipmap(GL_TEXTURE_2D);
+            glGenerateMipmap(config.type);
         }
         else
         {
@@ -60,7 +63,7 @@ namespace bolt
             binding = (int32_t)activeTexture;
 
             glActiveTexture(activeTexture);
-            glBindTexture(GL_TEXTURE_2D, texture);
+            glBindTexture(type, texture);
 
             activeTexture++;
         }
@@ -79,7 +82,7 @@ namespace bolt
         {
             activeTexture--;
 
-            glBindTexture(GL_TEXTURE_2D, 0);
+            glBindTexture(type, 0);
         }
     }
 }

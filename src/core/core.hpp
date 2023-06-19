@@ -7,21 +7,22 @@
 #define ENUM_TO_STRING(e) #e
 
 // PRIMARY
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <fstream>
 #include <algorithm>
-#include <functional>
-#include <string>
-#include <sstream>
-#include <memory>
-#include <map>
-#include <stdexcept>
-#include <cstdio>
 #include <chrono>
+#include <cmath>
 #include <ctime>
+#include <cstdio>
+#include <filesystem>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <map>
+#include <memory>
 #include <source_location.hpp>
+#include <sstream>
+#include <string>
+#include <stdexcept>
+#include <vector>
 
 // EXTERNAL
 #include <GL/glew.h>

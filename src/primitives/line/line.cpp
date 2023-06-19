@@ -20,7 +20,7 @@ namespace bolt
 
         uint32_t vert_shader = glCreateShader(GL_VERTEX_SHADER);
 
-        BOLT_LOG_INFO("Compiling frag_shader:")
+        BOLT_LOG_INFO("Compiling vert shader:")
         BOLT_LOG_INFO(vertex_shader_string)
 
         glShaderSource(vert_shader, 1, &c_str_vert, NULL);
@@ -53,20 +53,9 @@ namespace bolt
                                              "    FragColor = vec4(%f, %f, %f, %f);\n"
                                              "}";
 
-        /*file.open(frag_file);
-
-        while(std::getline(file, line))
-        {
-            fragment_shader_string += line + '\n';
-        }*/
-
         char* frag_formated = new char[fragment_shader_string.size() + 40];
 
         sprintf(frag_formated, fragment_shader_string.c_str(), color.r_dec, color.g_dec, color.b_dec, color.a_dec);
-
-        std::cout << color.r_dec << " " << color.g_dec << " " << color.b_dec << std::endl;
-
-        //file.close();
 
         const_str c_str_frag = frag_formated;
 
@@ -145,34 +134,6 @@ namespace bolt
         glBufferSubData(GL_ARRAY_BUFFER, current_size, 6 * sizeof(float), data.data());
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
-    uint32_t create_vertex_arrays(const std::vector<uint32_t>& buffer)
-    {
-        uint32_t vertex_array;
-
-        glGenVertexArrays(1, &vertex_array);
-
-        glBindVertexArray(vertex_array);
-
-        glBindBuffer(GL_ARRAY_BUFFER, buffer.back());
-
-        glVertexAttribPointer(
-            0,
-            3,
-            GL_FLOAT,
-            GL_FALSE,
-            3 * sizeof(float),
-            0
-        );
-
-        glEnableVertexAttribArray(0);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        glBindVertexArray(0);
-
-        return vertex_array;
     }
 
     uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2)

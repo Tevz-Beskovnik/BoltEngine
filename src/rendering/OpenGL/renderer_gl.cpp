@@ -44,7 +44,7 @@ namespace bolt {
         ASSERT_FILE_EXISTS(path.c_str(), "Bad texture file");
         ASSERT((textures.size() < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS), "Max number of textures binded to renderer");
         // todo: slice string and determin file extension
-        this->textures.push_back(TextureGL::create({TEXTURE_2D, PNG, path.c_str()})); // TODO: implement texture class
+        this->textures.push_back(TextureGL::create({TEXTURE_2D, path.c_str()})); // TODO: implement texture class
     }
 
     void RendererGL::render() const {

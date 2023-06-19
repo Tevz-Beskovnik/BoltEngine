@@ -7,11 +7,6 @@
 
 namespace bolt
 {
-    enum texture_format {
-        PNG,
-        JPG
-    };
-
     enum texture_type_gl {
         TEXTURE_2D = GL_TEXTURE_2D
     };
@@ -19,7 +14,6 @@ namespace bolt
     struct texture_config_gl
     {
         texture_type_gl type;
-        texture_format format;
         const_str texture_location;
     };
 

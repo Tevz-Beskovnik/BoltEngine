@@ -17,12 +17,11 @@ namespace bolt
                                        glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
                                        count.push_back(buffer_size/(sizeof(float)*3)); \
                                        vertex_arrays.push_back(create_vertex_arrays(buffers));
+                                       // UGLY UGLY CROSS FILE POLLUTION FUJJJJJJ UGH but it works
 
     uint32_t setup_line_shader(RGB color, std::string vert_file = "/Users/tevz/Documents/programing/BoltEngine/src/primitives/line/shaders/vert.glsl", std::string frag_file = "/Users/tevz/Documents/programing/BoltEngine/src/primitives/line/shaders/frag.glsl");
 
     void add_to_buffer(uint32_t current_size,uint32_t buffer, const vector_3& p1, const vector_3& p2);
-
-    uint32_t create_vertex_arrays(const std::vector<uint32_t>& buffer);
 
     uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2);
 
