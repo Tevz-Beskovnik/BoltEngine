@@ -53,7 +53,7 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     :window(window)
 {
     shader_config_gl s_vert {
-        .shader_location = "/Users/tevz/Documents/programing/BoltEngine/example/shaders/vert.glsl",
+        .shader_location = "/Users/tevz/Documents/programing/BoltEngine/example/shaders/vert.glsl", // TODO localize all filepaths
         .type = GL_VERTEX_SHADER
     };
 
