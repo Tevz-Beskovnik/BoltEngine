@@ -17,7 +17,5 @@
 
 namespace bolt
 {
-    uint32_t create_vertex_arrays(const std::vector<uint32_t>& buffer);
-
     void draw_primitives_f(const std::vector<uint32_t>& vertex_arrays, const std::vector<uint32_t>& shaders, const std::vector<uint32_t>& draw_types, const std::vector<int32_t>& count);
 }

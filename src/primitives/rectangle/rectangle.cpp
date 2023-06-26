@@ -6,7 +6,7 @@ namespace bolt
     {
         std::string vertex_shader_string;
         std::string line;
-        std::ifstream file("/Users/tevz/Documents/programing/BoltEngine/src/primitives/rectangle/shaders/vert.glsl");
+        std::ifstream file("../../src/primitives/rectangle/shaders/vert.glsl");
 
         while(std::getline(file, line))
         {
@@ -158,20 +158,18 @@ namespace bolt
             else if(tex_file.extension() == ".png")
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
             else
-                throw TextureException("Unsuported file extension");
+                throw TextureException("Unsuported file extension", texture_file);
 
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else
-        {
-            throw TextureException("Failed to load image: " + texture_file);
-        }
+            throw TextureException("Failed to load image:", texture_file);
 
         BOLT_LOG_INFO("Freeing loaded image from stb")
 
         std::string vertex_shader_string;
         std::string line;
-        std::ifstream file("/Users/tevz/Documents/programing/BoltEngine/src/primitives/rectangle/shaders/vert.glsl");
+        std::ifstream file("../../src/primitives/rectangle/shaders/vert.glsl");
 
         while(std::getline(file, line))
         {
@@ -209,7 +207,7 @@ namespace bolt
 
         std::string fragment_shader_string;
 
-        file.open("/Users/tevz/Documents/programing/BoltEngine/src/primitives/rectangle/shaders/fragTexture.glsl");
+        file.open("../../src/primitives/rectangle/shaders/fragTexture.glsl");
 
         while(std::getline(file, line))
         {
@@ -324,15 +322,13 @@ namespace bolt
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else
-        {
-            throw TextureException("Failed to load image: " + texture_file);
-        }
+            throw TextureException("Failed to load image:", texture_file);
 
         BOLT_LOG_INFO("Freeing loaded image from stb")
 
         std::string vertex_shader_string;
         std::string line;
-        std::ifstream file("/Users/tevz/Documents/programing/BoltEngine/src/primitives/rectangle/shaders/vert.glsl");
+        std::ifstream file("../../src/primitives/rectangle/shaders/vert.glsl");
 
         while(std::getline(file, line))
         {
@@ -370,7 +366,7 @@ namespace bolt
 
         std::string fragment_shader_string;
 
-        file.open("/Users/tevz/Documents/programing/BoltEngine/src/primitives/rectangle/shaders/fragBoth.glsl");
+        file.open("../../src/primitives/rectangle/shaders/fragBoth.glsl");
 
         while(std::getline(file, line))
         {
@@ -487,9 +483,7 @@ namespace bolt
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else
-        {
-            throw TextureException("Failed to load image: " + texture_file);
-        }
+            throw TextureException("Failed to load image:", texture_file);
 
         BOLT_LOG_INFO("Freeing loaded image from stb")
 
@@ -616,33 +610,10 @@ namespace bolt
 
     inline void add_rectangle_to_buffer(std::vector<float>& data, const rectangle& rect)
     {
-        vector_3 U = rect.corners[1] - rect.corners[0];
-        vector_3 V = rect.corners[2] - rect.corners[0];
-
-        vector_3 normal1 {
-            .x = (U.y * V.z) - (U.z * V.y),
-            .y = (U.z * V.x) - (U.x - V.z),
-            .z = (U.x * V.y) - (U.y - V.x)
-        };
-
-        V = rect.corners[2] - rect.corners[1];
-        U = rect.corners[3] - rect.corners[1];
-
-        vector_3 normal2 {
-            .x = (U.y * V.z) - (U.z * V.y),
-            .y = (U.z * V.x) - (U.x - V.z),
-            .z = (U.x * V.y) - (U.y - V.x)
-        };
-
         for(uint8_t i = 0; i < 3; i++)
         {
             data.push_back(rect.corners[i].x);
             data.push_back(rect.corners[i].y);
-            data.push_back(rect.corners[i].z);
-
-            data.push_back(normal1.x);
-            data.push_back(normal1.y);
-            data.push_back(normal1.z);
 
             data.push_back(rect.UV[i].x);
             data.push_back(rect.UV[i].y);
@@ -652,11 +623,6 @@ namespace bolt
         {
             data.push_back(rect.corners[i].x);
             data.push_back(rect.corners[i].y);
-            data.push_back(rect.corners[i].z);
-
-            data.push_back(normal2.x);
-            data.push_back(normal2.y);
-            data.push_back(normal2.z);
 
             data.push_back(rect.UV[i].x);
             data.push_back(rect.UV[i].y);
@@ -671,7 +637,7 @@ namespace bolt
 
         add_rectangle_to_buffer(data, rect);
 
-        glBufferSubData(GL_ARRAY_BUFFER, offset, 48 * sizeof(float), data.data());
+        glBufferSubData(GL_ARRAY_BUFFER, offset, 24 * sizeof(float), data.data());
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
@@ -688,12 +654,49 @@ namespace bolt
 
         add_rectangle_to_buffer(data, rect);
 
-        glBufferData(GL_ARRAY_BUFFER, 48 * sizeof(float), data.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), data.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         BOLT_LOG_INFO("Added rectangle primitives")
 
         return buffer;
+    }
+
+    uint32_t create_rect_vertex_arrays(uint32_t buffer)
+    {
+        uint32_t vertex_array;
+
+        glGenVertexArrays(1, &vertex_array);
+
+        glBindVertexArray(vertex_array);
+
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+
+        glVertexAttribPointer(
+                0,
+                2,
+                GL_FLOAT,
+                GL_FALSE,
+                4 * sizeof(float),
+                (void*)0
+        );
+
+        glVertexAttribPointer(
+                0,
+                2,
+                GL_FLOAT,
+                GL_FALSE,
+                4 * sizeof(float),
+                (void*)(2 * sizeof(float))
+        );
+
+        glEnableVertexAttribArray(0);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glBindVertexArray(0);
+
+        return vertex_array;
     }
 }

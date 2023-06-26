@@ -9,7 +9,7 @@ namespace bolt
     class TextureException : public LogException
     {
         public:
-            explicit TextureException(std::string error, source_location s = source_location::current());
+            explicit TextureException(const std::string& error, const std::string& file, source_location s = source_location::current());
 
             [[nodiscard]] const char* what() const noexcept override;
 

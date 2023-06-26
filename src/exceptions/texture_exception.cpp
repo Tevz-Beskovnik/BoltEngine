@@ -2,8 +2,8 @@
 
 namespace bolt
 {
-    TextureException::TextureException(std::string error, source_location s)
-        : error(error), file_location(std::string{"["} + s.function_name() + "#" + std::to_string(s.line()) + "]"), out(error + " " + file_location),
+    TextureException::TextureException(const std::string& error, const std::string& file, source_location s)
+        : error(error), file_location(std::string{"["} + s.function_name() + "#" + std::to_string(s.line()) + "]"), out(error + " " + file + " " + file_location),
           LogException(error + " " + std::string{"["} + s.function_name() + "#" + std::to_string(s.line()) + "]")
     {
         ;

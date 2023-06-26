@@ -154,4 +154,33 @@ namespace bolt
 
         return buffer;
     }
+
+    uint32_t create_line_vertex_arrays(uint32_t buffer)
+    {
+        uint32_t vertex_array;
+
+        glGenVertexArrays(1, &vertex_array);
+
+        glBindVertexArray(vertex_array);
+
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+
+        glVertexAttribPointer(
+                0,
+                3,
+                GL_FLOAT,
+                GL_FALSE,
+                3 * sizeof(float),
+                0
+        );
+
+        glEnableVertexAttribArray(0);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glBindVertexArray(0);
+
+        return vertex_array;
+    }
+
 }

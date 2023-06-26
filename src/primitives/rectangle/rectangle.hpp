@@ -13,7 +13,7 @@ namespace bolt
     #define create_rect_shader_c(color) _shader_tex_pair = setup_rectangle_shader(color); \
                                         shaders.push_back(_shader_tex_pair.first);
 
-    #define create_rect_shader_t(tex) _shader_tex_pair = setup_rectangle_shader(color); \
+    #define create_rect_shader_t(tex) _shader_tex_pair = setup_rectangle_shader(tex); \
                                       shaders.push_back(_shader_tex_pair.first);             \
                                       textures.push_back(_shader_tex_pair.second);
 
@@ -30,10 +30,10 @@ namespace bolt
                                      glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                      glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
                                      count.push_back(buffer_size/(sizeof(float)*48)); \
-                                     vertex_arrays.push_back(create_vertex_arrays(buffers));
-                                     // UGLY UGLY CROSS FILE POLLUTION FUJJJJJJ UGH but it works
+                                     vertex_arrays.push_back(create_rect_vertex_arrays(buffers.back()));
+
     struct rectangle {
-        vector_3 corners[4];
+        vector_2 corners[4];
         vector_2 UV[4];
     };
 
@@ -49,6 +49,8 @@ namespace bolt
 
     void add_to_rect_buffer(uint32_t offset, uint32_t buffer, const rectangle& rect);
 
+    uint32_t create_rect_vertex_arrays(uint32_t buffer);
+
     uint32_t setup_rectangle(const rectangle& rect);
 
     template <typename ...Args>
@@ -60,11 +62,11 @@ namespace bolt
 
         add_rectangle_to_buffer(data, rect);
 
-        glBufferSubData(GL_ARRAY_BUFFER, offset, 48 * sizeof(float), data.data());
+        glBufferSubData(GL_ARRAY_BUFFER, offset, 24 * sizeof(float), data.data());
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        add_to_rect_buffer(offset + 48 * sizeof(float), buffer, args...);
+        add_to_rect_buffer(offset + 24 * sizeof(float), buffer, args...);
     }
 
     template <typename ...Args>
@@ -82,13 +84,13 @@ namespace bolt
 
         add_rectangle_to_buffer(data, rect);
 
-        glBufferData(GL_ARRAY_BUFFER, 48 * sizeof(float) + arg_num * 48 * sizeof(float), data.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float) + arg_num * 24 * sizeof(float), data.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         BOLT_LOG_INFO("Added rectangle primitives")
 
-        add_to_rect_buffer(48 * sizeof(float), buffer, args...);
+        add_to_rect_buffer(24 * sizeof(float), buffer, args...);
 
         return buffer;
     }

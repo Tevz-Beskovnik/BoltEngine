@@ -32,14 +32,12 @@ namespace bolt
             else if(tex_file.extension() == ".png")
                 glTexImage2D(config.type, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
             else
-                throw TextureException("Unsuported file extension on texture");
+                throw TextureException("Unsuported file extension on texture", config.texture_location);
 
             glGenerateMipmap(config.type);
         }
         else
-        {
-            throw TextureException("Failed to load image: " + std::string{config.texture_location});
-        }
+            throw TextureException("Failed to load image: ", config.texture_location);
 
         BOLT_LOG_INFO("Freeing loaded image from stb")
 

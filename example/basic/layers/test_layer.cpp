@@ -53,18 +53,18 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     :window(window)
 {
     shader_config_gl s_vert {
-        .shader_location = "/Users/tevz/Documents/programing/BoltEngine/example/shaders/vert.glsl", // TODO localize all filepaths
+        .shader_location = "../../example/shaders/vert.glsl", // TODO localize all filepaths
         .type = GL_VERTEX_SHADER
     };
 
     shader_config_gl s_frag {
-        .shader_location = "/Users/tevz/Documents/programing/BoltEngine/example/shaders/fragTex.glsl",
+        .shader_location = "../../example/shaders/fragTex.glsl",
         .type = GL_FRAGMENT_SHADER
     };
 
     texture_config_gl town_tex {
         .type = bolt::TEXTURE_2D,
-        .texture_location = "/Users/tevz/Documents/programing/BoltEngine/example/textures/TownColor.png"
+        .texture_location = "../../example/textures/TownColor.png"
     };
 
     auto model = MeshBuilder::make_cube({2,1,6});
@@ -73,7 +73,7 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     render_config_gl r_conf = {
         .shader_config = {s_vert, s_frag},
         .texture_config = { town_tex },
-        .model = model->add_model(MeshBuilder::read_model("/Users/tevz/Documents/programing/BoltEngine/example/models/town.obj", OBJ)), // , // MeshBuilder::make_quad({-0.6f, -0.6f}, {0.5f, 0.5f})->add_model(MeshBuilder::make_quad({0.1f, 0.1f}, {0.5f, 0.5f})),
+        .model = model->add_model(MeshBuilder::read_model("../../example/models/town.obj", OBJ)), // , // MeshBuilder::make_quad({-0.6f, -0.6f}, {0.5f, 0.5f})->add_model(MeshBuilder::make_quad({0.1f, 0.1f}, {0.5f, 0.5f})),
         .shader_bindings = binding_func,
         .instances = 1,
         .draw_type = GL_TRIANGLES,
@@ -85,10 +85,11 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     create_line_shader(RGB(255.0f, 0, 255.0f, 255.0f))
     create_lines(vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
 
-    create_rect_shader_t("/Users/tevz/Documents/programing/BoltEngine/example/textures/lowPoly.jpg")
+    create_rect_shader_c(RGB(255.0f, 0, 255.0f, 255.0f))
     create_rects(rectangle{
         {
-            vector_3{}
+            vector_2{-1, -1}, vector_2{-0.5, -1},
+            vector_2{-1, -0.5}, vector_2{-0.5, -0.5}
         },
         {
             vector_2{0, 0}, vector_2{0, 1},
