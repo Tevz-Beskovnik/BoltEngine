@@ -82,15 +82,16 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
     renderer = RendererGL::create(r_conf);
 
-    create_line_shader(RGB(255.0f, 0, 255.0f, 255.0f))
-    create_lines(vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
+    create_lines(RGB(255.0f, 0, 255.0f, 255.0f), vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
 
-    create_rect_shader(RGB(255.0f, 255.0f, 0.0f, 255.0f), "../../example/textures/wacky-code.png")
-    //create_rect_shader_c(RGB(255.0f, 255.0f, 0.0f, 255.0f))
-    create_rects(rectangle{
+    create_rect_shader(RGB(255.0f, 255.0f, 0.0f, 255.0f), "../../example/textures/wacky-code.png", rectangle{
         .pos = vector_2{-1, -1},
         .dims = vector_2{0.5, 1}
     })
+    /*create_rects_c(RGB(255.0f, 255.0f, 0.0f, 255.0f), rectangle{
+        .pos = vector_2{-1, -1},
+        .dims = vector_2{0.5, 1}
+    })*/
 }
 
 [[nodiscard]] ref_ptr<TestLayer> TestLayer::create(ref_ptr<Window> window)

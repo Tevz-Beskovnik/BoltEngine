@@ -9,29 +9,38 @@
 
 namespace bolt
 {
-    // TODO create abstractions for x, y, z & w, h
-    #define create_rect_shader_c(color) _shader_tex_pair = setup_rectangle_shader(color); \
-                                        shaders.push_back(_shader_tex_pair.first); \
-                                        textures.push_back(_shader_tex_pair.second);
-
-    #define create_rect_shader_t(tex) _shader_tex_pair = setup_rectangle_shader(tex); \
-                                      shaders.push_back(_shader_tex_pair.first);             \
-                                      textures.push_back(_shader_tex_pair.second);
-
-    #define create_rect_shader(color, tex) _shader_tex_pair = setup_rectangle_shader(color, tex); \
-                                           shaders.push_back(_shader_tex_pair.first);             \
-                                           textures.push_back(_shader_tex_pair.second);
-
-    #define create_rect_shader_custom(color, tex, vert_file, frag_file) _shader_tex_pair = setup_rectangle_shader(color, tex); \
-                                                                        shaders.push_back(_shader_tex_pair.first);             \
-                                                                        textures.push_back(_shader_tex_pair.second);
-
     #define create_rects(rect, ...)  buffers.push_back(setup_rectangle(rect, __VA_ARGS__)); \
                                      draw_type.push_back(GL_TRIANGLES); \
                                      glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                      glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
                                      count.push_back(buffer_size/(sizeof(float)*4)); \
                                      vertex_arrays.push_back(create_rect_vertex_arrays(buffers.back()));
+
+    // TODO create abstractions for x, y, z & w, h
+    // !!ATTENTION!! this sort of macros wizardry is efficient however this should NEVER EVER EVER be used in PRODUCTION CODE
+    #define create_rects_c(color, rect, ...) create_rects(rect, __VA_ARGS__) \
+                                             _shader_tex_pair = setup_rectangle_shader(color); \
+                                             shaders.push_back(_shader_tex_pair.first); \
+                                             textures.push_back(_shader_tex_pair.second);      \
+                                             glBindVertexArray(0);
+
+    #define create_rects_t(tex, rect, ...) create_rects(rect, __VA_ARGS__) \
+                                           _shader_tex_pair = setup_rectangle_shader(tex); \
+                                           shaders.push_back(_shader_tex_pair.first);             \
+                                           textures.push_back(_shader_tex_pair.second);    \
+                                           glBindVertexArray(0);
+
+    #define create_rect_shader(color, tex, rect, ...) create_rects(rect, __VA_ARGS__) \
+                                                      _shader_tex_pair = setup_rectangle_shader(color, tex); \
+                                                      shaders.push_back(_shader_tex_pair.first);             \
+                                                      textures.push_back(_shader_tex_pair.second);           \
+                                                      glBindVertexArray(0);
+
+    #define create_rect_shader_custom(color, tex, vert_file, frag_file, rect, ...) create_rects(rect, __VA_ARGS__) \
+                                                                                   _shader_tex_pair = setup_rectangle_shader(color, tex); \
+                                                                                   shaders.push_back(_shader_tex_pair.first);             \
+                                                                                   textures.push_back(_shader_tex_pair.second); \
+                                                                                   glBindVertexArray(0);
 
     struct rectangle {
         vector_2 pos;

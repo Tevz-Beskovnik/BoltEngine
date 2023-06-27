@@ -7,16 +7,26 @@
 
 namespace bolt
 {
-    #define create_line_shader(color) shaders.push_back(setup_line_shader(color));
 
-    #define create_line_shader_custom(color, frag, vert) shaders.push_back(setup_line_shader(color, frag, vert));
+    #define create_lines(color, p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
+                                              draw_type.push_back(GL_LINES); \
+                                              glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
+                                              glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
+                                              count.push_back(buffer_size/(sizeof(float)*3)); \
+                                              vertex_arrays.push_back(create_line_vertex_arrays(buffers.back()));    \
+                                              shaders.push_back(setup_line_shader(color)); \
+                                              textures.push_back(0); \
+                                              glBindVertexArray(0);
 
-    #define create_lines(p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
-                                       draw_type.push_back(GL_LINES); \
-                                       glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
-                                       glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
-                                       count.push_back(buffer_size/(sizeof(float)*3)); \
-                                       vertex_arrays.push_back(create_line_vertex_arrays(buffers.back()));
+    #define create_lines_shaders(color, frag, vert, p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
+                                              draw_type.push_back(GL_LINES); \
+                                              glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
+                                              glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
+                                              count.push_back(buffer_size/(sizeof(float)*3)); \
+                                              vertex_arrays.push_back(create_line_vertex_arrays(buffers.back()));    \
+                                              shaders.push_back(setup_line_shader(color, frag, vert)); \
+                                              textures.push_back(0); \
+                                              glBindVertexArray(0);
 
     uint32_t setup_line_shader(RGB color, std::string vert_file = "../../src/primitives/line/shaders/vert.glsl", std::string frag_file = "../../src/primitives/line/shaders/frag.glsl");
 

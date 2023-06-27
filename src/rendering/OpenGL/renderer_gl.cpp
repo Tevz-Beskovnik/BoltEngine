@@ -16,6 +16,8 @@ namespace bolt {
 
         this->shader = ShaderGL::create(config.shader_config);
 
+        this->vertex->unbind();
+
         for(const auto& texture : config.texture_config)
             this->textures.push_back(TextureGL::create(texture));
     }

@@ -701,8 +701,6 @@ namespace bolt
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        glBindVertexArray(0);
-
         return vertex_array;
     }
 }
