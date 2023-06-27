@@ -19,7 +19,7 @@ namespace bolt
 
         uint32_t vert_shader = glCreateShader(GL_VERTEX_SHADER);
 
-        BOLT_LOG_INFO("Compiling frag_shader:")
+        BOLT_LOG_INFO("Compiling vert_shader:")
         BOLT_LOG_INFO(vertex_shader_string)
 
         glShaderSource(vert_shader, 1, &c_str_vert, NULL);
@@ -39,12 +39,12 @@ namespace bolt
             glDeleteShader(vert_shader);
 
             BOLT_LOG_ERROR(message)
-            BOLT_ERROR("Failed to compile frag_shader")
+            BOLT_ERROR("Failed to compile vert_shader")
         }
 
         std::string fragment_shader_string;
 
-        file.open("/Users/tevz/Documents/programing/BoltEngine/src/primitives/rectangle/shaders/fragColor.glsl");
+        file.open("../../src/primitives/rectangle/shaders/fragColor.glsl");
 
         while(std::getline(file, line))
         {
@@ -214,13 +214,9 @@ namespace bolt
             fragment_shader_string += line + '\n';
         }
 
-        char* frag_formated = new char[fragment_shader_string.size() + 40];
-
-        sprintf(frag_formated, fragment_shader_string.c_str(), texture);
-
         file.close();
 
-        const_str c_str_frag = frag_formated;
+        const_str c_str_frag = fragment_shader_string.c_str();
 
         uint32_t frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -280,8 +276,6 @@ namespace bolt
 
         glDeleteShader(vert_shader);
         glDeleteShader(frag_shader);
-
-        delete[] frag_formated;
 
         BOLT_LOG_INFO("Shaders deleted")
 
@@ -375,7 +369,7 @@ namespace bolt
 
         char* frag_formated = new char[fragment_shader_string.size() + 50];
 
-        sprintf(frag_formated, fragment_shader_string.c_str(), texture, color.r_dec, color.g_dec, color.b_dec, color.a_dec);
+        sprintf(frag_formated, fragment_shader_string.c_str(), color.r_dec, color.g_dec, color.b_dec, color.a_dec);
 
         file.close();
 
@@ -383,7 +377,7 @@ namespace bolt
 
         uint32_t frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-        BOLT_LOG_INFO("Compiling frag_shader:")
+        BOLT_LOG_INFO("Compiling frag_shader: ")
         BOLT_LOG_INFO(fragment_shader_string)
 
         glShaderSource(frag_shader, 1, &c_str_frag, NULL);
@@ -439,8 +433,6 @@ namespace bolt
 
         glDeleteShader(vert_shader);
         glDeleteShader(frag_shader);
-
-        delete[] frag_formated;
 
         BOLT_LOG_INFO("Shaders deleted")
 
@@ -536,7 +528,7 @@ namespace bolt
 
         char* frag_formated = new char[fragment_shader_string.size() + 50];
 
-        sprintf(frag_formated, fragment_shader_string.c_str(), texture, color.r_dec, color.g_dec, color.b_dec, color.a_dec);
+        sprintf(frag_formated, fragment_shader_string.c_str(), color.r_dec, color.g_dec, color.b_dec, color.a_dec);
 
         file.close();
 
@@ -610,23 +602,33 @@ namespace bolt
 
     inline void add_rectangle_to_buffer(std::vector<float>& data, const rectangle& rect)
     {
-        for(uint8_t i = 0; i < 3; i++)
-        {
-            data.push_back(rect.corners[i].x);
-            data.push_back(rect.corners[i].y);
+        // poly 1
+        data.push_back(rect.pos.x); // top left corner
+        data.push_back(rect.pos.y);
+        data.push_back(0);
+        data.push_back(0);
+        data.push_back(rect.pos.x); // bottom left corner
+        data.push_back(rect.pos.y + rect.dims.y);
+        data.push_back(0);
+        data.push_back(1);
+        data.push_back(rect.pos.x + rect.dims.x); // bottom right corner
+        data.push_back(rect.pos.y + rect.dims.y);
+        data.push_back(1);
+        data.push_back(1);
 
-            data.push_back(rect.UV[i].x);
-            data.push_back(rect.UV[i].y);
-        }
-
-        for(uint8_t i = 1; i < 4; i++)
-        {
-            data.push_back(rect.corners[i].x);
-            data.push_back(rect.corners[i].y);
-
-            data.push_back(rect.UV[i].x);
-            data.push_back(rect.UV[i].y);
-        }
+        // poly 2
+        data.push_back(rect.pos.x); // top left corner
+        data.push_back(rect.pos.y);
+        data.push_back(0);
+        data.push_back(0);
+        data.push_back(rect.pos.x + rect.dims.x); // bottom right corner
+        data.push_back(rect.pos.y + rect.dims.y);
+        data.push_back(1);
+        data.push_back(1);
+        data.push_back(rect.pos.x + rect.dims.x); // top right corner
+        data.push_back(rect.pos.y);
+        data.push_back(1);
+        data.push_back(0);
     }
 
     void add_to_rect_buffer(uint32_t offset, uint32_t buffer, const rectangle& rect)
@@ -645,6 +647,8 @@ namespace bolt
     uint32_t setup_rectangle(const rectangle& rect)
     {
         uint32_t buffer;
+
+        BOLT_LOG_INFO("Setup rectangle NO VA args")
 
         glGenBuffers(1, &buffer);
 
@@ -679,11 +683,13 @@ namespace bolt
                 GL_FLOAT,
                 GL_FALSE,
                 4 * sizeof(float),
-                (void*)0
+                0
         );
 
+        glEnableVertexAttribArray(0);
+
         glVertexAttribPointer(
-                0,
+                1,
                 2,
                 GL_FLOAT,
                 GL_FALSE,
@@ -691,7 +697,7 @@ namespace bolt
                 (void*)(2 * sizeof(float))
         );
 
-        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 

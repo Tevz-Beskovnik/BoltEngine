@@ -85,16 +85,11 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     create_line_shader(RGB(255.0f, 0, 255.0f, 255.0f))
     create_lines(vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
 
-    create_rect_shader_c(RGB(255.0f, 0, 255.0f, 255.0f))
+    create_rect_shader(RGB(255.0f, 255.0f, 0.0f, 255.0f), "../../example/textures/wacky-code.png")
+    //create_rect_shader_c(RGB(255.0f, 255.0f, 0.0f, 255.0f))
     create_rects(rectangle{
-        {
-            vector_2{-1, -1}, vector_2{-0.5, -1},
-            vector_2{-1, -0.5}, vector_2{-0.5, -0.5}
-        },
-        {
-            vector_2{0, 0}, vector_2{0, 1},
-            vector_2{1, 0}, vector_2{1, 1}
-        }
+        .pos = vector_2{-1, -1},
+        .dims = vector_2{0.5, 1}
     })
 }
 

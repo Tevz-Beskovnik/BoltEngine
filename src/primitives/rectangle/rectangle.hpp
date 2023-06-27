@@ -11,7 +11,8 @@ namespace bolt
 {
     // TODO create abstractions for x, y, z & w, h
     #define create_rect_shader_c(color) _shader_tex_pair = setup_rectangle_shader(color); \
-                                        shaders.push_back(_shader_tex_pair.first);
+                                        shaders.push_back(_shader_tex_pair.first); \
+                                        textures.push_back(_shader_tex_pair.second);
 
     #define create_rect_shader_t(tex) _shader_tex_pair = setup_rectangle_shader(tex); \
                                       shaders.push_back(_shader_tex_pair.first);             \
@@ -29,12 +30,12 @@ namespace bolt
                                      draw_type.push_back(GL_TRIANGLES); \
                                      glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                      glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
-                                     count.push_back(buffer_size/(sizeof(float)*48)); \
+                                     count.push_back(buffer_size/(sizeof(float)*4)); \
                                      vertex_arrays.push_back(create_rect_vertex_arrays(buffers.back()));
 
     struct rectangle {
-        vector_2 corners[4];
-        vector_2 UV[4];
+        vector_2 pos;
+        vector_2 dims;
     };
 
     std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color);
@@ -88,9 +89,9 @@ namespace bolt
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        BOLT_LOG_INFO("Added rectangle primitives")
-
         add_to_rect_buffer(24 * sizeof(float), buffer, args...);
+
+        BOLT_LOG_INFO("Added rectangle primitives")
 
         return buffer;
     }

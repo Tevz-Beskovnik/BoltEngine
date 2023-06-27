@@ -13,9 +13,9 @@
                              int32_t buffer_size;         \
                              std::pair<uint32_t, uint32_t> _shader_tex_pair;
 
-#define draw_primitives draw_primitives_f(vertex_arrays, shaders, draw_type, count);
+#define draw_primitives draw_primitives_f(vertex_arrays, shaders, draw_type, count, textures);
 
 namespace bolt
 {
-    void draw_primitives_f(const std::vector<uint32_t>& vertex_arrays, const std::vector<uint32_t>& shaders, const std::vector<uint32_t>& draw_types, const std::vector<int32_t>& count);
+    void draw_primitives_f(const std::vector<uint32_t>& vertex_arrays, const std::vector<uint32_t>& shaders, const std::vector<uint32_t>& draw_types, const std::vector<int32_t>& count, const std::vector<uint32_t>& textures);
 }
