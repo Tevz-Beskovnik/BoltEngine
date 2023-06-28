@@ -9,7 +9,7 @@
 
 namespace bolt
 {
-    #define create_rects(rect, ...)  buffers.push_back(setup_rectangle(rect, __VA_ARGS__)); \
+    #define create_rects_i(rect, ...)  buffers.push_back(setup_rectangle(rect, __VA_ARGS__)); \
                                      draw_type.push_back(GL_TRIANGLES); \
                                      glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                      glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
@@ -18,25 +18,25 @@ namespace bolt
 
     // TODO create abstractions for x, y, z & w, h
     // !!ATTENTION!! this sort of macros wizardry is efficient however this should NEVER EVER EVER be used in PRODUCTION CODE
-    #define create_rects_c(color, rect, ...) create_rects(rect, __VA_ARGS__) \
+    #define create_rectangles_color(color, rect, ...) create_rects_i(rect, __VA_ARGS__) \
                                              _shader_tex_pair = setup_rectangle_shader(color); \
                                              shaders.push_back(_shader_tex_pair.first); \
                                              textures.push_back(_shader_tex_pair.second);      \
                                              glBindVertexArray(0);
 
-    #define create_rects_t(tex, rect, ...) create_rects(rect, __VA_ARGS__) \
+    #define create_rectangles_texture(tex, rect, ...) create_rects_i(rect, __VA_ARGS__) \
                                            _shader_tex_pair = setup_rectangle_shader(tex); \
                                            shaders.push_back(_shader_tex_pair.first);             \
                                            textures.push_back(_shader_tex_pair.second);    \
                                            glBindVertexArray(0);
 
-    #define create_rect_shader(color, tex, rect, ...) create_rects(rect, __VA_ARGS__) \
+    #define create_rectangles(color, tex, rect, ...) create_rects_i(rect, __VA_ARGS__) \
                                                       _shader_tex_pair = setup_rectangle_shader(color, tex); \
                                                       shaders.push_back(_shader_tex_pair.first);             \
                                                       textures.push_back(_shader_tex_pair.second);           \
                                                       glBindVertexArray(0);
 
-    #define create_rect_shader_custom(color, tex, vert_file, frag_file, rect, ...) create_rects(rect, __VA_ARGS__) \
+    #define create_rect_shader_custom(color, tex, vert_file, frag_file, rect, ...) create_rects_i(rect, __VA_ARGS__) \
                                                                                    _shader_tex_pair = setup_rectangle_shader(color, tex); \
                                                                                    shaders.push_back(_shader_tex_pair.first);             \
                                                                                    textures.push_back(_shader_tex_pair.second); \
@@ -47,21 +47,21 @@ namespace bolt
         vector_2 dims;
     };
 
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color);
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color);
 
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(const std::string& texture_file);
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(const std::string& texture_file);
 
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture);
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture);
 
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture, const std::string& vert, const std::string& frag);
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture, const std::string& vert, const std::string& frag);
 
     inline void add_rectangle_to_buffer(std::vector<float>& data, const rectangle& rect);
 
     void add_to_rect_buffer(uint32_t offset, uint32_t buffer, const rectangle& rect);
 
-    uint32_t create_rect_vertex_arrays(uint32_t buffer);
+    [[nodiscard]] uint32_t create_rect_vertex_arrays(uint32_t buffer);
 
-    uint32_t setup_rectangle(const rectangle& rect);
+    [[nodiscard]] uint32_t setup_rectangle(const rectangle& rect);
 
     template <typename ...Args>
     void add_to_rect_buffer(uint32_t offset, uint32_t buffer, const rectangle& rect, Args ...args)
@@ -80,7 +80,7 @@ namespace bolt
     }
 
     template <typename ...Args>
-    uint32_t setup_rectangle(const rectangle& rect, Args ...args)
+    [[nodiscard]] uint32_t setup_rectangle(const rectangle& rect, Args ...args)
     {
         uint32_t buffer;
 

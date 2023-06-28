@@ -33,4 +33,9 @@ namespace bolt
         else
             return false;
     }
+
+    [[nodiscard]] bool Keyboard::is_key_pressed(Key key)
+    {
+        glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
+    }
 }

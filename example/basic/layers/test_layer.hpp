@@ -4,7 +4,7 @@
 
 using namespace bolt;
 
-class TestLayer : public LayerInterface {
+class TestLayer final : public LayerInterface {
     public:
         explicit TestLayer(ref_ptr<Window> window);
 
@@ -12,11 +12,11 @@ class TestLayer : public LayerInterface {
 
         virtual ~TestLayer() override = default;
 
-        void frame() const override;
+        void frame() final;
 
-        void bind_event_trigger(event_trigger trigger) override;
+        void bind_event_trigger(event_trigger trigger) final;
 
-        void on_event(Event& e) const override;
+        void on_event(Event& e) const final;
 
         [[nodiscard]] bool handle_window_close(WindowCloseEvent& e) const;
 
@@ -24,6 +24,8 @@ class TestLayer : public LayerInterface {
 
     private:
         setup_primitives;
+
+        bool pressed = false;
 
         event_trigger trigger;
         ref_ptr<Window> window;

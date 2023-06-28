@@ -84,14 +84,18 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
     create_lines(RGB(255.0f, 0, 255.0f, 255.0f), vector_3{0.5, 0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, 0.5, 0.0}, vector_3{-0.5, -0.5, 0.0}, vector_3{0.5, -0.5, 0.0}, vector_3{-0.5, -0.5, 0.0})
 
-    create_rect_shader(RGB(255.0f, 255.0f, 0.0f, 255.0f), "../../example/textures/wacky-code.png", rectangle{
-        .pos = vector_2{-1, -1},
-        .dims = vector_2{0.5, 1}
+    create_rectangles(RGB(255.0f, 255.0f, 0.0f, 255.0f), "../../example/textures/wacky-code.png", rectangle{
+        vector_2{-1, -1},
+        vector_2{0.5, 1}
     })
-    /*create_rects_c(RGB(255.0f, 255.0f, 0.0f, 255.0f), rectangle{
-        .pos = vector_2{-1, -1},
-        .dims = vector_2{0.5, 1}
-    })*/
+
+    create_triangles_color(RGB(0.0f, 255.0f, 255.0f, 255.0f), triangle{
+        .vertecies{
+            vector_2{0.5, 1},
+            vector_2{1, 1},
+            vector_2{1, 0.5}
+        }
+    })
 }
 
 [[nodiscard]] ref_ptr<TestLayer> TestLayer::create(ref_ptr<Window> window)
@@ -99,7 +103,7 @@ TestLayer::TestLayer(ref_ptr<Window> window)
     return create_ref<TestLayer>(window);
 }
 
-void TestLayer::frame() const
+void TestLayer::frame()
 {
     window->cleanup_routine();
     window->frame_routine();

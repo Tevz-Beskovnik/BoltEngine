@@ -168,6 +168,10 @@ namespace bolt
         glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height){
             static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_window_resize_event(width, height);
         });
+
+        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods){
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_keyboard_event(key, scancode, action, mods);
+        });
     }
 
     void Window::cleanup_routine()

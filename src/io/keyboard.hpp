@@ -152,6 +152,8 @@ namespace bolt
             [[nodiscard]] static bool is_key_held(Key key);
 
             [[nodiscard]] static bool is_key_toggled(Key key);
+
+            [[nodiscard]] static bool is_key_pressed(Key key);
         private:
             static ManagedWindowPtr window;
     };

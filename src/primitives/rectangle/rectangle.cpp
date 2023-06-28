@@ -2,7 +2,7 @@
 
 namespace bolt
 {
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color)
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color)
     {
         std::string vertex_shader_string;
         std::string line;
@@ -125,7 +125,7 @@ namespace bolt
         return { program, 0 };
     }
 
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(const std::string& texture_file)
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(const std::string& texture_file)
     {
         ASSERT_FILE_EXISTS(texture_file.c_str(), "File that contains texture does not appear to exist");
 
@@ -282,7 +282,7 @@ namespace bolt
         return { program, texture };
     }
 
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture_file)
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture_file)
     {
         ASSERT_FILE_EXISTS(texture_file.c_str(), "File that contains texture does not appear to exist");
 
@@ -309,9 +309,13 @@ namespace bolt
         {
             BOLT_LOG_INFO("Binding texture_file buffer to active binding and generating mipmaps")
 
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_buffer);
-
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
+            std::filesystem::path tex_file = texture_file;
+            if(tex_file.extension() == ".jpg")
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_buffer);
+            else if(tex_file.extension() == ".png")
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
+            else
+                throw TextureException("Unknown file extension:", texture_file.c_str());
 
             glGenerateMipmap(GL_TEXTURE_2D);
         }
@@ -439,7 +443,7 @@ namespace bolt
         return { program, texture };
     }
 
-    std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture_file, const std::string& vert, const std::string& frag)
+    [[nodiscard]] std::pair<uint32_t, uint32_t> setup_rectangle_shader(RGB color, const std::string& texture_file, const std::string& vert, const std::string& frag)
     {
         ASSERT_FILE_EXISTS(texture_file.c_str(), "File that contains texture does not appear to exist");
         ASSERT_FILE_EXISTS(vert.c_str(), "File that contains vertex shader does not appear to exist");
@@ -468,9 +472,13 @@ namespace bolt
         {
             BOLT_LOG_INFO("Binding texture_file buffer to active binding and generating mipmaps")
 
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_buffer);
-
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
+            std::filesystem::path tex_file = texture_file;
+            if(tex_file.extension() == ".jpg")
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_buffer);
+            else if(tex_file.extension() == ".png")
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer);
+            else
+                throw TextureException("Unknown file extension:", texture_file.c_str());
 
             glGenerateMipmap(GL_TEXTURE_2D);
         }
@@ -644,7 +652,7 @@ namespace bolt
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    uint32_t setup_rectangle(const rectangle& rect)
+    [[nodiscard]] uint32_t setup_rectangle(const rectangle& rect)
     {
         uint32_t buffer;
 
@@ -667,6 +675,7 @@ namespace bolt
         return buffer;
     }
 
+    [[nodiscard]]
     uint32_t create_rect_vertex_arrays(uint32_t buffer)
     {
         uint32_t vertex_array;

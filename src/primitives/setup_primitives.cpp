@@ -21,5 +21,23 @@ namespace bolt
             glDrawArrays(draw_types[i], 0, (int)count[i]);
         }
     }
-}
 
+    void cleanup_primitive(std::vector<uint32_t>& vertex_arrays, std::vector<uint32_t>& shaders, std::vector<uint32_t>& draw_types, std::vector<int32_t>& count, std::vector<uint32_t>& textures, std::vector<uint32_t>& buffers, uint32_t index)
+    {
+        BOLT_LOG_INFO(std::string("Cleaning up primative at index: ") + std::to_string(index))
+
+        if(textures[index] != 0)
+            glDeleteTextures(1, &textures[index]);
+
+        glDeleteProgram(shaders[index]);
+        glDeleteVertexArrays(1, &vertex_arrays[index]);
+        glDeleteBuffers(1, &buffers[index]);
+
+        shaders.erase(shaders.begin() + index);
+        textures.erase(textures.begin() + index);
+        vertex_arrays.erase(vertex_arrays.begin() + index);
+        buffers.erase(buffers.begin() + index);
+        draw_types.erase(draw_types.begin() + index);
+        count.erase(count.begin() + index);
+    }
+}

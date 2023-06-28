@@ -11,7 +11,7 @@ namespace bolt
         public:
             virtual ~LayerInterface() { ; }
 
-            virtual void frame() const = 0;
+            virtual void frame() = 0;
 
             virtual void bind_event_trigger(event_trigger t) = 0;
 

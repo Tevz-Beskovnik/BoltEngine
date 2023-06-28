@@ -18,6 +18,7 @@
 #include <setup_primitives.hpp> // primitive defs
 #include <line.hpp>
 #include <rectangle.hpp>
+#include <triangle.hpp>
 
 // event system includes
 #include <event.hpp>

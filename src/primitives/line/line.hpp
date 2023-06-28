@@ -28,13 +28,13 @@ namespace bolt
                                               textures.push_back(0); \
                                               glBindVertexArray(0);
 
-    uint32_t setup_line_shader(RGB color, std::string vert_file = "../../src/primitives/line/shaders/vert.glsl", std::string frag_file = "../../src/primitives/line/shaders/frag.glsl");
+    [[nodiscard]] uint32_t setup_line_shader(RGB color, std::string vert_file = "../../src/primitives/line/shaders/vert.glsl", std::string frag_file = "../../src/primitives/line/shaders/frag.glsl");
 
     void add_to_buffer(uint32_t current_size,uint32_t buffer, const vector_3& p1, const vector_3& p2);
 
-    uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2);
+    [[nodiscard]] uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2);
 
-    uint32_t create_line_vertex_arrays(uint32_t buffer);
+    [[nodiscard]] uint32_t create_line_vertex_arrays(uint32_t buffer);
 
     template<typename ...Args>
     void add_to_buffer(uint32_t current_size, uint32_t buffer, const vector_3& p1, const vector_3& p2, Args ...args)
@@ -53,7 +53,7 @@ namespace bolt
     }
 
     template<typename ...Args>
-    uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2, Args ...args)
+    [[nodiscard]] uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2, Args ...args)
     {
         uint32_t buffer;
 

@@ -2,7 +2,7 @@
 
 namespace bolt
 {
-    uint32_t setup_line_shader(RGB color, std::string vert_file, std::string frag_file)
+    [[nodiscard]] uint32_t setup_line_shader(RGB color, std::string vert_file, std::string frag_file)
     {
         // vertex frag_shader
         std::string vertex_shader_string;
@@ -136,7 +136,7 @@ namespace bolt
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2)
+    [[nodiscard]] uint32_t setup_line_buffer(const vector_3& p1, const vector_3& p2)
     {
         uint32_t buffer;
 
@@ -155,7 +155,7 @@ namespace bolt
         return buffer;
     }
 
-    uint32_t create_line_vertex_arrays(uint32_t buffer)
+    [[nodiscard]] uint32_t create_line_vertex_arrays(uint32_t buffer)
     {
         uint32_t vertex_array;
 
