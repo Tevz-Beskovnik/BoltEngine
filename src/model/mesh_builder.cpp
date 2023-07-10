@@ -11,6 +11,7 @@ namespace bolt
     {
         std::string error = "Model file: " + std::string(file_path) + " does not exist.";
         ASSERT_FILE_EXISTS(file_path, error);
+        BOLT_LOG_INFO(std::string("Creating new model with mesh") + std::string(file_path))
 
         switch(file_standard)
         {
@@ -30,6 +31,8 @@ namespace bolt
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_quad(const vector_2 corner, const vector_2 dimensions)
     {
         std::vector<polygon> mesh;
+
+        BOLT_LOG_INFO("Creating a quad")
 
         mesh.push_back(
             {
@@ -73,6 +76,8 @@ namespace bolt
     {
         std::vector<polygon> mesh;
 
+        BOLT_LOG_INFO("Creating a triangle")
+
         mesh.push_back(
             {
                 .vert ={
@@ -97,6 +102,8 @@ namespace bolt
     [[nodiscard]] ref_ptr<Model> MeshBuilder::make_cube(const vector_3 dimensions)
     {
         std::vector<polygon> mesh;
+
+        BOLT_LOG_INFO("Creating a cube")
 
         mesh.push_back({
                            .vert={{0, 1*dimensions.y, 0},
