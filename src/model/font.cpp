@@ -6,10 +6,11 @@ namespace bolt
         : font_file(config.font_file_path.c_str()), font_image(config.font_picture_path.c_str()), scale(config.scale)
     {
         BOLT_LOG_INFO(std::string("Creating new font: ") + config.font_file_path)
-        for(uint8_t i = 0; i < 0xff; i++)
-            charset[i].id = 0xff;
+        for(auto& character : charset)
+            character.id = 0xff;
 
         read_character_file();
+        calculate_UV();
     }
 
     [[nodiscard]] ref_ptr<Font> Font::create(const font_config& config)
@@ -45,6 +46,11 @@ namespace bolt
     void Font::set_line_height(uint16_t lineHeight)
     {
         line_height = lineHeight;
+    }
+
+    [[nodiscard]] std::vector<polygon> Font::create_mesh(const std::string& text)
+    {
+
     }
 
     void Font::read_character_file()
@@ -91,6 +97,14 @@ namespace bolt
 
     void Font::calculate_UV()
     {
-        
+        for(auto& character : charset)
+        {
+            if(character.id == 0xff) continue;
+            
+            character.UV[2] = { (float)character.x / (float)image_w, 1.0f - ((float)character.y + (float)character.height ) / (float)image_h }; // bottom left
+            character.UV[3] = { (float)character.x / (float)image_w, 1.0f - (float)character.y / (float)image_w }; // top left
+            character.UV[0] = { ((float)character.x + (float)character.width) / (float)image_w, 1.0f - ((float)character.y + (float)character.height) / (float)image_h }; // bottom right
+            character.UV[1] = { ((float)character.x + (float)character.width) / (float)image_w, 1.0f - (float)character.y / (float)image_h}; // top right
+        }
     }
 }

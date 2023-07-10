@@ -46,6 +46,8 @@ namespace bolt
 
             void set_line_height(uint16_t lineHeight);
 
+            [[nodiscard]] std::vector<polygon> create_mesh(const std::string& text);
+
         private:
             const_str font_file;
             const_str font_image;
@@ -62,7 +64,5 @@ namespace bolt
             void read_character_file();
 
             void calculate_UV();
-
-            void create_mesh_for_string(std::string text);
     };
 }
