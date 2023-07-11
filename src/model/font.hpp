@@ -3,6 +3,7 @@
 #include <core.hpp>
 #include <util.hpp>
 #include <primitives.hpp>
+#include <texture_gl.hpp>
 #include <model.hpp>
 
 namespace bolt
@@ -44,9 +45,9 @@ namespace bolt
 
             [[nodiscard]] uint16_t get_line_height() const;
 
-            void set_line_height(uint16_t lineHeight);
+            void create_mesh(std::string text, std::vector<polygon>& mesh);
 
-            [[nodiscard]] std::vector<polygon> create_mesh(const std::string& text);
+            [[nodiscard]] texture_config_gl get_texture_config() const;
 
         private:
             const_str font_file;
@@ -54,12 +55,12 @@ namespace bolt
             uint16_t image_w;
             uint16_t image_h;
 
-            uint16_t line_width;
+            uint16_t max_line_width;
             uint16_t line_height;
 
             float scale;
 
-            std::array<char_info, 256> charset;
+            char_info charset[256];
 
             void read_character_file();
 

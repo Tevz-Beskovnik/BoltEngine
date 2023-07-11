@@ -35,6 +35,8 @@ namespace bolt
 
             void add_texture(const std::string &path) override;
 
+            void add_model(const ref_ptr<ModelInterface>& model) override;
+
             void render() const override;
 
         private:

@@ -2,10 +2,11 @@
 
 namespace bolt
 {
-    [[nodiscard]] Model::Model(model_config config)
-        :mesh(std::move(config.mesh)), indices(std::move(config.indices)), instance(nullptr)
+    [[nodiscard]] Model::Model(const model_config& config)
+        : ModelInterface(config.vertices, config.UVs, config.normals, config.indices), instance(nullptr)
     {
-        BOLT_LOG_INFO("Poly count: " + std::to_string(this->mesh.size()))
+        BOLT_LOG_INFO("Poly count: " + std::to_string(this->vertices.size()/3))
+
         to_drawable_vector();
 
         set_attribute_layout();
@@ -16,62 +17,44 @@ namespace bolt
         ;
     }
 
-    [[nodiscard]] ref_ptr<Model> Model::create(model_config config)
+    [[nodiscard]] ref_ptr<Model> Model::create(const model_config& config)
     {
         ref_ptr<Model> temp = create_ref<Model>(config);
         temp->instance = temp;
         return temp;
     }
 
-    void Model::set_mesh(const std::vector<polygon>& new_mesh)
+    [[nodiscard]] uint32_t Model::vertices_count() const noexcept
     {
-        mesh = new_mesh;
-
-        to_drawable_vector();
-    }
-
-    [[nodiscard]] const std::vector<float>& Model::get_drawable_vector() const noexcept
-    {
-        return drawable_vector;
-    }
-
-    [[nodiscard]] const std::vector<uint32_t>& Model::get_index_buffer() const noexcept
-    {
-        return indices;
-    }
-
-    [[nodiscard]] const std::vector<AttributeLayout>& Model::get_attribute_layout() const noexcept
-    {
-        return attribute_layout;
-    }
-
-    [[nodiscard]] const std::vector<polygon>& Model::get_polygons() const noexcept
-    {
-        return mesh;
-    }
-
-    [[nodiscard]] uint32_t Model::polygon_count() const noexcept
-    {
-        return mesh.size();
+        return vertices.size();
     }
 
     void Model::transform_model(const matrix_4& mat) noexcept
     {
         #pragma omp parallel for
-        for(uint64_t i = 0; i < mesh.size(); i++)
+        for(uint64_t i = 0; i < vertices.size(); i+=3)
         {
-            mesh[i].vert[0] = mat * mesh[i].vert[0];
-            mesh[i].vert[1] = mat * mesh[i].vert[1];
-            mesh[i].vert[2] = mat * mesh[i].vert[2];
+            vertices[i] = mat * vertices[i];
+            vertices[i + 1] = mat * vertices[i + 1];
+            vertices[i + 2] = mat * vertices[i + 2];
 
-            mesh[i].normal = Model::calculate_normal(mesh[i]);
+            normals[i/3] = Model::calculate_normal(vertices[i], vertices[i + 1], vertices[i + 2]);
         }
     }
 
-    ref_ptr<ModelInterface> Model::add_model(const ref_ptr<ModelInterface>& model)
+    ref_ptr<ModelInterface> Model::add_model(const ref_ptr<ModelInterface>& model) // TODO have to combine index buffers too
     {
-        for(const auto& poly : model->get_polygons())
-            mesh.push_back(poly);
+        for(const auto& vert : model->get_vertices())
+            vertices.push_back(vert);
+
+        for(const auto& UV : model->get_UVs())
+            UVs.push_back(UV);
+
+        for(const auto& normal : model->get_normals())
+            normals.push_back(normal);
+
+        for(const auto& index : model->get_index_buffer())
+            indices.push_back(index);
 
         to_drawable_vector();
 
@@ -82,15 +65,7 @@ namespace bolt
     {
         matrix_4 translation_mat = matrix_4::translation(position);
 
-        #pragma omp parallel for
-        for(uint64_t i = 0; i < mesh.size(); i++)
-        {
-            mesh[i].vert[0] = translation_mat * mesh[i].vert[0];
-            mesh[i].vert[1] = translation_mat * mesh[i].vert[1];
-            mesh[i].vert[2] = translation_mat * mesh[i].vert[2];
-
-            mesh[i].normal = Model::calculate_normal(mesh[i]);
-        }
+        transform_model(translation_mat);
 
         to_drawable_vector();
     }
@@ -105,25 +80,23 @@ namespace bolt
         // TODO: write a coherent lighting system
     }
 
-    void Model::print() const
-    {
-        for(const auto& el : mesh)
-            el.print();
-    }
-
     void Model::recalculate_normals()
     {
+        BOLT_LOG_INFO("Recalculating normals for model")
+
         #pragma omp parallel for
-        for(uint64_t i = 0; i < mesh.size(); i++)
+        for(uint64_t i = 0; i < vertices.size()-3; i+=3)
         {
-            mesh[i].normal = Model::calculate_normal(mesh[i]);
+            normals[i/3] = Model::calculate_normal(vertices[i], vertices[i + 1], vertices[i + 2]);
         }
+
+        BOLT_LOG_INFO("Finished recalculating normals")
     }
 
-    [[nodiscard]] vector_3 Model::calculate_normal(polygon triangle)
+    [[nodiscard]] vector_3 Model::calculate_normal(vector_3 p1, vector_3 p2, vector_3 p3)
     {
-        vector_3 U = triangle.vert[1] - triangle.vert[0];
-        vector_3 V = triangle.vert[2] - triangle.vert[0];
+        vector_3 U = p2 - p1;
+        vector_3 V = p3 - p1;
 
         vector_3 normal = {
             U.y * V.z - U.z * V.y,
@@ -136,48 +109,49 @@ namespace bolt
 
     void Model::to_drawable_vector()
     {
+        BOLT_LOG_INFO("Creating drawable vector")
         drawable_vector.clear();
 
-        for(const auto& polygon: mesh)
+        for(uint32_t i = 0; i < vertices.size(); i+=3)
         {
-            drawable_vector.push_back(static_cast<float>(polygon.vert[0].x));
-            drawable_vector.push_back(static_cast<float>(polygon.vert[0].y));
-            drawable_vector.push_back(static_cast<float>(polygon.vert[0].z));
+            drawable_vector.push_back(static_cast<float>(vertices[i].x));
+            drawable_vector.push_back(static_cast<float>(vertices[i].y));
+            drawable_vector.push_back(static_cast<float>(vertices[i].z));
 
-            drawable_vector.push_back(static_cast<float>(polygon.normal.x));
-            drawable_vector.push_back(static_cast<float>(polygon.normal.y));
-            drawable_vector.push_back(static_cast<float>(polygon.normal.z));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].x));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].y));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].z));
 
-            drawable_vector.push_back(static_cast<float>(polygon.UV[0].x));
-            drawable_vector.push_back(static_cast<float>(polygon.UV[0].y));
+            drawable_vector.push_back(static_cast<float>(UVs[i].x));
+            drawable_vector.push_back(static_cast<float>(UVs[i].y));
 
-            drawable_vector.push_back(static_cast<float>(polygon.vert[1].x));
-            drawable_vector.push_back(static_cast<float>(polygon.vert[1].y));
-            drawable_vector.push_back(static_cast<float>(polygon.vert[1].z));
+            drawable_vector.push_back(static_cast<float>(vertices[i+1].x));
+            drawable_vector.push_back(static_cast<float>(vertices[i+1].y));
+            drawable_vector.push_back(static_cast<float>(vertices[i+1].z));
 
-            drawable_vector.push_back(static_cast<float>(polygon.normal.x));
-            drawable_vector.push_back(static_cast<float>(polygon.normal.y));
-            drawable_vector.push_back(static_cast<float>(polygon.normal.z));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].x));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].y));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].z));
 
-            drawable_vector.push_back(static_cast<float>(polygon.UV[1].x));
-            drawable_vector.push_back(static_cast<float>(polygon.UV[1].y));
+            drawable_vector.push_back(static_cast<float>(UVs[i+1].x));
+            drawable_vector.push_back(static_cast<float>(UVs[i+1].y));
 
-            drawable_vector.push_back(static_cast<float>(polygon.vert[2].x));
-            drawable_vector.push_back(static_cast<float>(polygon.vert[2].y));
-            drawable_vector.push_back(static_cast<float>(polygon.vert[2].z));
+            drawable_vector.push_back(static_cast<float>(vertices[i+2].x));
+            drawable_vector.push_back(static_cast<float>(vertices[i+2].y));
+            drawable_vector.push_back(static_cast<float>(vertices[i+2].z));
 
-            drawable_vector.push_back(static_cast<float>(polygon.normal.x));
-            drawable_vector.push_back(static_cast<float>(polygon.normal.y));
-            drawable_vector.push_back(static_cast<float>(polygon.normal.z));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].x));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].y));
+            drawable_vector.push_back(static_cast<float>(normals[i/3].z));
 
-            drawable_vector.push_back(static_cast<float>(polygon.UV[2].x));
-            drawable_vector.push_back(static_cast<float>(polygon.UV[2].y));
+            drawable_vector.push_back(static_cast<float>(UVs[i+2].x));
+            drawable_vector.push_back(static_cast<float>(UVs[i+2].y));
         }
     }
 
     void Model::set_attribute_layout()
     {
-        attribute_layout.push_back({
+        attrib_layout.push_back({
             3,
             GL_FLOAT,
             GL_FALSE,
@@ -185,7 +159,7 @@ namespace bolt
             0
         });
 
-        attribute_layout.push_back({
+        attrib_layout.push_back({
             3,
             GL_FLOAT,
             GL_FALSE,
@@ -193,7 +167,7 @@ namespace bolt
             3 * sizeof(float)
         });
 
-        attribute_layout.push_back({
+        attrib_layout.push_back({
             2,
             GL_FLOAT,
             GL_FALSE,

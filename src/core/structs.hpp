@@ -4,7 +4,7 @@
 
 namespace bolt
 {
-    struct AttributeLayout // USED IN model_dynamic_inteface and model_static_inteface
+    struct attribute_layout // USED IN model_dynamic_inteface and model_static_inteface
     {
         int32_t size;
         uint32_t type;

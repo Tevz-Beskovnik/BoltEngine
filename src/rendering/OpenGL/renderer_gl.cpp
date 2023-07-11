@@ -49,6 +49,19 @@ namespace bolt {
         this->textures.push_back(TextureGL::create({TEXTURE_2D, path.c_str()})); // TODO: implement texture class
     }
 
+    void RendererGL::add_model(const ref_ptr<ModelInterface>& model)
+    {
+        this->model->add_model(model);
+
+        this->vertex = VertexGL::create({
+            .index_buffer = this->model->get_index_buffer().size() != 0
+                ? IndexBufferGL::create(this->model->get_index_buffer())
+                : nullptr,
+            .verticies = this->model->get_drawable_vector(),
+            .layouts = this->model->get_attribute_layout()
+        });
+    }
+
     void RendererGL::render() const {
         shader->bind();
 
@@ -66,14 +79,14 @@ namespace bolt {
 
         if(!vertex->has_index())
             if(instances == 1)
-                glDrawArrays(draw_type, offset, static_cast<int>(3*model->polygon_count()));
+                glDrawArrays(draw_type, offset, static_cast<int>(model->vertices_count()));
             else
-                glDrawArraysInstanced(draw_type, offset, static_cast<int>(3*model->polygon_count()), static_cast<int>(instances));
+                glDrawArraysInstanced(draw_type, offset, static_cast<int>(model->vertices_count()), static_cast<int>(instances));
         else
             if(instances == 1)
-                glDrawElements(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0);
+                glDrawElements(draw_type, static_cast<int>(model->vertices_count()), GL_UNSIGNED_INT, 0);
             else
-                glDrawElementsInstanced(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0, static_cast<int>(instances));
+                glDrawElementsInstanced(draw_type, static_cast<int>(model->vertices_count()), GL_UNSIGNED_INT, 0, static_cast<int>(instances));
 
         for(const auto& texture : textures)
             texture->unbind();

@@ -20,12 +20,12 @@ namespace bolt
 
     [[nodiscard]] uint16_t Font::get_line_width() const noexcept
     {
-        return line_width;
+        return max_line_width;
     }
 
     void Font::set_line_width(int width) noexcept
     {
-        line_width = width;
+        max_line_width = width;
     }
 
     [[nodiscard]] float Font::get_scale() const noexcept
@@ -43,14 +43,68 @@ namespace bolt
         return line_height;
     }
 
-    void Font::set_line_height(uint16_t lineHeight)
+    void Font::create_mesh(std::string text, std::vector<polygon>& mesh)
     {
-        line_height = lineHeight;
+        uint32_t line_width = 0; // current line width
+        vector_2 cursorPos = {0.0f, 0.0f}; //cursor positon
+
+        std::reverse(text.begin(), text.end());
+
+        for(const auto& character : text)
+        {
+            char_info* current_character = charset + character;
+
+            if (line_width + current_character->xadvance > max_line_width)
+            {
+                cursorPos.y -= static_cast<float>(line_height);
+                line_width = 0;
+            }
+
+            vector_3 vert1 = { // bottom left
+                    cursorPos.x + static_cast<float>(current_character->xoffset),
+                    cursorPos.y,
+                    0.0f
+            };
+
+            vector_3 vert2 = { // top left
+                    cursorPos.x + static_cast<float>(current_character->xoffset),
+                    cursorPos.y + 71.0f - static_cast<float>(current_character->yoffset),
+                    0.0f
+            };
+
+            vector_3 vert3 = { // top right
+                    cursorPos.x + static_cast<float>(current_character->xadvance),
+                    cursorPos.y + 71.0f - static_cast<float>(current_character->yoffset),
+                    0.0f
+            };
+
+            vector_3 vert4 = { // bottom right
+                    cursorPos.x + static_cast<float>(current_character->xadvance),
+                    cursorPos.y,
+                    0.0f
+            };
+
+            vert1 *= scale;
+            vert2 *= scale;
+            vert3 *= scale;
+            vert4 *= scale;
+
+            mesh.push_back(polygon{
+                { vert3, vert1, vert4 }, { current_character->UV[3], current_character->UV[0], current_character->UV[2] }, { 0.0f, 0.0f, 0.0f }
+            });
+
+            mesh.push_back(polygon{
+                { vert3, vert2, vert1 }, { current_character->UV[3], current_character->UV[1], current_character->UV[0] }, { 0.0f, 0.0f, 0.0f }
+            });
+        }
     }
 
-    [[nodiscard]] std::vector<polygon> Font::create_mesh(const std::string& text)
+    [[nodiscard]] texture_config_gl Font::get_texture_config() const
     {
-
+        return texture_config_gl{
+            .type = TEXTURE_2D,
+            .texture_location = font_image
+        };
     }
 
     void Font::read_character_file()
@@ -64,33 +118,33 @@ namespace bolt
             char line[256];
             f.getline(line, 256);
 
-            std::stringstream s;
-            s << line;
+            std::stringstream stream;
+            stream << line;
 
             char c_;
             std::string s_;
 
             if (line[0] == 'c' && line[1] == 'o')
             {
-                s >> s_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> line_height;
-                s >> s_;
-                s >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> image_w; //width of the font sprite
-                s >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> image_h; //height of the font sprite
+                stream >> s_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> line_height;
+                stream >> s_;
+                stream >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> image_w; //width of the font sprite
+                stream >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> image_h; //height of the font sprite
             }
 
             uint16_t id;
 
             if (line[0] == 'c' && line[1] == 'h' && line[4] != 's')
             {
-                s >> s_ >> c_ >> c_ >> c_ >> id;
+                stream >> s_ >> c_ >> c_ >> c_ >> id;
                 charset[id].id = id;
-                s >> c_ >> c_ >> charset[id].x;
-                s >> c_ >> c_ >> charset[id].y;
-                s >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].width;
-                s >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].height;
-                s >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].xoffset;
-                s >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].yoffset;
-                s >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].xadvance;
+                stream >> c_ >> c_ >> charset[id].x;
+                stream >> c_ >> c_ >> charset[id].y;
+                stream >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].width;
+                stream >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].height;
+                stream >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].xoffset;
+                stream >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].yoffset;
+                stream >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> c_ >> charset[id].xadvance;
             }
         }
     }

@@ -2,28 +2,20 @@
 
 #include <core.hpp>
 #include <colors.hpp>
-#include <util.hpp>
 #include <primitives.hpp>
+#include <util.hpp>
 #include <model_interface.hpp>
 
 namespace bolt
 {
-    struct model_config
-    {
-        std::vector<vector_3> vertices;
-        std::vector<vector_2> UVs;
-        std::vector<vector_3> normals;
-        std::vector<uint32_t> indices;
-    };
-
-    class Model final : public ModelInterface
+    class Line final : public ModelInterface
     {
         public:
-            explicit Model(const model_config& config);
+            Line(const std::vector<vector_3>& points, RGB color);
 
-            ~Model() override;
+            ~Line() override;
 
-            [[nodiscard]] static ref_ptr<Model> create(const model_config& config);
+            [[nodiscard]] static ref_ptr<Line> create(const std::vector<vector_3>& points, RGB color);
 
             [[nodiscard]] uint32_t vertices_count() const noexcept final;
 
@@ -38,7 +30,8 @@ namespace bolt
             void apply_lighting() final;
 
         private:
-            ref_ptr<Model> instance;
+            std::vector<RGB> color;
+            ref_ptr<Line> instance;
 
             void recalculate_normals();
 
@@ -46,6 +39,6 @@ namespace bolt
 
             void set_attribute_layout();
 
-            [[nodiscard]] static vector_3 calculate_normal(vector_3 p1, vector_3 p2, vector_3 p3);
+            [[nodiscard]] static vector_3 calculate_normal(polygon triangle);
     };
 }

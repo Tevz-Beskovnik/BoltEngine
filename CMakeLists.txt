@@ -36,7 +36,7 @@ set (
         src/imgui_impl/imgui_impl_glfw.cpp
         src/imgui_impl/imgui_impl_opengl3.cpp
         src/io/mouse.cpp
-        src/model/font.cpp src/primitives/line/line.cpp src/exceptions/texture_exception.cpp src/primitives/rectangle/rectangle.cpp src/primitives/triangle/triangle.hpp src/primitives/triangle/triangle.cpp src/model/types/text.hpp src/model/types/text.cpp src/core/structs.hpp)
+        src/model/font.cpp src/primitives/line/line.cpp src/exceptions/texture_exception.cpp src/primitives/rectangle/rectangle.cpp src/primitives/triangle/triangle.hpp src/primitives/triangle/triangle.cpp src/core/structs.hpp src/scene/scene.cpp src/scene/scene.hpp example/basic/layers/test_layer_two.cpp example/basic/layers/test_layer_two.hpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 

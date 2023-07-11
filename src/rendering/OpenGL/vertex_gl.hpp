@@ -5,13 +5,15 @@
 #include <buffer_gl.hpp>
 #include <index_buffer_gl.hpp>
 #include <util.hpp>
+#include <structs.hpp>
 
 namespace bolt
 {
-    struct vertex_config {
+    struct vertex_config
+    {
         ref_ptr<IndexBufferGL> index_buffer;
         const std::vector<float>& verticies;
-        const std::vector<AttributeLayout>& layouts;
+        const std::vector<attribute_layout>& layouts;
     };
 
     class VertexGL
