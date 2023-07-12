@@ -4,7 +4,11 @@
 
 namespace bolt
 {
+    void trash(uint32_t) { ; }
+
     render_framework ObjectCreator::framework = OPEN_GL;
+
+    uniform_bindings ObjectCreator::binding_func = trash;
 
     void ObjectCreator::set_render_framework(bolt::render_framework new_framework)
     {
@@ -31,7 +35,7 @@ namespace bolt
                 },
             .texture_config = {},
             .model = Line::create(points, color),
-            .shader_bindings = uniform_binding_func,
+            .shader_bindings = ObjectCreator::binding_func,
             .instances = 1,
             .draw_type = GL_LINES,
             .offset = 0
@@ -62,7 +66,7 @@ namespace bolt
                 },
                 .texture_config = {},
                 .model = model,
-                .shader_bindings = uniform_binding_func,
+                .shader_bindings = ObjectCreator::binding_func,
                 .instances = 1,
                 .draw_type = GL_TRIANGLES,
                 .offset = 0
@@ -93,7 +97,7 @@ namespace bolt
                 },
                 .texture_config = {},
                 .model = MeshBuilder::make_quad(pos, dims),
-                .shader_bindings = uniform_binding_func,
+                .shader_bindings = ObjectCreator::binding_func,
                 .instances = 1,
                 .draw_type = GL_TRIANGLES,
                 .offset = 0
@@ -120,7 +124,7 @@ namespace bolt
                 },
                 .texture_config = {},
                 .model = MeshBuilder::read_model(model_file, OBJ), // TODO check for file extension to determin what file type to add
-                .shader_bindings = uniform_binding_func,
+                .shader_bindings = ObjectCreator::binding_func,
                 .instances = 1,
                 .draw_type = GL_TRIANGLES,
                 .offset = 0
@@ -132,8 +136,8 @@ namespace bolt
         renderer->add_model(MeshBuilder::read_model(model, OBJ));
     }
 
-    void ObjectCreator::set_uniform_binding_func(void (*uniform_binding_func)(uint32_t program))
+    void ObjectCreator::set_uniform_binding_func(bolt::uniform_bindings binding_func)
     {
-        ObjectCreator::uniform_binding_func = uniform_binding_func;
+        ObjectCreator::binding_func = binding_func;
     }
 }

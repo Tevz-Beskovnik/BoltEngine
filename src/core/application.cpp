@@ -7,7 +7,20 @@
 namespace bolt
 {
     Application::Application()
-        :running(true)
+        :running(true), window(nullptr)
+    {
+        LogUtil::initLogs();
+
+        // setup imgui
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    }
+
+    Application::Application(const ref_ptr<Window>& window)
+            :running(true), window(window)
     {
         LogUtil::initLogs();
 
@@ -35,10 +48,14 @@ namespace bolt
 
     void Application::run() const
     {
+        if(window == nullptr) throw SetupException("Application window is not set");
+
         while(running)
         {
+            window->frame_routine();
             for(const auto& layer : layers) layer->frame();
             for(const auto& camera : cameras) camera->update();
+            window->cleanup_routine();
         }
     }
 
@@ -70,5 +87,10 @@ namespace bolt
 
         running = false;
         return true;
+    }
+
+    void Application::set_window(const ref_ptr<bolt::Window> &window)
+    {
+        Application::window = window;
     }
 }

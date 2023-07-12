@@ -1,5 +1,6 @@
 #include <bolt.hpp>
 #include <test_layer.hpp>
+#include <test_layer_two.hpp>
 #include <test_camera.hpp>
 
 using namespace bolt;
@@ -24,7 +25,11 @@ int main() // todo start handeling exceptions
 
     window->set_background_color(&bg);
 
+    app.set_window(window);
+
     app.add_layer(TestLayer::create(window));
+
+    app.add_layer(TestLayerTwo::create(window));
 
     window->hide_cursor();
 

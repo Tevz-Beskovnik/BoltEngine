@@ -15,6 +15,10 @@ namespace bolt
         public:
             Application();
 
+            explicit Application(const ref_ptr<Window>& window);
+
+            void set_window(const ref_ptr<bolt::Window> &window);
+
             virtual ~Application() = default;
 
             void add_layer(ref_ptr<LayerInterface> layer);
@@ -29,6 +33,8 @@ namespace bolt
 
         private:
             bool running;
+
+            ref_ptr<Window> window;
 
             std::vector<ref_ptr<LayerInterface>> layers{};
 

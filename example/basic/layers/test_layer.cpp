@@ -52,6 +52,8 @@ void CalculateFrameRate() {
 TestLayer::TestLayer(ref_ptr<Window> window)
     :window(window)
 {
+    ObjectCreator::set_uniform_binding_func(binding_func);
+
     shader_config_gl s_vert {
         .shader_location = "../../example/shaders/vert.glsl", // TODO localize all filepaths
         .type = GL_VERTEX_SHADER
@@ -105,9 +107,6 @@ TestLayer::TestLayer(ref_ptr<Window> window)
 
 void TestLayer::frame()
 {
-    window->cleanup_routine();
-    window->frame_routine();
-
     renderer->render();
 
     draw_primitives;

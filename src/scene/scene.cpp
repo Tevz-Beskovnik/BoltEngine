@@ -23,7 +23,7 @@ namespace bolt
     {
         for (const auto &obj: objects)
         {
-            if(obj == nullptr)
+            if(obj != nullptr)
             {
                 obj->render();
             }

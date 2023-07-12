@@ -11,6 +11,10 @@ namespace bolt
     {
         for(uint32_t i = 0; i < points.size(); i++)
             this->color.push_back(color);
+
+        to_drawable_vector();
+
+        set_attribute_layout();
     }
 
     Line::~Line()

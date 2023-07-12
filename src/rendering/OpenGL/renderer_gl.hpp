@@ -7,11 +7,10 @@
 #include <texture_gl.hpp>
 #include <vertex_gl.hpp>
 #include <file_system.hpp>
+#include <structs.hpp>
 
 namespace bolt
 {
-    typedef void (*uniform_bindings)(uint32_t program);
-
     struct render_config_gl {
         std::vector<shader_config_gl> shader_config;
         std::vector<texture_config_gl> texture_config;

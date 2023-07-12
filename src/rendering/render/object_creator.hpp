@@ -10,6 +10,7 @@
 #include <renderer_gl.hpp>
 #include <renderer_vk.hpp>
 #include <colors.hpp>
+#include <structs.hpp>
 
 namespace bolt
 {
@@ -34,10 +35,10 @@ namespace bolt
 
             static void set_render_framework(render_framework framework);
 
-            static void set_uniform_binding_func(void (*uniform_binding_func)(uint32_t program));
+            static void set_uniform_binding_func(uniform_bindings binding_func);
 
         private:
-            static void (*uniform_binding_func)(uint32_t program);
+            static uniform_bindings binding_func;
 
             static render_framework framework;
 

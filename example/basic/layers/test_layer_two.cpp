@@ -7,18 +7,22 @@
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
     :window(window)
 {
-    std::vector<vector_3> lines = {
-        {-2.0, -2.0, -2.0},
-        {-2.0, -2.0, 2.0},
-        {-2.0, -2.0, 2.0},
-        {2.0, -2.0, 2.0},
-        {2.0, -2.0, 2.0},
-        {2.0, -2.0, -2.0},
-        {2.0, -2.0, -2.0},
-        {-2.0, -2.0, -2.0}
-    };
+    std::vector<vector_3> bottom_grid;
+    for(int32_t i = -4; i < 5; i++)
+    {
+        bottom_grid.push_back({static_cast<float>(i), -4, -4});
+        bottom_grid.push_back({static_cast<float>(i), -4, 4});
+    }
 
-    scene.add_object(ObjectCreator::lines(lines, RGB(255, 255, 255, 125), "../../example/shaders/vert_lines.glsl", "../../example/shaders/frag_lines.glsl"));
+    for(int32_t i = -4; i < 5; i++)
+    {
+        bottom_grid.push_back({-4, -4, static_cast<float>(i)});
+        bottom_grid.push_back({4, -4, static_cast<float>(i)});
+    }
+
+    uint32_t pos = scene.add_object(ObjectCreator::lines(bottom_grid, RGB(255, 255, 255, 255), "../../example/shaders/frag_lines.glsl", "../../example/shaders/vert_lines.glsl"));
+
+    std::cout << pos << std::endl;
 }
 
 [[nodiscard]] ref_ptr<TestLayerTwo> TestLayerTwo::create(ref_ptr<Window> window)
@@ -28,7 +32,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
 
 void TestLayerTwo::frame()
 {
-
+    scene.draw();
 }
 
 void TestLayerTwo::bind_event_trigger(event_trigger trigger)
