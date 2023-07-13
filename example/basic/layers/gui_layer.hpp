@@ -4,13 +4,13 @@
 
 using namespace bolt;
 
-class TestLayer final : public LayerInterface {
+class GuiLayer final : public LayerInterface {
     public:
-        explicit TestLayer(ref_ptr<Window> window);
+        explicit GuiLayer(ref_ptr<Window> window);
 
-        [[nodiscard]] static ref_ptr<TestLayer> create(ref_ptr<Window> window);
+        [[nodiscard]] static ref_ptr<GuiLayer> create(ref_ptr<Window> window);
 
-        virtual ~TestLayer() override = default;
+        virtual ~GuiLayer() override = default;
 
         void frame() final;
 
@@ -26,6 +26,9 @@ class TestLayer final : public LayerInterface {
         setup_primitives;
 
         bool pressed = false;
+
+        float pitch;
+        float yaw;
 
         event_trigger trigger;
         ref_ptr<Window> window;

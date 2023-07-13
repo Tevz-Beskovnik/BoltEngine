@@ -24,6 +24,8 @@ namespace bolt
     {
         LogUtil::initLogs();
 
+        window->register_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
+
         // setup imgui
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -92,5 +94,7 @@ namespace bolt
     void Application::set_window(const ref_ptr<bolt::Window> &window)
     {
         Application::window = window;
+
+        window->register_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }
 }

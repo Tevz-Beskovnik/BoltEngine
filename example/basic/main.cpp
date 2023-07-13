@@ -1,7 +1,8 @@
 #include <bolt.hpp>
-#include <test_layer.hpp>
+#include <gui_layer.hpp>
 #include <test_layer_two.hpp>
 #include <test_camera.hpp>
+#include <gui_render_layer.hpp>
 
 using namespace bolt;
 
@@ -27,11 +28,13 @@ int main() // todo start handeling exceptions
 
     app.set_window(window);
 
-    app.add_layer(TestLayer::create(window));
+    app.add_layer(GuiLayer::create(window));
 
     app.add_layer(TestLayerTwo::create(window));
 
-    window->hide_cursor();
+    app.add_layer(GuiRenderLayer::create(window));
+
+    //window->hide_cursor();
 
     app.add_camera(TestCamera::create(WIDTH, HEIGHT));
 

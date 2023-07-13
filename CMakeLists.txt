@@ -22,7 +22,7 @@ set (
         src/rendering/OpenGL/index_buffer_gl.cpp
         src/rendering/OpenGL/frame_buffer_gl.cpp
         src/core/application.cpp
-        example/basic/layers/test_layer.cpp
+        example/basic/layers/gui_layer.cpp
         src/scene/camera_base.cpp
         src/core/log.cpp
         src/exceptions/renderer_exception.cpp
@@ -36,7 +36,16 @@ set (
         src/imgui_impl/imgui_impl_glfw.cpp
         src/imgui_impl/imgui_impl_opengl3.cpp
         src/io/mouse.cpp
-        src/model/font.cpp src/primitives/line/line.cpp src/exceptions/texture_exception.cpp src/primitives/rectangle/rectangle.cpp src/primitives/triangle/triangle.hpp src/primitives/triangle/triangle.cpp src/core/structs.hpp src/scene/scene.cpp src/scene/scene.hpp example/basic/layers/test_layer_two.cpp example/basic/layers/test_layer_two.hpp)
+        src/model/font.cpp
+        src/primitives/line/line.cpp
+        src/exceptions/texture_exception.cpp
+        src/primitives/rectangle/rectangle.cpp
+        src/primitives/triangle/triangle.hpp
+        src/primitives/triangle/triangle.cpp
+        src/core/structs.hpp
+        src/scene/scene.cpp
+        src/scene/scene.hpp
+        example/basic/layers/test_layer_two.cpp example/basic/layers/test_layer_two.hpp example/basic/layers/gui_render_layer.cpp example/basic/layers/gui_render_layer.hpp example/basic/scene_generators/object_generator.hpp example/basic/scene_generators/object_generator.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 
@@ -68,5 +77,6 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/rectangle
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/triangle
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/camera
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/scene_generators
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )

@@ -4,8 +4,8 @@ TestCamera::TestCamera(uint16_t w, uint16_t h)
 {
     camera_conf config = {
         .id = 1,
-        .position = {0.0, 0.0, 0.0},
-        .pointing = {0.0, 0.0, 0.0},
+        .position = {6.0, 5.0, 6.0},
+        .pointing = {-0.7, 2.37, 0},
         .width = w,
         .height = h,
         .f_far = 1000,
@@ -25,7 +25,7 @@ TestCamera::TestCamera(uint16_t w, uint16_t h)
 
 void TestCamera::update()
 {
-    vector_2 current = Mouse::read_pos();
+    /*vector_2 current = Mouse::read_pos();
     if(pointing.x + (last_cursor_position.y - current.y)*0.01 < PI/2 && pointing.x + (last_cursor_position.y - current.y)*0.01 > -PI/2)
         pointing.x += (last_cursor_position.y - current.y)*0.01;
     pointing.y += (last_cursor_position.x - current.x)*0.01;
@@ -36,7 +36,7 @@ void TestCamera::update()
 
     sideways = Keyboard::is_key_held(Key::D)*0.07 + Keyboard::is_key_held(Key::A)*-0.07;
     position.y += Keyboard::is_key_held(Key::LeftShift)*-0.07 + Keyboard::is_key_held(Key::Space)*0.07;
-    forward = Keyboard::is_key_held(Key::W)*0.07 + Keyboard::is_key_held(Key::S)*-0.07;
+    forward = Keyboard::is_key_held(Key::W)*0.07 + Keyboard::is_key_held(Key::S)*-0.07;*/
 
     CameraBase::update();
 }

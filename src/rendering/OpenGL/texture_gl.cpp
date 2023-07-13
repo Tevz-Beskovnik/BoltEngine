@@ -20,8 +20,7 @@ namespace bolt
         glTexParameteri(config.type, GL_TEXTURE_WRAP_T, GL_CLAMP);
         glTexParameteri(config.type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(config.type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         if(texture_buffer)
         {
             BOLT_LOG_INFO("Binding texture buffer to active binding and generating mipmaps")

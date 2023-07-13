@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bolt.hpp>
+#include <object_generator.hpp>
 
 using namespace bolt;
 
