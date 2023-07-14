@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.5)
 project(BoltEngine VERSION 1.0)
-
+# TODO localize all things to do with engine in a library!!! THIS SHOULD BE HIGH PRIORITY
 include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
