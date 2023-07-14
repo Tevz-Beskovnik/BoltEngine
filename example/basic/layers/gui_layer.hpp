@@ -27,7 +27,6 @@ class GuiLayer final : public LayerInterface {
 
         bool pressed = false;
 
-        float pitch;
         float yaw;
 
         event_trigger trigger;

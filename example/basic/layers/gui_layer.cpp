@@ -56,11 +56,11 @@ void CalculateFrameRate() {
 }
 
 GuiLayer::GuiLayer(ref_ptr<Window> window)
-    :window(window), pitch(0), yaw(0)
+    :window(window), yaw(0)
 {
     ObjectCreator::set_uniform_binding_func(binding_func);
 
-    rotation_mat = matrix_4::rotation_x(pitch) * matrix_4::rotation_y(yaw);
+    rotation_mat = matrix_4::rotation_y(yaw);
 }
 
 [[nodiscard]] ref_ptr<GuiLayer> GuiLayer::create(ref_ptr<Window> window)
@@ -70,10 +70,9 @@ GuiLayer::GuiLayer(ref_ptr<Window> window)
 
 void GuiLayer::frame()
 {
-    yaw += Keyboard::is_key_held(Key::D)*0.07 + Keyboard::is_key_held(Key::A)*-0.07;
-    pitch += Keyboard::is_key_held(Key::W)*0.07 + Keyboard::is_key_held(Key::S)*-0.07;
+    yaw -= Keyboard::is_key_held(Key::D)*0.07 + Keyboard::is_key_held(Key::A)*-0.07;
 
-    rotation_mat = matrix_4::rotation_x(pitch) * matrix_4::rotation_y(yaw);
+    rotation_mat = matrix_4::rotation_y(yaw);
 
     CalculateFrameRate();
 

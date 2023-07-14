@@ -157,9 +157,10 @@ namespace bolt
         glfwSetWindowUserPointer(window, caller);
 
         // TODO decide what kind of input handeling to use direct or event based
-        /*glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-            static_cast<EventCallerManagedPtr>(glfwGetWindowUserPointer(window))->call_keyboard_event(key, scancode, action, mods);
-        });*/
+        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods); // if you overload the callback you also have to register the imgui impl callbacks
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_keyboard_event(key, scancode, action, mods);
+        });
 
         glfwSetWindowCloseCallback(window, [](GLFWwindow* window){
             static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_window_close_event();
@@ -167,6 +168,16 @@ namespace bolt
 
         glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height){
             static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_window_resize_event(width, height);
+        });
+
+        glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
+            ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_mouse_event(button, action, mods);
+        });
+
+        glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x_pos, double y_pos){
+            ImGui_ImplGlfw_CursorPosCallback(window, x_pos, y_pos);
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_mouse_position_event(x_pos, y_pos);
         });
     }
 

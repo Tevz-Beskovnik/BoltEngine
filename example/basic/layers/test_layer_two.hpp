@@ -20,7 +20,20 @@ class TestLayerTwo final : public LayerInterface
 
         void on_event(Event& e) const final;
 
+        bool handle_mouse_position_event(MouseMoveEvent& event) const;
+
+        bool handle_mouse_button_event(MouseClickEvent& event) const;
+
     private:
+        setup_primitives;
+
+        static vector_2 mouse_pos;
+
+        static MouseButton pressed_button;
+        static int32_t action;
+
+        float ar;
+
         event_trigger trigger;
         ref_ptr<Window> window;
 };

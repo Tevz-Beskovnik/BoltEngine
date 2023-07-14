@@ -1,5 +1,7 @@
 #include <setup_primitives.hpp>
 
+// TODO: store data about primitives in static variables in .cpp files so as to not pollute classes :))))))) (I AM SO PROUD I THOUGH OF THIS) AND ALSO SAVES A LOT OF HEDAICHES WHEN TRYING TO DRAW THING FROM CROSS CLASSES
+
 namespace bolt
 {
     void draw_primitives_f(const std::vector<uint32_t>& vertex_arrays, const std::vector<uint32_t>& shaders, const std::vector<uint32_t>& draw_types, const std::vector<int32_t>& count, const std::vector<uint32_t>& textures)

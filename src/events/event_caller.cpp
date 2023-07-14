@@ -39,8 +39,24 @@ namespace bolt
         trigger(event);
     }
 
-    void EventCaller::call_mouse_event() const
+    void EventCaller::call_mouse_event(int button, int action, int mods) const
     {
-        ;
+        MouseClickEvent event;
+
+        event.button = button;
+        event.action = action;
+        event.mods = mods;
+
+        trigger(event);
+    }
+
+    void EventCaller::call_mouse_position_event(double x_pos, double y_pos) const
+    {
+        MouseMoveEvent event;
+
+        event.pos.x = static_cast<float>(x_pos);
+        event.pos.y = static_cast<float>(y_pos);
+
+        trigger(event);
     }
 }
