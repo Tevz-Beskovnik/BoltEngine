@@ -35,19 +35,19 @@ namespace bolt
         std::vector<vector_3> verts;
         std::vector<vector_2> UVs;
 
-        verts.push_back({ corner.x, corner.y, corner.z });
-        verts.push_back({ corner.x, corner.y + dimensions.y, corner.z });
-        verts.push_back({ corner.x + dimensions.x, corner.y, corner.z });
-        verts.push_back({ corner.x + dimensions.x, corner.y + dimensions.y, corner.z });
-        verts.push_back({ corner.x + dimensions.x, corner.y, corner.z });
-        verts.push_back({ corner.x, corner.y + dimensions.y, corner.z });
+        verts.push_back({corner.x, corner.y, corner.z});
+        verts.push_back({corner.x, corner.y + dimensions.y, corner.z});
+        verts.push_back({corner.x + dimensions.x, corner.y + dimensions.y, corner.z});
+        verts.push_back({corner.x, corner.y, corner.z});
+        verts.push_back({corner.x + dimensions.x, corner.y + dimensions.y, corner.z});
+        verts.push_back({corner.x + dimensions.x, corner.y, corner.z});
 
+        UVs.push_back({ 0.0f, 0.0f });
         UVs.push_back({ 0.0f, 1.0f});
+        UVs.push_back({ 1.0f, 1.0f });
         UVs.push_back({ 0.0f, 0.0f});
         UVs.push_back({ 1.0f, 1.0f });
-        UVs.push_back({ 1.0f, 1.0f });
         UVs.push_back({ 1.0f, 0.0f });
-        UVs.push_back({ 0.0f, 0.0f });
 
         BOLT_LOG_INFO("Mesh-builder poly count: " + std::to_string(verts.size()/3))
 

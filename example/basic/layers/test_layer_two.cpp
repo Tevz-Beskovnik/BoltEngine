@@ -9,16 +9,16 @@ int32_t TestLayerTwo::action = -1;
 vector_2 TestLayerTwo::mouse_pos = {0, 0};
 
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
-    :window(window)
+    :window(window), current_active(0)
 {
-    uint32_t pos = scene.add_object(generate_3d_grid());
+    auto pos = scene.add_object(generate_3d_grid());
 
     uint16_t w, h;
 
     window->get_size(&w, &h);
     ar = static_cast<float>(w) / static_cast<float>(h);
 
-    std::vector<std::string> frames = {
+    frames = {
             "../../example/textures/color-frame-black.png",
             "../../example/textures/color-frame-white.png",
             "../../example/textures/color-frame-red.png",
@@ -35,18 +35,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
             "../../example/textures/color-frame-brown.png"
     };
 
-    for(uint8_t i = 0; i < 14; i+=2)
-    {
-        create_rectangles_texture(frames[i].c_str(), rectangle{
-                .pos = {0.85f, (0.87f - i * 0.06f)},
-                .dims = {0.05f, (0.05f * ar)}
-        })
-
-        create_rectangles_texture(frames[i+1].c_str(), rectangle{
-                .pos = {0.92f, (0.87f - i * 0.06f)},
-                .dims = {0.05f, (0.05f * ar)}
-        })
-    }
+    create_frames(frame_objects, frames, collision_boxes, scene, ar);
 }
 
 [[nodiscard]] ref_ptr<TestLayerTwo> TestLayerTwo::create(ref_ptr<Window> window)
@@ -58,7 +47,22 @@ void TestLayerTwo::frame()
 {
     scene.draw();
 
-    draw_primitives;
+    if(int32_t new_active = intersects_rects(mouse_pos, collision_boxes); new_active != -1 && pressed_button == MouseButton::LEFT_BUTTON && action == 1)
+    {
+        BOLT_LOG_INFO("Remove from scene the current active frame")
+        scene.remove(frame_objects[current_active]);
+
+        BOLT_LOG_INFO("Replace old active with transparent frame")
+        frame_objects[current_active] = create_transparent_frame(frames[current_active], collision_boxes[current_active], scene);
+
+        BOLT_LOG_INFO("Remove the to be active frame")
+        scene.remove(frame_objects[new_active]);
+
+        BOLT_LOG_INFO("Create the new active frame")
+        frame_objects[new_active] = create_full_frame(frames[new_active], collision_boxes[new_active], scene);
+
+        current_active = new_active;
+    }
 
     {
         ImGui::Begin("Mouse info");

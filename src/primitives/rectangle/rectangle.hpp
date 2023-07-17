@@ -9,7 +9,8 @@
 
 namespace bolt
 {
-    #define create_rects_i(rect, ...)  buffers.push_back(setup_rectangle(rect, __VA_ARGS__)); \
+    #define create_rects_i(rect, ...) buffers.size(); \
+                                     buffers.push_back(setup_rectangle(rect, __VA_ARGS__)); \
                                      draw_type.push_back(GL_TRIANGLES); \
                                      glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                      glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \

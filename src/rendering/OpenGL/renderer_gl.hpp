@@ -32,6 +32,8 @@ namespace bolt
 
             void set_viewport(vector_2 corner, vector_2 dimensions) override;
 
+            void add_binding_func(uniform_bindings func) final;
+
             void add_texture(const std::string &path) override;
 
             void add_model(const ref_ptr<ModelInterface>& model) override;

@@ -8,7 +8,8 @@
 namespace bolt
 {
 
-    #define create_lines(color, p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
+    #define create_lines(color, p1, p2, ...)  buffers.size(); \
+                                              buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
                                               draw_type.push_back(GL_LINES); \
                                               glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                               glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \
@@ -18,7 +19,8 @@ namespace bolt
                                               textures.push_back(0); \
                                               glBindVertexArray(0);
 
-    #define create_lines_shaders(color, frag, vert, p1, p2, ...)  buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
+    #define create_lines_shaders(color, frag, vert, p1, p2, ...) buffers.size(); \
+                                              buffers.push_back(setup_line_buffer(p1, p2, __VA_ARGS__)); \
                                               draw_type.push_back(GL_LINES); \
                                               glBindBuffer(GL_ARRAY_BUFFER, buffers.back()); \
                                               glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buffer_size); \

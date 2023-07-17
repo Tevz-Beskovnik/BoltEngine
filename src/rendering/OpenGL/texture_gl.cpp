@@ -68,7 +68,11 @@ namespace bolt
 
     void TextureGL::bind_uniform(uint32_t program) const
     {
-        int32_t uTexture = glGetUniformLocation(program, "uTexture");
+        std::string uniform_name = "uTexture" + std::to_string(binding-GL_TEXTURE0);
+        BOLT_LOG_INFO("Binding on uniform location: ")
+        BOLT_LOG_INFO(uniform_name)
+
+        int32_t uTexture = glGetUniformLocation(program, uniform_name.c_str());
 
         glUniform1i(uTexture, binding-GL_TEXTURE0);
     }
