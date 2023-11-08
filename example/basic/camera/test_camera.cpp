@@ -1,6 +1,7 @@
 #include <test_camera.hpp>
 
 TestCamera::TestCamera(uint16_t w, uint16_t h)
+    :yaw(0), pitch(0)
 {
     camera_conf config = {
         .id = 1,
@@ -38,7 +39,18 @@ void TestCamera::update()
     position.y += Keyboard::is_key_held(Key::LeftShift)*-0.07 + Keyboard::is_key_held(Key::Space)*0.07;
     forward = Keyboard::is_key_held(Key::W)*0.07 + Keyboard::is_key_held(Key::S)*-0.07;*/
 
+    float y_adjust = Keyboard::is_key_held(Key::D)*0.007 + Keyboard::is_key_held(Key::A)*-0.007;
+
+    pointing.y += y_adjust;
+    yaw = y_adjust;
+
+    matrix_4 rotation = matrix_4::rotation_x(pitch) * matrix_4::rotation_y(yaw);
+
+    position = rotation * position;
+
     CameraBase::update();
+
+    std::cout << pointing.x << " " << pointing.y << " " << pointing.z << std::endl;d
 }
 
 void TestCamera::update_view_matrix() {

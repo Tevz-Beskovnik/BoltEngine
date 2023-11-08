@@ -18,5 +18,7 @@ class TestCamera : public CameraBase
         void update_view_matrix() override;
 
     private:
+        float yaw, pitch;
+
         vector_2 last_cursor_position{0,0};
 };

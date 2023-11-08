@@ -8,8 +8,6 @@ static RGB color(189, 240, 180);
 
 static matrix_4 view_mat;
 
-static matrix_4 rotation_mat;
-
 static float u_time = 0.0;
 
 static int _fpsCount = 0;
@@ -25,8 +23,6 @@ void binding_func(uint32_t program)
 
     int uViewMat = glGetUniformLocation(program, "uViewMat");
 
-    int uRotationMat = glGetUniformLocation(program, "uRotationMat");
-
     u_time += 0.01;
 
     /*color.set_r(color.r+1);
@@ -38,8 +34,6 @@ void binding_func(uint32_t program)
     glUniform3f(uColor, color.r_dec, color.g_dec, color.b_dec);
 
     glUniformMatrix4fv(uViewMat, 1, GL_TRUE, &view_mat.m[0][0]);
-
-    glUniformMatrix4fv(uRotationMat, 1, GL_TRUE, &rotation_mat.m[0][0]);
 }
 
 void CalculateFrameRate() {
@@ -56,11 +50,9 @@ void CalculateFrameRate() {
 }
 
 GuiLayer::GuiLayer(ref_ptr<Window> window)
-    :window(window), pitch(0), yaw(0)
+    :window(window)
 {
     ObjectCreator::set_uniform_binding_func(binding_func);
-
-    rotation_mat = matrix_4::rotation_x(pitch) * matrix_4::rotation_y(yaw);
 }
 
 [[nodiscard]] ref_ptr<GuiLayer> GuiLayer::create(ref_ptr<Window> window)
@@ -70,10 +62,6 @@ GuiLayer::GuiLayer(ref_ptr<Window> window)
 
 void GuiLayer::frame()
 {
-    yaw += Keyboard::is_key_held(Key::D)*0.07 + Keyboard::is_key_held(Key::A)*-0.07;
-    pitch += Keyboard::is_key_held(Key::W)*0.07 + Keyboard::is_key_held(Key::S)*-0.07;
-
-    rotation_mat = matrix_4::rotation_x(pitch) * matrix_4::rotation_y(yaw);
 
     CalculateFrameRate();
 
