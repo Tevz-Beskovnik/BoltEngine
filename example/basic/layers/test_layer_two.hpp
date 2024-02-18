@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bolt.hpp>
+#include <collision.hpp>
 #include <object_generator.hpp>
 
 using namespace bolt;
@@ -20,7 +21,23 @@ class TestLayerTwo final : public LayerInterface
 
         void on_event(Event& e) const final;
 
+        bool handle_mouse_position_event(MouseMoveEvent& event) const;
+
+        bool handle_mouse_button_event(MouseClickEvent& event) const;
+
     private:
+        static vector_2 mouse_pos;
+
+        static MouseButton pressed_button;
+        static int32_t action;
+
+        float ar;
+
+        std::vector<rectangle> collision_boxes{};
+        std::vector<std::string> frames;
+        std::vector<uint32_t> frame_objects;
+        uint32_t current_active;
+
         event_trigger trigger;
         ref_ptr<Window> window;
 };

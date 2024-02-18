@@ -14,6 +14,11 @@ namespace bolt
         Mouse::window = window;
     }
 
+    [[nodiscard]] bool Mouse::left_click()
+    {
+
+    }
+
     [[nodiscard]] vector_2 Mouse::read_pos()
     {
         double x, y;

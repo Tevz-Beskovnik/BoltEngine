@@ -31,7 +31,8 @@ namespace bolt
         WindowEvent = 0b1,
         KeyEvent = 0b10,
         AppEvent = 0b100,
-        CameraEvent = 0b1000
+        CameraEvent = 0b1000,
+        MouseEvent = 0b10000
     };
 
     class Event

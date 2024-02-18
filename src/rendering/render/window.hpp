@@ -19,6 +19,7 @@
 #include <setup_exception.hpp>
 #include <keyboard.hpp>
 #include <mouse.hpp>
+#include <imgui_impl_glfw.hpp>
 
 namespace bolt
 {

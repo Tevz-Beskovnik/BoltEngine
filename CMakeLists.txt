@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.5)
 project(BoltEngine VERSION 1.0)
-
+# TODO localize all things to do with engine in a library!!! THIS SHOULD BE HIGH PRIORITY
 include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
@@ -45,7 +45,7 @@ set (
         src/core/structs.hpp
         src/scene/scene.cpp
         src/scene/scene.hpp
-        example/basic/layers/test_layer_two.cpp example/basic/layers/test_layer_two.hpp example/basic/layers/gui_render_layer.cpp example/basic/layers/gui_render_layer.hpp example/basic/scene_generators/object_generator.hpp example/basic/scene_generators/object_generator.cpp)
+        example/basic/layers/test_layer_two.cpp example/basic/layers/test_layer_two.hpp example/basic/layers/gui_render_layer.cpp example/basic/layers/gui_render_layer.hpp example/basic/game_functions/object_generator.hpp example/basic/game_functions/object_generator.cpp src/events/mouse_events.hpp example/basic/game_functions/collision.cpp)
 
 add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
 
@@ -77,6 +77,6 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/rectangle
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/triangle
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/camera
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/scene_generators
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/game_functions
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )

@@ -62,6 +62,11 @@ namespace bolt {
         });
     }
 
+    void RendererGL::add_binding_func(uniform_bindings func)
+    {
+        this->binding_function = func;
+    }
+
     void RendererGL::render() const {
         shader->bind();
 

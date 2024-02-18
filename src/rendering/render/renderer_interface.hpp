@@ -16,6 +16,8 @@ namespace bolt
 
             virtual void add_model(const ref_ptr<ModelInterface>& model) = 0;
 
+            virtual void add_binding_func(uniform_bindings func) = 0;
+
             virtual void set_viewport(vector_2 corner, vector_2 dimensions) = 0;
 
             virtual void render() const = 0;

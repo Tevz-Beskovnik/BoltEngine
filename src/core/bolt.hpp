@@ -28,7 +28,8 @@
 #include <application_events.hpp>
 #include <camera_events.hpp>
 #include <keyboard_events.hpp>
-#include <keyboard.hpp>
+#include <mouse_events.hpp>
+#include <keyboard.hpp> // TODO throw out old input modes
 #include <mouse.hpp>
 
 // exceptions

@@ -4,6 +4,7 @@
 #include <event.hpp>
 #include <keyboard_events.hpp>
 #include <window_events.hpp>
+#include <mouse_events.hpp>
 
 namespace bolt
 {
@@ -17,7 +18,9 @@ namespace bolt
 
             void call_window_close_event() const;
 
-            void call_mouse_event() const;
+            void call_mouse_event(int button, int action, int mods) const;
+
+            void call_mouse_position_event(double x_pos, double y_pos) const;
 
         private:
             event_trigger trigger;
