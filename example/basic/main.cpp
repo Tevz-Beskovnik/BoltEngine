@@ -3,6 +3,7 @@
 #include <test_layer_two.hpp>
 #include <test_camera.hpp>
 #include <gui_render_layer.hpp>
+#include <iostream>
 
 using namespace bolt;
 
@@ -20,9 +21,15 @@ int main() // todo start handeling exceptions
         .fullscreen = false
     };
 
+    std::cout << "hello" << std::endl;
+
     RGB bg(65, 134, 244);
 
+    std::cout << "hello" << std::endl;
+
     ref_ptr<Window> window = Window::create(w_conf);
+
+    std::cout << "hello" << std::endl;
 
     window->set_background_color(&bg);
 
@@ -33,10 +40,15 @@ int main() // todo start handeling exceptions
     app.add_layer(TestLayerTwo::create(window));
 
     app.add_layer(GuiRenderLayer::create(window));
+    std::cout << "hello" << std::endl;
 
     //window->hide_cursor();
 
+    std::cout << "hello" << std::endl;
+
     app.add_camera(TestCamera::create(WIDTH, HEIGHT));
+
+    std::cout << "hello" << std::endl;
 
     app.run();
 

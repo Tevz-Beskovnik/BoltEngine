@@ -19,20 +19,20 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
     ar = static_cast<float>(w) / static_cast<float>(h);
 
     frames = {
-            "../../example/textures/color-frame-black.png",
-            "../../example/textures/color-frame-white.png",
-            "../../example/textures/color-frame-red.png",
-            "../../example/textures/color-frame-orange.png",
-            "../../example/textures/color-frame-vanilla.png",
-            "../../example/textures/color-frame-bordo.png",
-            "../../example/textures/color-frame-cyan.png",
-            "../../example/textures/color-frame-dark-blue.png",
-            "../../example/textures/color-frame-light-blue.png",
-            "../../example/textures/color-frame-dark-green.png",
-            "../../example/textures/color-frame-light-green.png",
-            "../../example/textures/color-frame-pinky.png",
-            "../../example/textures/color-frame-rose.png",
-            "../../example/textures/color-frame-brown.png"
+        "../example/textures/color-frame-black.png",
+        "../example/textures/color-frame-white.png",
+        "../example/textures/color-frame-red.png",
+        "../example/textures/color-frame-orange.png",
+        "../example/textures/color-frame-vanilla.png",
+        "../example/textures/color-frame-bordo.png",
+        "../example/textures/color-frame-cyan.png",
+        "../example/textures/color-frame-dark-blue.png",
+        "../example/textures/color-frame-light-blue.png",
+        "../example/textures/color-frame-dark-green.png",
+        "../example/textures/color-frame-light-green.png",
+        "../example/textures/color-frame-pinky.png",
+        "../example/textures/color-frame-rose.png",
+        "../example/textures/color-frame-brown.png"
     };
 
     create_frames(frame_objects, frames, collision_boxes, scene, ar);

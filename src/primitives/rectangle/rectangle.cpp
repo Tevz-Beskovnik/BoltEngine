@@ -6,7 +6,7 @@ namespace bolt
     {
         std::string vertex_shader_string;
         std::string line;
-        std::ifstream file("../../src/primitives/rectangle/shaders/vert.glsl");
+        std::ifstream file("../src/primitives/rectangle/shaders/vert.glsl");
 
         while(std::getline(file, line))
         {
@@ -44,7 +44,7 @@ namespace bolt
 
         std::string fragment_shader_string;
 
-        file.open("../../src/primitives/rectangle/shaders/fragColor.glsl");
+        file.open("../src/primitives/rectangle/shaders/fragColor.glsl");
 
         while(std::getline(file, line))
         {
@@ -169,7 +169,7 @@ namespace bolt
 
         std::string vertex_shader_string;
         std::string line;
-        std::ifstream file("../../src/primitives/rectangle/shaders/vert.glsl");
+        std::ifstream file("../src/primitives/rectangle/shaders/vert.glsl");
 
         while(std::getline(file, line))
         {
@@ -207,7 +207,7 @@ namespace bolt
 
         std::string fragment_shader_string;
 
-        file.open("../../src/primitives/rectangle/shaders/fragTexture.glsl");
+        file.open("../src/primitives/rectangle/shaders/fragTexture.glsl");
 
         while(std::getline(file, line))
         {
@@ -326,7 +326,7 @@ namespace bolt
 
         std::string vertex_shader_string;
         std::string line;
-        std::ifstream file("../../src/primitives/rectangle/shaders/vert.glsl");
+        std::ifstream file("../src/primitives/rectangle/shaders/vert.glsl");
 
         while(std::getline(file, line))
         {
@@ -364,7 +364,7 @@ namespace bolt
 
         std::string fragment_shader_string;
 
-        file.open("../../src/primitives/rectangle/shaders/fragBoth.glsl");
+        file.open("../src/primitives/rectangle/shaders/fragBoth.glsl");
 
         while(std::getline(file, line))
         {

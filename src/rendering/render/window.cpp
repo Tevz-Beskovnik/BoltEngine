@@ -6,9 +6,11 @@ namespace bolt
         :background_color(new RGB()), background_color_owned(true), width(config.width), height(config.height), title((basic_str)config.title)
     {
         if (!glfwInit())
-            BOLT_ERROR(SetupException("Failed to initialise GLFW"))
+            BOLT_ERROR(SetupException("Failed to initialise GLFW"));
 
         BOLT_LOG_INFO("GLFW initialised")
+
+        std::cout << "hello5" << std::endl;
 
         glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

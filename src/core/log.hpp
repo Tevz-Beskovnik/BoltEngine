@@ -5,7 +5,7 @@
 namespace bolt
 {
     #ifndef BOLT_LOG_FILE
-        #define BOLT_LOG_FILE "../../log"
+        #define BOLT_LOG_FILE "../log"
     #endif
 
     #define BOLT_LOG_ERROR(msg) LogUtil::log(LogType::ERROR, msg);

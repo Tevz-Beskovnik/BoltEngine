@@ -30,7 +30,7 @@ namespace bolt
                                               textures.push_back(0); \
                                               glBindVertexArray(0);
 
-    [[nodiscard]] uint32_t setup_line_shader(RGB color, std::string vert_file = "../../src/primitives/line/shaders/vert.glsl", std::string frag_file = "../../src/primitives/line/shaders/frag.glsl");
+    [[nodiscard]] uint32_t setup_line_shader(RGB color, std::string vert_file = "../src/primitives/line/shaders/vert.glsl", std::string frag_file = "../src/primitives/line/shaders/frag.glsl");
 
     void add_to_buffer(uint32_t current_size,uint32_t buffer, const vector_3& p1, const vector_3& p2);
 

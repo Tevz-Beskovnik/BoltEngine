@@ -18,17 +18,17 @@ namespace bolt
                                      vertex_arrays.push_back(create_triangle_vertex_array(buffers.back()));
 
     #define create_triangles_color(color, trig, ...) create_triangles_i(trig, __VA_ARGS__) \
-                                                     shaders.push_back(setup_triangle_shaders(color, "../../src/primitives/triangle/shaders/vert.glsl", "../../src/primitives/triangle/shaders/fragColor.glsl")); \
+                                                     shaders.push_back(setup_triangle_shaders(color, "../src/primitives/triangle/shaders/vert.glsl", "../src/primitives/triangle/shaders/fragColor.glsl")); \
                                                      textures.push_back(0);                \
                                                      glBindVertexArray(0);
 
     #define create_triangles_texture(tex, trig, ...) create_triangles_i(trig, __VA_ARGS__) \
-                                                     shaders.push_back(setup_triangle_shaders(RGB(255.0f, 255.0f, 255.0f, 255.0f), "../../src/primitives/triangle/shaders/vert.glsl", "../../src/primitives/triangle/shaders/fragBoth.glsl")); \
+                                                     shaders.push_back(setup_triangle_shaders(RGB(255.0f, 255.0f, 255.0f, 255.0f), "../src/primitives/triangle/shaders/vert.glsl", "../src/primitives/triangle/shaders/fragBoth.glsl")); \
                                                      textures.push_back(setup_triangle_texture(tex));                \
                                                      glBindVertexArray(0);
 
     #define create_triangles(tex, color, trig, ...) create_triangles_i(trig, __VA_ARGS__) \
-                                                    shaders.push_back(setup_triangle_shaders(color, "../../src/primitives/triangle/shaders/vert.glsl", "../../src/primitives/triangle/shaders/fragBoth.glsl")); \
+                                                    shaders.push_back(setup_triangle_shaders(color, "../src/primitives/triangle/shaders/vert.glsl", "../src/primitives/triangle/shaders/fragBoth.glsl")); \
                                                     textures.push_back(setup_triangle_texture(tex));                \
                                                     glBindVertexArray(0);
 

@@ -41,14 +41,14 @@ ref_ptr<RenderInterface> generate_3d_grid()
         mesh.push_back({static_cast<float>(i), 4, -4});
     }
 
-    return ObjectCreator::lines(mesh, RGB(255, 255, 255, 70), "../../example/shaders/frag_lines.glsl", "../../example/shaders/vert_lines.glsl");
+    return ObjectCreator::lines(mesh, RGB(255, 255, 255, 70), "../example/shaders/frag_lines.glsl", "../example/shaders/vert_lines.glsl");
 }
 
 void create_frames(std::vector<uint32_t>& object_frames, const std::vector<std::string>& frames, std::vector<rectangle>& collision_boxes, Scene& scene, float ar)
 {
     for(uint8_t i = 0; i < 14; i+=2)
     {
-        auto object_one = ObjectCreator::quad(vector_3{0.85f, (0.87f - i * 0.06f), 0.0f}, vector_2{0.05f, (0.05f * ar)}, "../../example/shaders/frag_flat.glsl", "../../example/shaders/vert_flat.glsl");
+        auto object_one = ObjectCreator::quad(vector_3{0.85f, (0.87f - i * 0.06f), 0.0f}, vector_2{0.05f, (0.05f * ar)}, "../example/shaders/frag_flat.glsl", "../example/shaders/vert_flat.glsl");
 
         object_one->add_binding_func([](uint32_t program){
             RGB color(255, 255, 255, 125); // TODO there has to be a better way of doing this but for now this is ok
@@ -65,7 +65,7 @@ void create_frames(std::vector<uint32_t>& object_frames, const std::vector<std::
                 .dims = vector_2{0.05f, (0.05f * ar)}
         });
 
-        auto object_two = ObjectCreator::quad(vector_3{0.92f, (0.87f - i * 0.06f), 0.0f}, vector_2{0.05f, (0.05f * ar)}, "../../example/shaders/frag_flat.glsl", "../../example/shaders/vert_flat.glsl");
+        auto object_two = ObjectCreator::quad(vector_3{0.92f, (0.87f - i * 0.06f), 0.0f}, vector_2{0.05f, (0.05f * ar)}, "../example/shaders/frag_flat.glsl", "../example/shaders/vert_flat.glsl");
 
         object_two->add_binding_func([](uint32_t program){
             RGB color(255, 255, 255, 125); // TODO there has to be a better way of doing this but for now this is ok
@@ -86,7 +86,7 @@ void create_frames(std::vector<uint32_t>& object_frames, const std::vector<std::
 
 uint32_t create_full_frame(const std::string& texture, const rectangle& rect, Scene& scene)
 {
-    auto full_frame = ObjectCreator::quad({rect.pos.x, rect.pos.y, 0.0f}, {rect.dims.x, rect.dims.y}, "../../example/shaders/frag_flat.glsl", "../../example/shaders/vert_flat.glsl");
+    auto full_frame = ObjectCreator::quad({rect.pos.x, rect.pos.y, 0.0f}, {rect.dims.x, rect.dims.y}, "../example/shaders/frag_flat.glsl", "../example/shaders/vert_flat.glsl");
 
     full_frame->add_texture(texture);
 
@@ -101,7 +101,7 @@ uint32_t create_full_frame(const std::string& texture, const rectangle& rect, Sc
 
 uint32_t create_transparent_frame(const std::string& texture, const rectangle& rect, Scene& scene)
 {
-    auto full_frame = ObjectCreator::quad({rect.pos.x, rect.pos.y, 0.0f}, {rect.dims.x, rect.dims.y}, "../../example/shaders/frag_flat.glsl", "../../example/shaders/vert_flat.glsl");
+    auto full_frame = ObjectCreator::quad({rect.pos.x, rect.pos.y, 0.0f}, {rect.dims.x, rect.dims.y}, "../example/shaders/frag_flat.glsl", "../example/shaders/vert_flat.glsl");
 
     full_frame->add_texture(texture);
 
