@@ -46,6 +46,8 @@ namespace bolt
 
         set_active();
 
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
         if(config.fullscreen)
             fullscreen();
     }
@@ -73,8 +75,10 @@ namespace bolt
 
     void Window::get_size(uint16_t *set_width, uint16_t *set_height) const
     {
-        *set_width = width;
-        *set_height = height;
+        int s_width, s_height;
+        glfwGetWindowSize(window, &s_width, &s_height);
+        *set_width = s_width;
+        *set_height = s_height;
     }
 
     void Window::fullscreen()

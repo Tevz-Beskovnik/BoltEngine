@@ -50,7 +50,7 @@ void TestCamera::update()
 
     CameraBase::update();
 
-    std::cout << pointing.x << " " << pointing.y << " " << pointing.z << std::endl;d
+    //std::cout << pointing.x << " " << pointing.y << " " << pointing.z << std::endl;
 }
 
 void TestCamera::update_view_matrix() {

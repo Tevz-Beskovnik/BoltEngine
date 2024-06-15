@@ -47,24 +47,31 @@ void TestLayerTwo::frame()
 {
     scene.draw();
 
-    if(int32_t new_active = intersects_rects(mouse_pos, collision_boxes); new_active != -1 && pressed_button == MouseButton::LEFT_BUTTON && action == 1)
+    if(pressed_button == MouseButton::LEFT_BUTTON && action == 1)
     {
-        BOLT_LOG_INFO("Remove from scene the current active frame")
-        scene.remove(frame_objects[current_active]);
+        if(int32_t new_active = intersects_rects(mouse_pos, collision_boxes); new_active != -1)
+        {
+            std::cout << "This was clicked" << std::endl;
+            BOLT_LOG_INFO("Remove from scene the current active frame")
+            scene.remove(frame_objects[current_active]);
 
-        BOLT_LOG_INFO("Replace old active with transparent frame")
-        frame_objects[current_active] = create_transparent_frame(frames[current_active], collision_boxes[current_active], scene);
+            BOLT_LOG_INFO("Replace old active with transparent frame")
+            frame_objects[current_active] = create_transparent_frame(frames[current_active], collision_boxes[current_active], scene);
 
-        BOLT_LOG_INFO("Remove the to be active frame")
-        scene.remove(frame_objects[new_active]);
+            BOLT_LOG_INFO("Remove the to be active frame")
+            scene.remove(frame_objects[new_active]);
 
-        BOLT_LOG_INFO("Create the new active frame")
-        frame_objects[new_active] = create_full_frame(frames[new_active], collision_boxes[new_active], scene);
+            BOLT_LOG_INFO("Create the new active frame")
+            frame_objects[new_active] = create_full_frame(frames[new_active], collision_boxes[new_active], scene);
 
-        current_active = new_active;
+            current_active = new_active;
+        }
     }
 
     {
+        uint16_t height, width;
+        window->get_size(&width, &height);
+
         ImGui::Begin("Mouse info");
 
         ImGui::Text("Cursor position:");
@@ -74,6 +81,8 @@ void TestLayerTwo::frame()
         ImGui::Text("Button clicked:");
 
         ImGui::Text("Button: %i, action: %i", pressed_button, action);
+
+        ImGui::Text("Current active: %i,", current_active);
 
         ImGui::End();
     }
@@ -105,7 +114,7 @@ bool TestLayerTwo::handle_mouse_position_event(MouseMoveEvent& event) const
     mouse_pos /= (static_cast<float>(w)/2);
 
     mouse_pos.x -= 1;
-    mouse_pos.y = 2 - mouse_pos.y - 1;
+    mouse_pos.y = 1 - mouse_pos.y;
 
     return false;
 }

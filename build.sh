@@ -1,7 +1,8 @@
 if [ $1 == "build" ]
 then
     cd ./build
-    cmake ..
+    cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+    cmake --build .
     make
 else
     if [ $1 == "clean" ]
