@@ -63,7 +63,11 @@ GuiLayer::GuiLayer(ref_ptr<Window> window)
 void GuiLayer::frame()
 {
 
-    CalculateFrameRate();
+    /*CalculateFrameRate();
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
     {
         ImGui::Begin("Box color editor");
@@ -81,7 +85,10 @@ void GuiLayer::frame()
         ImGui::End();
     }
 
+    ImGui::EndFrame();
     ImGui::Render();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 }
 
 void GuiLayer::bind_event_trigger(bolt::event_trigger trigger)

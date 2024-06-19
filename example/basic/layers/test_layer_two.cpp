@@ -68,6 +68,10 @@ void TestLayerTwo::frame()
         }
     }
 
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
     {
         uint16_t height, width;
         window->get_size(&width, &height);
@@ -87,7 +91,10 @@ void TestLayerTwo::frame()
         ImGui::End();
     }
 
+    ImGui::EndFrame();
     ImGui::Render();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void TestLayerTwo::bind_event_trigger(event_trigger trigger)

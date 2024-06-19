@@ -140,10 +140,6 @@ namespace bolt
     {
         glfwPollEvents();
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
         glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

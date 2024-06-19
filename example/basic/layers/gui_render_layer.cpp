@@ -13,7 +13,7 @@ GuiRenderLayer::GuiRenderLayer(ref_ptr<Window> window)
 
 void GuiRenderLayer::frame()
 {
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 }
 
 void GuiRenderLayer::bind_event_trigger(event_trigger trigger)
