@@ -10,46 +10,29 @@ find_package(GLEW)
 find_package(glfw3)
 find_package(imgui)
 
-file (GLOB_RECURSE BoltEngine_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+set(MAIN_FILE_BASIC "example/basic/main.cpp")
 
-set (
-        BoltEngine_HEADER_FILES
-        src/rendering/OpenGL/shader_gl.cpp
-        src/rendering/Vulkan/shader_vk.cpp
-        src/rendering/OpenGL/texture_gl.cpp
-        src/rendering/OpenGL/renderer_gl.cpp
-        src/rendering/Vulkan/renderer_vk.cpp
-        src/rendering/OpenGL/vertex_gl.cpp
-        src/rendering/OpenGL/buffer_gl.cpp
-        src/rendering/OpenGL/index_buffer_gl.cpp
-        src/rendering/OpenGL/frame_buffer_gl.cpp
-        src/core/application.cpp
-        example/basic/layers/gui_layer.cpp
-        src/scene/camera_base.cpp
-        src/core/log.cpp
-        src/exceptions/renderer_exception.cpp
-        src/exceptions/wrong_file_extension_exception.cpp
-        src/exceptions/setup_exception.cpp
-        src/exceptions/assertion_exception.cpp
-        src/exceptions/log_exception.cpp
-        src/events/event_caller.cpp
-        src/io/keyboard.cpp
-        example/basic/camera/test_camera.cpp
-        src/imgui_impl/imgui_impl_glfw.cpp
-        src/imgui_impl/imgui_impl_opengl3.cpp
-        src/io/mouse.cpp
-        src/model/font.cpp
-        src/primitives/line/line.cpp
-        src/exceptions/texture_exception.cpp
-        src/primitives/rectangle/rectangle.cpp
-        src/primitives/triangle/triangle.hpp
-        src/primitives/triangle/triangle.cpp
-        src/core/structs.hpp
-        src/scene/scene.cpp
-        src/scene/scene.hpp
-        example/basic/layers/test_layer_two.cpp example/basic/layers/test_layer_two.hpp example/basic/layers/gui_render_layer.cpp example/basic/layers/gui_render_layer.hpp example/basic/game_functions/object_generator.hpp example/basic/game_functions/object_generator.cpp src/events/mouse_events.hpp example/basic/game_functions/collision.cpp)
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L1 CONFIGURE_DEPENDS "example/*.cpp")
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L2 CONFIGURE_DEPENDS "example/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L3 CONFIGURE_DEPENDS "example/*/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L4 CONFIGURE_DEPENDS "example/*/*/*/*.cpp")
 
-add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
+file (GLOB_RECURSE BoltEngine_SOURCES_L1 CONFIGURE_DEPENDS "src/*.cpp")
+file (GLOB_RECURSE BoltEngine_SOURCES_L2 CONFIGURE_DEPENDS "src/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_SOURCES_L3 CONFIGURE_DEPENDS "src/*/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_SOURCES_L4 CONFIGURE_DEPENDS "src/*/*/*/*.cpp")
+
+add_executable("${CMAKE_PROJECT_NAME}"
+        ${BoltEngine_SOURCES_L1} # Main sources
+        ${BoltEngine_SOURCES_L2}
+        ${BoltEngine_SOURCES_L3}
+        ${BoltEngine_SOURCES_L4}
+        ${BoltEngine_EXAMPLE_SOURCES_L1} # Example sources
+        ${BoltEngine_EXAMPLE_SOURCES_L2}
+        ${BoltEngine_EXAMPLE_SOURCES_L3}
+        ${BoltEngine_EXAMPLE_SOURCES_L4}aaaaa
+        ${MAIN_FILE_BASIC}
+)
 
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC BOLT_DEBUG) # comment out for release build
 
