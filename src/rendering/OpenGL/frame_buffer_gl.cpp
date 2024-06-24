@@ -15,13 +15,12 @@ namespace bolt
         glGenTextures(1, &fbo_texture);
         glBindTexture(GL_TEXTURE_2D, fbo_texture);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, config.width, config.height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_texture, 0);
-
     }
 
     FrameBufferGL::~FrameBufferGL()
@@ -42,6 +41,16 @@ namespace bolt
     void FrameBufferGL::unbind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void FrameBufferGL::bind_texture() const
+    {
+        glBindTexture(GL_TEXTURE_2D, fbo_texture);
+    }
+
+    void FrameBufferGL::unbind_texture()
+    {
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     void FrameBufferGL::delete_frame_buffer() const

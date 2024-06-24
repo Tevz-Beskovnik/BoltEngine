@@ -30,7 +30,7 @@ add_executable("${CMAKE_PROJECT_NAME}"
         ${BoltEngine_EXAMPLE_SOURCES_L1} # Example sources
         ${BoltEngine_EXAMPLE_SOURCES_L2}
         ${BoltEngine_EXAMPLE_SOURCES_L3}
-        ${BoltEngine_EXAMPLE_SOURCES_L4}aaaaa
+        ${BoltEngine_EXAMPLE_SOURCES_L4}
         ${MAIN_FILE_BASIC}
 )
 
