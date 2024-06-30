@@ -16,7 +16,7 @@ TestCamera::TestCamera(uint16_t w, uint16_t h)
 
     last_cursor_position = Mouse::read_pos();
 
-    CameraBase::set_config(config);
+    Camera3dBase::set_config(config);
 }
 
 [[nodiscard]] ref_ptr<TestCamera> TestCamera::create(uint16_t w, uint16_t h)
@@ -48,7 +48,7 @@ void TestCamera::update()
 
     position = rotation * position;
 
-    CameraBase::update();
+    Camera3dBase::update();
 
     //std::cout << pointing.x << " " << pointing.y << " " << pointing.z << std::endl;
 }

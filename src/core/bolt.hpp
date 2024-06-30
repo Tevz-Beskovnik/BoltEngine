@@ -12,7 +12,8 @@
 #include <object_creator.hpp>
 #include <renderer_gl.hpp>
 #include <renderer_vk.hpp>
-#include <camera_base.hpp>
+#include "camera/camera_3d_base.hpp"
+#include "camera/camera_2d_base.hpp"
 #include <mesh_builder.hpp>
 #include <model.hpp>
 #include <line_model.hpp>

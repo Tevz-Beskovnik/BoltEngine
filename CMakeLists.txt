@@ -63,5 +63,6 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/triangle
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/camera
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/game_functions
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/camera
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )

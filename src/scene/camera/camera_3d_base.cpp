@@ -1,19 +1,19 @@
-#include <camera_base.hpp>
+#include "camera_3d_base.hpp"
 
 namespace bolt
 {
-    CameraBase::CameraBase(camera_conf config)
+    Camera3dBase::Camera3dBase(camera_conf config)
         : position(config.position), pointing(config.pointing), id(config.id)
     {
         create_projection_matrix(config.width, config.height, config.f_far, config.f_near, config.fov);
     }
 
-    void CameraBase::set_event_trigger(event_trigger trigger)
+    void Camera3dBase::set_event_trigger(event_trigger trigger)
     {
         this->trigger = trigger;
     }
 
-    void CameraBase::set_config(camera_conf config)
+    void Camera3dBase::set_config(camera_conf config)
     {
         this->position = config.position;
         this->pointing = config.pointing;
@@ -21,7 +21,7 @@ namespace bolt
         create_projection_matrix(config.width, config.height, config.f_far, config.f_near, config.fov);
     }
 
-    void CameraBase::update()
+    void Camera3dBase::update()
     {
         matrix_4 previous_view_matrix = view_matrix;
 
@@ -36,12 +36,12 @@ namespace bolt
         }
     }
 
-    void CameraBase::on_event(Event& e)
+    void Camera3dBase::on_event(Event& e)
     {
         ;
     }
 
-    void CameraBase::create_projection_matrix(uint16_t width, uint16_t height, float f_far, float f_near, float fov)
+    void Camera3dBase::create_projection_matrix(uint16_t width, uint16_t height, float f_far, float f_near, float fov)
     {
         const float fov_rad = 1 / tanf(fov * 0.5f / 180.0f * (float)PI);
 

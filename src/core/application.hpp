@@ -6,7 +6,7 @@
 #include <application_events.hpp>
 #include <layer_interface.hpp>
 #include <window.hpp>
-#include <camera_base.hpp>
+#include "camera/camera_3d_base.hpp"
 
 namespace bolt
 {

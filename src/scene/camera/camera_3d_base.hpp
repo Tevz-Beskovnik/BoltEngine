@@ -4,6 +4,7 @@
 #include <util.hpp>
 #include <primitives.hpp>
 #include <camera_events.hpp>
+#include <camera_base.hpp>
 
 namespace bolt
 {
@@ -18,7 +19,7 @@ namespace bolt
         float fov;
     };
 
-    class CameraBase
+    class Camera3dBase : public CameraBase
     {
         public:
             vector_3 position;
@@ -28,11 +29,11 @@ namespace bolt
             float sideways = 0.0f;
             float vertical = 0.0f;
 
-            CameraBase() = default;
+            Camera3dBase() = default;
 
-            virtual ~CameraBase() = default;
+            virtual ~Camera3dBase() = default;
 
-            explicit CameraBase(camera_conf config);
+            explicit Camera3dBase(camera_conf config);
 
             void set_event_trigger(event_trigger trigger);
 

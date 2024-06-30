@@ -4,6 +4,7 @@
 #include <util.hpp>
 #include <primitives.hpp>
 #include <camera_events.hpp>
+#include <camera_base.hpp>
 
 namespace bolt
 {
@@ -13,7 +14,7 @@ namespace bolt
         vector_2 size;
     };
 
-    class Camera2dBase
+    class Camera2dBase : public CameraBase
     {
         public:
             vector_2 position;

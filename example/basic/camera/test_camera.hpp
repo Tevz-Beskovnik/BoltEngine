@@ -4,7 +4,7 @@
 
 using namespace bolt;
 
-class TestCamera : public CameraBase
+class TestCamera : public Camera3dBase
 {
     public:
         explicit TestCamera(uint16_t w, uint16_t h);

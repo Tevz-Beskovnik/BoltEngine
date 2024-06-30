@@ -8,12 +8,17 @@ MouseButton TestLayerTwo::pressed_button = NONE;
 int32_t TestLayerTwo::action = -1;
 vector_2 TestLayerTwo::mouse_pos = {0, 0};
 
+void binding_function(uint32_t program) {
+    auto uTranslationMat = glGetUniformLocation(program, "uTranslation");
+}
+
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
     :window(window), current_active(0)
 {
-    auto pos = scene.add_object(generate_3d_grid());
+    scene.add_object(ObjectCreator::quad({800.0f, 450.0f, 0.0f}, {20, 20}, "/Users/tevz/Documents/programing/BoltEngine/example/shaders/2d_player.vert", "/Users/tevz/Documents/programing/BoltEngine/example/shaders/frag_tex.glsl"));
+    //auto pos = scene.add_object(generate_3d_grid());
 
-    uint16_t w, h;
+    /*uint16_t w, h;
 
     window->get_size(&w, &h);
     ar = static_cast<float>(w) / static_cast<float>(h);
@@ -35,7 +40,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
         "../example/textures/color-frame-brown.png"
     };
 
-    create_frames(frame_objects, frames, collision_boxes, scene, ar);
+    create_frames(frame_objects, frames, collision_boxes, scene, ar);*/
 }
 
 [[nodiscard]] ref_ptr<TestLayerTwo> TestLayerTwo::create(ref_ptr<Window> window)
@@ -45,7 +50,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
 
 void TestLayerTwo::frame()
 {
-    scene.draw();
+    /*scene.draw();
 
     if(pressed_button == MouseButton::LEFT_BUTTON && action == 1)
     {
@@ -66,7 +71,7 @@ void TestLayerTwo::frame()
 
             current_active = new_active;
         }
-    }
+    }*/
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
