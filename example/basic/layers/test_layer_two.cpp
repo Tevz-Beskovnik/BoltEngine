@@ -1,21 +1,46 @@
 //
 // Created by tevz on 11.7.2023.
 //
+#define MOVEMENT_MODIFIER 5
 
 #include <test_layer_two.hpp>
+
+/**
+ * TODO:
+ * Screen coords are from -1 - 1 no 0 - 1 as I assumed (you already knew this you idiot
+ * Anyway make sure it binds correctly
+ * */
 
 MouseButton TestLayerTwo::pressed_button = NONE;
 int32_t TestLayerTwo::action = -1;
 vector_2 TestLayerTwo::mouse_pos = {0, 0};
+vector_2 TestLayerTwo::obj_pos = {800, 450};
+
+static bool w_held;
+static bool a_held;
+static bool s_held;
+static bool d_held;
+static matrix_4 translation_matrix;
 
 void binding_function(uint32_t program) {
     auto uTranslationMat = glGetUniformLocation(program, "uTranslation");
+
+    translation_matrix.m[0][0] = TestLayerTwo::obj_pos.x/1600;
+    translation_matrix.m[1][1] = TestLayerTwo::obj_pos.y/900;
+
+    glUniformMatrix4fv(uTranslationMat, 1, GL_TRUE, &translation_matrix.m[0][0]);
 }
 
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
     :window(window), current_active(0)
 {
-    scene.add_object(ObjectCreator::quad({800.0f, 450.0f, 0.0f}, {20, 20}, "/Users/tevz/Documents/programing/BoltEngine/example/shaders/2d_player.vert", "/Users/tevz/Documents/programing/BoltEngine/example/shaders/frag_tex.glsl"));
+    ObjectCreator::set_uniform_binding_func(binding_function);
+
+    auto quad = ObjectCreator::quad({1.0f, 1.0f, 0.0f}, {0.05f, 0.05f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
+
+    quad->add_texture("../example/textures/color-frame-bordo.png");
+
+    scene.add_object(quad);
     //auto pos = scene.add_object(generate_3d_grid());
 
     /*uint16_t w, h;
@@ -50,6 +75,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
 
 void TestLayerTwo::frame()
 {
+    scene.draw();
     /*scene.draw();
 
     if(pressed_button == MouseButton::LEFT_BUTTON && action == 1)
@@ -73,6 +99,9 @@ void TestLayerTwo::frame()
         }
     }*/
 
+    obj_pos.x += static_cast<float>(-MOVEMENT_MODIFIER*a_held) + static_cast<float>(MOVEMENT_MODIFIER*d_held);
+    obj_pos.y += static_cast<float>(-MOVEMENT_MODIFIER*s_held) + static_cast<float>(MOVEMENT_MODIFIER*w_held);
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -83,9 +112,9 @@ void TestLayerTwo::frame()
 
         ImGui::Begin("Mouse info");
 
-        ImGui::Text("Cursor position:");
+        ImGui::Text("Camera position:");
 
-        ImGui::Text("X: %f, Y: %f", mouse_pos.x, mouse_pos.y);
+        ImGui::Text("X: %f, Y: %f", obj_pos.x, obj_pos.y);
 
         ImGui::Text("Button clicked:");
 
@@ -113,6 +142,9 @@ void TestLayerTwo::on_event(Event& e) const
 
     dispatcher.dispatch<MouseMoveEvent>(CAST_MEMBER_FUNCTION(handle_mouse_position_event));
     dispatcher.dispatch<MouseClickEvent>(CAST_MEMBER_FUNCTION(handle_mouse_button_event));
+    dispatcher.dispatch<WindowCloseEvent>(CAST_MEMBER_FUNCTION(handle_close_window_event));
+    dispatcher.dispatch<class CameraUpdate>(CAST_MEMBER_FUNCTION(handle_camera_update));
+    dispatcher.dispatch<class KeyEvent>(CAST_MEMBER_FUNCTION(handle_keyboard_input));
 }
 
 bool TestLayerTwo::handle_mouse_position_event(MouseMoveEvent& event) const
@@ -131,10 +163,69 @@ bool TestLayerTwo::handle_mouse_position_event(MouseMoveEvent& event) const
     return false;
 }
 
+bool TestLayerTwo::handle_camera_update(class CameraUpdate& event) const
+{
+    translation_matrix = event.get_view_matrix();
+
+    return false;
+}
+
 bool TestLayerTwo::handle_mouse_button_event(MouseClickEvent& event) const
 {
     pressed_button = static_cast<MouseButton>(event.button);
     action = event.action;
 
     return false;
+}
+
+bool TestLayerTwo::handle_keyboard_input(class bolt::KeyEvent &event) const
+{
+    switch(event.key) {
+        case Key::A:
+        {
+            if(event.action == GLFW_PRESS) {
+                a_held = true;
+            } else if(event.action == GLFW_RELEASE) {
+                a_held = false;
+            }
+            break;
+        }
+        case Key::D:
+        {
+            if(event.action == GLFW_PRESS) {
+                d_held = true;
+            } else if(event.action == GLFW_RELEASE) {
+                d_held = false;
+            }
+            break;
+        }
+        case Key::W:
+        {
+            if(event.action == GLFW_PRESS) {
+                w_held = true;
+            } else if(event.action == GLFW_RELEASE) {
+                w_held = false;
+            }
+            break;
+        }
+        case Key::S:
+        {
+            if(event.action == GLFW_PRESS) {
+                s_held = true;
+            } else if(event.action == GLFW_RELEASE) {
+                s_held = false;
+            }
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool TestLayerTwo::handle_close_window_event(WindowCloseEvent& event) const
+{
+    StopAppEvent close_event;
+    trigger(close_event);
+
+    return true;
 }

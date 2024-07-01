@@ -1,6 +1,12 @@
 #include <2d_test_camera.hpp>
 
-[[nodiscard]] ref_ptr<Camera2dTest> Camera2dTest::create(camera_2d_conf& config)
+Camera2dTest::Camera2dTest(const camera_2d_conf& config)
+    : Camera2dBase(config)
+{
+    ;
+}
+
+[[nodiscard]] ref_ptr<Camera2dTest> Camera2dTest::create(const camera_2d_conf& config)
 {
     return create_ref<Camera2dTest>(config);
 }
@@ -17,22 +23,22 @@ bool Camera2dTest::handle_key_event(class KeyEvent& event)
     switch(event.key) {
         case Key::A:
         {
-            position.x -= 0.1;
+            position.x -= 1.0f;
             break;
         }
         case Key::D:
         {
-            position.x += 0.1;
+            position.x += 1.0f;
             break;
         }
         case Key::W:
         {
-            position.y += 0.1;
+            position.y += 1.0f;
             break;
         }
         case Key::S:
         {
-            position.y -= 0.1;
+            position.y -= 1.0f;
             break;
         }
     }

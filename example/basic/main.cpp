@@ -1,3 +1,5 @@
+#define BOLT_LOG_FILE "C:/Users/tevzb/OneDrive/Dokumenti/BoltEngine/log"
+
 #include <bolt.hpp>
 #include <test_layer_two.hpp>
 #include <2d_test_camera.hpp>
@@ -19,15 +21,9 @@ int main() // todo start handeling exceptions
         .fullscreen = false
     };
 
-    std::cout << "hello" << std::endl;
-
     RGB bg(65, 134, 244);
 
-    std::cout << "hello" << std::endl;
-
     ref_ptr<Window> window = Window::create(w_conf);
-
-    std::cout << "hello" << std::endl;
 
     window->set_background_color(&bg);
 
@@ -38,21 +34,18 @@ int main() // todo start handeling exceptions
     app.add_layer(TestLayerTwo::create(window));
 
     //app.add_layer(GuiRenderLayer::create(window));
-    std::cout << "hello" << std::endl;
 
     //window->hide_cursor();
 
-    std::cout << "hello" << std::endl;
-
     camera_2d_conf camera_config = {
         .position = vector_2({
-                                 0.0f,
-                                 0.0f
-                             }),
+            800.0f,
+            450.0f
+        }),
         .size = vector_2({
-                             800,
-                             600
-                         })
+            1600,
+            900
+        })
     };
 
     app.add_camera(Camera2dTest::create(camera_config));

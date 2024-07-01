@@ -9,6 +9,8 @@ using namespace bolt;
 class TestLayerTwo final : public LayerInterface
 {
     public:
+        static vector_2 obj_pos;
+
         explicit TestLayerTwo(ref_ptr<Window> window);
 
         [[nodiscard]] static ref_ptr<TestLayerTwo> create(ref_ptr<Window> window);
@@ -24,6 +26,12 @@ class TestLayerTwo final : public LayerInterface
         bool handle_mouse_position_event(MouseMoveEvent& event) const;
 
         bool handle_mouse_button_event(MouseClickEvent& event) const;
+
+        bool handle_close_window_event(WindowCloseEvent& event) const;
+
+        bool handle_camera_update(class CameraUpdate& event) const;
+
+        bool handle_keyboard_input(class KeyEvent& event) const;
 
     private:
         static vector_2 mouse_pos;

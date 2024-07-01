@@ -23,7 +23,7 @@ namespace bolt
 
             Camera2dBase();
 
-            explicit Camera2dBase(camera_2d_conf config);
+            explicit Camera2dBase(const camera_2d_conf& config);
 
             void set_event_trigger(event_trigger trigger);
 

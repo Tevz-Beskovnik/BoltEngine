@@ -11,7 +11,7 @@ namespace bolt {
         ;
     }
 
-    Camera2dBase::Camera2dBase(camera_2d_conf config)
+    Camera2dBase::Camera2dBase(const camera_2d_conf& config)
         : position(config.position), size(config.size)
     {
         ;
@@ -32,9 +32,12 @@ namespace bolt {
     {
         matrix_4 previous_translation_matrix = this->translation_matrix;
 
+        float actual_x = this->position.x / this->size.x;
+        float actual_y = this->position.y / this->size.y;
+
         this->translation_matrix = {
-            this->position.x, 0.0f, 0.0f, 0.0f,
-            0.0f, this->position.y, 0.0f, 0.0f,
+            actual_x, 0.0f, 0.0f, 0.0f,
+            0.0f, actual_y, 0.0f, 0.0f,
             0.0f, 0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 0.0f, 1.0f
         };

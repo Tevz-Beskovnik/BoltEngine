@@ -6,7 +6,9 @@ using namespace bolt;
 
 class Camera2dTest : public Camera2dBase {
     public:
-        [[nodiscard]] static ref_ptr<Camera2dTest> create(camera_2d_conf& config);
+        explicit Camera2dTest(const camera_2d_conf& config);
+
+        [[nodiscard]] static ref_ptr<Camera2dTest> create(const camera_2d_conf& config);
 
         void on_event(Event& event) override;
 
