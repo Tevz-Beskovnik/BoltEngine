@@ -20,15 +20,15 @@ static bool w_held;
 static bool a_held;
 static bool s_held;
 static bool d_held;
-static matrix_4 translation_matrix;
+ static vector_3 translationVector = {0.0f, 0.0f, 1.0f};
 
 void binding_function(uint32_t program) {
-    auto uTranslationMat = glGetUniformLocation(program, "uTranslation");
+    auto uTranslationVec = glGetUniformLocation(program, "uTranslation");
 
-    translation_matrix.m[0][0] = TestLayerTwo::obj_pos.x/1600;
-    translation_matrix.m[1][1] = TestLayerTwo::obj_pos.y/900;
+    translationVector.x = (TestLayerTwo::obj_pos.x/1600)*2-1;
+    translationVector.y = (TestLayerTwo::obj_pos.y/900)*2-1;
 
-    glUniformMatrix4fv(uTranslationMat, 1, GL_TRUE, &translation_matrix.m[0][0]);
+    glUniform3f(uTranslationVec, translationVector.x, translationVector.y, translationVector.z);
 }
 
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
@@ -36,7 +36,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
 {
     ObjectCreator::set_uniform_binding_func(binding_function);
 
-    auto quad = ObjectCreator::quad({1.0f, 1.0f, 0.0f}, {0.05f, 0.05f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
+    auto quad = ObjectCreator::quad({0.0f, 0.0f, 0.0f}, {0.05f, 0.05f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
 
     quad->add_texture("../example/textures/color-frame-bordo.png");
 
@@ -114,7 +114,7 @@ void TestLayerTwo::frame()
 
         ImGui::Text("Camera position:");
 
-        ImGui::Text("X: %f, Y: %f", obj_pos.x, obj_pos.y);
+        ImGui::Text("X: %f, Y: %f", (TestLayerTwo::obj_pos.x/1600)*2-1, (TestLayerTwo::obj_pos.y/900)*2-1);
 
         ImGui::Text("Button clicked:");
 
@@ -143,7 +143,6 @@ void TestLayerTwo::on_event(Event& e) const
     dispatcher.dispatch<MouseMoveEvent>(CAST_MEMBER_FUNCTION(handle_mouse_position_event));
     dispatcher.dispatch<MouseClickEvent>(CAST_MEMBER_FUNCTION(handle_mouse_button_event));
     dispatcher.dispatch<WindowCloseEvent>(CAST_MEMBER_FUNCTION(handle_close_window_event));
-    dispatcher.dispatch<class CameraUpdate>(CAST_MEMBER_FUNCTION(handle_camera_update));
     dispatcher.dispatch<class KeyEvent>(CAST_MEMBER_FUNCTION(handle_keyboard_input));
 }
 
@@ -159,13 +158,6 @@ bool TestLayerTwo::handle_mouse_position_event(MouseMoveEvent& event) const
 
     mouse_pos.x -= 1;
     mouse_pos.y = 1 - mouse_pos.y;
-
-    return false;
-}
-
-bool TestLayerTwo::handle_camera_update(class CameraUpdate& event) const
-{
-    translation_matrix = event.get_view_matrix();
 
     return false;
 }

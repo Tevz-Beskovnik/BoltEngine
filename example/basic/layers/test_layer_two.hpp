@@ -29,8 +29,6 @@ class TestLayerTwo final : public LayerInterface
 
         bool handle_close_window_event(WindowCloseEvent& event) const;
 
-        bool handle_camera_update(class CameraUpdate& event) const;
-
         bool handle_keyboard_input(class KeyEvent& event) const;
 
     private:

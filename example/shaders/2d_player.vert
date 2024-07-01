@@ -6,9 +6,9 @@ layout (location = 2) in vec2 aUV;
 
 out vec2 oUV;
 
-uniform mat4 uTranslation;
+uniform vec3 uTranslation;
 
 void main() {
     oUV = aUV;
-    gl_Position = vec4(aPos, 1.0f) * uTranslation;
+    gl_Position = vec4(aPos, 1.0f) + vec4(uTranslation, 1.0f);;
 }
