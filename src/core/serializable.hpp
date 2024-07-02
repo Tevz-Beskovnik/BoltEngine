@@ -6,7 +6,7 @@ namespace bolt
 {
     class Serializable
     {
-        virtual Serializable deserialize() = 0;
+        virtual ref_ptr<Serializable> deserialize(std::string input) = 0;
 
         virtual std::string serialize() = 0;
     };

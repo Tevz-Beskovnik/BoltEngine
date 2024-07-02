@@ -34,4 +34,14 @@ namespace bolt
             }
         }
     }
+
+    ref_ptr<Serializable> Scene::deserialize(std::string input)
+    {
+
+    }
+
+    std::string Scene::serialize()
+    {
+
+    }
 }

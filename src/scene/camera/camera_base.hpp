@@ -1,9 +1,10 @@
 #pragma once
 
 #include <event.hpp>
+#include <serializable.hpp>
 
 namespace bolt {
-    class CameraBase {
+    class CameraBase : public Serializable {
     public:
         CameraBase() = default;
 

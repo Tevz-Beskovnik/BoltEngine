@@ -4,10 +4,11 @@
 #include <util.hpp>
 #include <event.hpp>
 #include <scene.hpp>
+#include <serializable.hpp>
 
 namespace bolt
 {
-    class LayerInterface
+    class LayerInterface : public Serializable
     {
         public:
             virtual ~LayerInterface() { ; }

@@ -4,10 +4,11 @@
 #include <util.hpp>
 #include <primitives.hpp>
 #include <model_interface.hpp>
+#include <serializable.hpp>
 
 namespace bolt
 {
-    class RenderInterface
+    class RenderInterface : public Serializable
     {
         public:
             virtual ~RenderInterface() { ; };
