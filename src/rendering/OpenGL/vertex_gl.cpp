@@ -26,7 +26,7 @@ namespace bolt {
                 layout.size,
                 layout.type,
                 layout.normalise,
-                layout.totalSizeInBytes,
+                layout.total_size_in_bytes,
                 (void *) layout.offset
             );
 

@@ -1,32 +1,46 @@
 cmake_minimum_required(VERSION 3.20.5)
 project(BoltEngine VERSION 1.0)
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+# TODO localize all things to do with engine in a library!!! THIS SHOULD BE HIGH PRIORITY
 
 set(CMAKE_CXX_STANDARD 23)
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_APPLE_SILICON_PROCESSOR arm64) # comment out for linux builds
 
-file (GLOB_RECURSE BoltEngine_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+find_package(GLEW)
+find_package(glfw3)
+find_package(imgui)
 
-set (
-        BoltEngine_HEADER_FILES
-        src/rendering/OpenGL/shader_gl.cpp
-        src/rendering/Vulkan/shader_vk.cpp
-        src/rendering/OpenGL/texture_gl.cpp
-        src/rendering/OpenGL/renderer_gl.cpp
-        src/rendering/Vulkan/renderer_vk.cpp src/rendering/OpenGL/vertex_gl.cpp src/rendering/OpenGL/buffer_gl.cpp src/rendering/OpenGL/index_buffer_gl.cpp src/rendering/OpenGL/frame_buffer_gl.cpp src/core/application.cpp example/basic/layers/test_layer.cpp src/scene/camera.cpp src/core/log.cpp src/exceptions/renderer_exception.cpp src/exceptions/wrong_file_extension_exception.cpp src/exceptions/setup_exception.cpp src/exceptions/assertion_exception.cpp)
+set(MAIN_FILE_BASIC "example/basic/main.cpp")
 
-add_executable("${CMAKE_PROJECT_NAME}" ${BoltEngine_SOURCES} "example/basic/main.cpp" ${BoltEngine_HEADER_FILES})
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L1 CONFIGURE_DEPENDS "example/*.cpp")
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L2 CONFIGURE_DEPENDS "example/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L3 CONFIGURE_DEPENDS "example/*/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L4 CONFIGURE_DEPENDS "example/*/*/*/*.cpp")
+
+file (GLOB_RECURSE BoltEngine_SOURCES_L1 CONFIGURE_DEPENDS "src/*.cpp")
+file (GLOB_RECURSE BoltEngine_SOURCES_L2 CONFIGURE_DEPENDS "src/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_SOURCES_L3 CONFIGURE_DEPENDS "src/*/*/*.cpp")
+file (GLOB_RECURSE BoltEngine_SOURCES_L4 CONFIGURE_DEPENDS "src/*/*/*/*.cpp")
+
+add_executable("${CMAKE_PROJECT_NAME}"
+        ${BoltEngine_SOURCES_L1} # Main sources
+        ${BoltEngine_SOURCES_L2}
+        ${BoltEngine_SOURCES_L3}
+        ${BoltEngine_SOURCES_L4}
+        ${BoltEngine_EXAMPLE_SOURCES_L1} # Example sources
+        ${BoltEngine_EXAMPLE_SOURCES_L2}
+        ${BoltEngine_EXAMPLE_SOURCES_L3}
+        ${BoltEngine_EXAMPLE_SOURCES_L4}
+        ${MAIN_FILE_BASIC}
+)
 
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC BOLT_DEBUG) # comment out for release build
-
-target_link_libraries("${CMAKE_PROJECT_NAME}" CONAN_PKG::glfw CONAN_PKG::glew)
 
 set(BoltEngine_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
+
+target_link_libraries(${PROJECT_NAME} GLEW::GLEW glfw imgui::imgui)
 
 target_include_directories(
         "${CMAKE_PROJECT_NAME}"
@@ -42,5 +56,13 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/layers
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/scene
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/exceptions
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/imgui_impl
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/line
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/rectangle
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives/triangle
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/camera
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/game_functions
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/camera
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )

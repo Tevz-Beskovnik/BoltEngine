@@ -7,9 +7,33 @@
 namespace bolt
 {
     Application::Application()
-        :running(true)
+        :running(true), window(nullptr)
     {
         LogUtil::initLogs();
+
+        // setup imgui
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;  // Enable Mouse Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    }
+
+    Application::Application(const ref_ptr<Window>& window)
+            :running(true), window(window)
+    {
+        LogUtil::initLogs();
+
+        window->register_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
+
+        // setup imgui
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;  // Enable Mouse Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     }
 
     void Application::add_layer(ref_ptr<LayerInterface> layer)
@@ -19,10 +43,24 @@ namespace bolt
         layer->bind_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }
 
+    void Application::add_camera(ref_ptr<CameraBase> camera)
+    {
+        cameras.push_back(camera);
+
+        camera->set_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
+    }
+
     void Application::run() const
     {
+        if(window == nullptr) throw SetupException("Application window is not set");
+
         while(running)
+        {
+            window->frame_routine();
             for(const auto& layer : layers) layer->frame();
+            for(const auto& camera : cameras) camera->update();
+            window->cleanup_routine();
+        }
     }
 
     void Application::on_event(Event& event)
@@ -38,6 +76,13 @@ namespace bolt
 
             layer->on_event(event);
         }
+
+        for(const auto& camera : cameras)
+        {
+            if(event.handled) break;
+
+            camera->on_event(event);
+        }
     }
 
     bool Application::handle_app_stop(StopAppEvent& e)
@@ -46,5 +91,12 @@ namespace bolt
 
         running = false;
         return true;
+    }
+
+    void Application::set_window(const ref_ptr<bolt::Window> &window)
+    {
+        Application::window = window;
+
+        window->register_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }
 }

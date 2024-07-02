@@ -24,12 +24,17 @@ namespace bolt
     #define CAST_MEMBER_FUNCTION(function) [this](auto&&... args) -> decltype(auto) { return this->function(std::forward<decltype(args)>(args)...); }
     #endif
 
+    #ifndef TEST_EQUAL
+    #define TEST_EQUAL(expression, err) static_assert(expression, err);
+    #endif
+
     enum render_framework
     {
         OPEN_GL = 0,
         VULKAN = 1
     };
 
+    typedef GLFWwindow* ManagedWindowPtr;
     typedef const char* const_str;
     typedef char* basic_str;
 

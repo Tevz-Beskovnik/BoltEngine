@@ -10,16 +10,21 @@
 #pragma once
 
 #include <core.hpp>
-#include <window_interface.hpp>
-#include <window_gl.hpp>
-#include <window_vk.hpp>
 #include <window_events.hpp>
+#include <event_caller.hpp>
+#include <core.hpp>
+#include <colors.hpp>
+#include <util.hpp>
+#include <keyboard_events.hpp>
+#include <setup_exception.hpp>
+#include <keyboard.hpp>
+#include <mouse.hpp>
+#include <imgui_impl_glfw.hpp>
 
 namespace bolt
 {
     struct window_config
     {
-        render_framework framework;
         uint16_t width;
         uint16_t height;
         const_str title;
@@ -29,41 +34,52 @@ namespace bolt
     class Window
     {
         public:
-            [[nodiscard]] explicit Window(window_config* config);
+            explicit Window(const window_config& config);
 
-            [[nodiscard]] static ref_ptr<Window> create(window_config* config);
+            ~Window();
 
-            void set_window_dims(uint16_t width, uint16_t height);
+            [[nodiscard]] static ref_ptr<Window> create(const window_config& config);
 
-            void window_windowed(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
+            void resize_window(uint16_t width, uint16_t height);
 
-            void window_windowed(uint16_t width, uint16_t height);
+            void fullscreen();
+
+            void windowed(uint16_t width, uint16_t height);
+
+            void windowed(uint16_t width, uint16_t height, uint16_t x, uint16_t y);
+
+            void frame_routine();
 
             void register_event_trigger(event_trigger trigger);
 
-            void window_windowed();
+            void get_size(uint16_t *width, uint16_t *height) const;
 
-            void window_fullscreen();
-
-            void window_frame_routine();
-
-            void window_cleanup_routine();
+            void cleanup_routine();
 
             void set_background_color(RGB* color);
 
-            void get_size(uint16_t *width, uint16_t *height);
+            void hide_cursor() const;
 
             [[nodiscard]] bool is_window_open() const;
 
-            void close() const;
+            void close();
 
         private:
+            bool background_color_owned;
+            RGB* background_color;
+
             event_trigger trigger;
 
             basic_str title;
 
             uint16_t width, height;
 
-            single_ptr<WindowInterface> framework_window;
+            EventCaller* caller;
+
+            GLFWwindow* window;
+
+            void set_active();
+
+            void set_event_caller();
     };
 }

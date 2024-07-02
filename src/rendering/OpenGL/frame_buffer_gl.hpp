@@ -8,14 +8,14 @@ namespace bolt
 {
     struct frame_buffer_conf
     {
-        uint32_t width;
-        uint32_t height;
+        int32_t width;
+        int32_t height;
     };
 
     class FrameBufferGL
     {
         public:
-            FrameBufferGL(frame_buffer_conf config);
+            explicit FrameBufferGL(frame_buffer_conf config);
 
             virtual ~FrameBufferGL();
 
@@ -24,6 +24,10 @@ namespace bolt
             void bind() const;
 
             static void unbind();
+
+            void bind_texture() const;
+
+            static void unbind_texture();
 
             void delete_frame_buffer() const;
         private:

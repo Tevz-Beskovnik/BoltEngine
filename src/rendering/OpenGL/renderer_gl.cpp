@@ -16,6 +16,8 @@ namespace bolt {
 
         this->shader = ShaderGL::create(config.shader_config);
 
+        this->vertex->unbind();
+
         for(const auto& texture : config.texture_config)
             this->textures.push_back(TextureGL::create(texture));
     }
@@ -43,8 +45,26 @@ namespace bolt {
         ASSERT(!path.empty(), "Path cannot be a empty string");
         ASSERT_FILE_EXISTS(path.c_str(), "Bad texture file");
         ASSERT((textures.size() < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS), "Max number of textures binded to renderer");
+        // todo: slice string and determin file extension
+        this->textures.push_back(TextureGL::create({TEXTURE_2D, path.c_str()})); // TODO: implement texture class
+    }
 
-        this->textures.push_back(TextureGL::create({TEXTURE_2D, "neke", 0, 0})); // TODO: implement texture class
+    void RendererGL::add_model(const ref_ptr<ModelInterface>& model)
+    {
+        this->model->add_model(model);
+
+        this->vertex = VertexGL::create({
+            .index_buffer = this->model->get_index_buffer().size() != 0
+                ? IndexBufferGL::create(this->model->get_index_buffer())
+                : nullptr,
+            .verticies = this->model->get_drawable_vector(),
+            .layouts = this->model->get_attribute_layout()
+        });
+    }
+
+    void RendererGL::add_binding_func(uniform_bindings func)
+    {
+        this->binding_function = func;
     }
 
     void RendererGL::render() const {
@@ -52,20 +72,28 @@ namespace bolt {
 
         vertex->bind();
 
-        for(const auto& texture : textures) texture->bind();
+        for(const auto& texture : textures)
+        {
+            texture->bind();
+
+            texture->bind_uniform(shader->get_program());
+        }
 
         if(binding_function != nullptr)
             binding_function(shader->get_program());
 
         if(!vertex->has_index())
             if(instances == 1)
-                glDrawArrays(draw_type, offset, static_cast<int>(3*model->polygon_count())); // TODO switch drawing to glDrawElements if index buffer exists
+                glDrawArrays(draw_type, offset, static_cast<int>(model->vertices_count()));
             else
-                glDrawArraysInstanced(draw_type, offset, static_cast<int>(3*model->polygon_count()), static_cast<int>(instances));
+                glDrawArraysInstanced(draw_type, offset, static_cast<int>(model->vertices_count()), static_cast<int>(instances));
         else
             if(instances == 1)
-                glDrawElements(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0);
+                glDrawElements(draw_type, static_cast<int>(model->vertices_count()), GL_UNSIGNED_INT, 0);
             else
-                glDrawElementsInstanced(draw_type, static_cast<int>(3*model->polygon_count()), GL_UNSIGNED_INT, 0, static_cast<int>(instances));
+                glDrawElementsInstanced(draw_type, static_cast<int>(model->vertices_count()), GL_UNSIGNED_INT, 0, static_cast<int>(instances));
+
+        for(const auto& texture : textures)
+            texture->unbind();
     }
 }

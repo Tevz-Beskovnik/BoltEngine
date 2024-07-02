@@ -5,7 +5,7 @@
 namespace bolt
 {
     #ifndef BOLT_LOG_FILE
-        #define BOLT_LOG_FILE "/Users/tevz/Documents/programing/BoltEngine/log"
+        #define BOLT_LOG_FILE "../log"
     #endif
 
     #define BOLT_LOG_ERROR(msg) LogUtil::log(LogType::ERROR, msg);
@@ -18,12 +18,12 @@ namespace bolt
         #define BOLT_LOG_WARNING(msg) LogUtil::log(LogType::WARNING, msg);
         #define BOLT_LOG_INFO(msg) LogUtil::log(LogType::INFO, msg);
     #else
-        #define BOLT_MSG_DEBUG(string)
-        #define BOLT_MSG_ERROR(bolt_msg_err)
-        #define BOLT_ERROR(err)
+        #define BOLT_MSG_DEBUG(string) {}
+        #define BOLT_MSG_ERROR(bolt_msg_err) {}
+        #define BOLT_ERROR(err) {}
 
-        #define BOLT_LOG_WARNING(msg)
-        #define BOLT_LOG_INFO(msg)
+        #define BOLT_LOG_WARNING(msg) {}
+        #define BOLT_LOG_INFO(msg) {}
     #endif
 
     enum LogType
@@ -41,7 +41,7 @@ namespace bolt
 
             static void initLogs();
 
-            static void log(LogType, std::string, source_location s = source_location::current());
+            static void log(LogType, const std::string&, source_location s = source_location::current());
 
         public:
             static time_t raw_time;

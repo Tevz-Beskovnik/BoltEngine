@@ -2,103 +2,229 @@
 
 namespace bolt
 {
-    [[nodiscard]] Window::Window(window_config* config)
-        : width(config->width), height(config->height), title((basic_str)config->title)
+    [[nodiscard]] Window::Window(const window_config& config)
+        :background_color(new RGB()), background_color_owned(true), width(config.width), height(config.height), title((basic_str)config.title)
     {
-        if(config->framework == OPEN_GL)
-            framework_window = WindowGL::create(width, height, title);
-        else if(config->framework == VULKAN)
-            framework_window = WindowVK::create(width, height, title);
+        if (!glfwInit())
+            BOLT_ERROR(SetupException("Failed to initialise GLFW"));
 
-        if(config->fullscreen)
-            framework_window->fullscreen();
+        BOLT_LOG_INFO("GLFW initialised")
 
-        framework_window->set_active();
+        std::cout << "hello5" << std::endl;
+
+        glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+        BOLT_LOG_INFO("Creating window")
+
+        window = glfwCreateWindow((int)width, (int)height, title, NULL, NULL);
+
+        Keyboard::set_window(window);
+        Mouse::set_window(window);
+
+        if(window == NULL)
+        {
+            glfwTerminate();
+            BOLT_ERROR(SetupException("Failed to initialize window"))
+        }
+
+        glfwMakeContextCurrent(window);
+
+        BOLT_LOG_INFO("Set context to window")
+
+        if(glewInit() != GLEW_OK)
+            BOLT_ERROR(SetupException("GLEW failed to init"))
+
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
+        //ImGui::StyleColorsLight();
+
+        // Setup Platform/Renderer backends
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 150");
+
+        set_active();
+
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+        if(config.fullscreen)
+            fullscreen();
     }
 
-    [[nodiscard]] ref_ptr<Window> Window::create(window_config* config)
+    Window::~Window()
     {
-        ASSERT_NE(strlen(config->title), 0, "Title cannot be null len");
-        ASSERT(!(config->height == 0 || config->width == 0), "Width and height cannot be 0");
-        ASSERT((config->framework == 0 || config->framework == 1), "Invalid window framework selected");
+        delete caller;
+    }
+
+    [[nodiscard]] ref_ptr<Window> Window::create(const window_config& config)
+    {
+        ASSERT_NE(strlen(config.title), 0, "Title cannot be null len");
+        ASSERT(!(config.height == 0 || config.width == 0), "Width and height cannot be 0");
 
         return create_ref<Window>(config);
     }
 
-    void Window::set_window_dims(uint16_t new_width, uint16_t new_height)
+    void Window::resize_window(uint16_t width, uint16_t height)
     {
-        width = new_width;
-        height = new_height;
-
-        framework_window->resize_window(width, height);
+        this->width = width;
+        this->height = height;
+        BOLT_LOG_INFO("Resizing window");
+        glfwSetWindowSize(window, width, height);
     }
 
-    void Window::window_windowed(uint16_t x, uint16_t y, uint16_t new_width, uint16_t new_height)
+    void Window::get_size(uint16_t *set_width, uint16_t *set_height) const
     {
-        width = new_width;
-        height = new_height;
-
-        framework_window->windowed(width, height, x, y);
+        int s_width, s_height;
+        glfwGetWindowSize(window, &s_width, &s_height);
+        *set_width = s_width;
+        *set_height = s_height;
     }
 
-    void Window::window_windowed(uint16_t new_width, uint16_t new_height)
+    void Window::fullscreen()
     {
-        width = new_width;
-        height = new_height;
+        BOLT_LOG_INFO("Seting window to fullscreen")
 
-        framework_window->windowed(width, height);
+        int width, height;
+
+        glfwGetWindowSize(window , &width, &height);
+
+        glfwSetWindowMonitor(
+            window,
+            glfwGetPrimaryMonitor(),
+            0,
+            0,
+            width,
+            height,
+            GLFW_DONT_CARE
+        );
+    }
+
+    void Window::windowed(uint16_t width, uint16_t height)
+    {
+        this->width = width;
+        this->height = height;
+
+        BOLT_LOG_INFO("Seting window to windowed")
+        glfwSetWindowMonitor(
+            window,
+            NULL,
+            0,
+            0,
+            width,
+            height,
+            GLFW_DONT_CARE
+        );
+    }
+
+    void Window::windowed(uint16_t width, uint16_t height, uint16_t x, uint16_t y)
+    {
+        this->width = width;
+        this->height = height;
+
+        BOLT_LOG_INFO("Seting window to windowed")
+        glfwSetWindowMonitor(
+            window,
+            NULL,
+            x,
+            y,
+            width,
+            height,
+            GLFW_DONT_CARE
+        );
+    }
+
+    void Window::frame_routine()
+    {
+        glfwPollEvents();
+
+        glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Window::register_event_trigger(event_trigger trigger)
     {
         this->trigger = trigger;
+
+        caller = new EventCaller(trigger);
+
+        set_event_caller();
     }
 
-    void Window::window_windowed()
+    void Window::set_event_caller()
     {
-        framework_window->windowed(width, height);
+        glfwSetWindowUserPointer(window, caller);
+
+        // TODO decide what kind of input handeling to use direct or event based
+        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods); // if you overload the callback you also have to register the imgui impl callbacks
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_keyboard_event(key, scancode, action, mods);
+        });
+
+        glfwSetWindowCloseCallback(window, [](GLFWwindow* window){
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_window_close_event();
+        });
+
+        glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height){
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_window_resize_event(width, height);
+        });
+
+        glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
+            ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_mouse_event(button, action, mods);
+        });
+
+        glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x_pos, double y_pos){
+            ImGui_ImplGlfw_CursorPosCallback(window, x_pos, y_pos);
+            static_cast<EventCaller*>(glfwGetWindowUserPointer(window))->call_mouse_position_event(x_pos, y_pos);
+        });
     }
 
-    void Window::window_fullscreen()
+    void Window::cleanup_routine()
     {
-        framework_window->fullscreen();
-    }
-
-    void Window::window_frame_routine()
-    {
-        framework_window->frame_routine();
-    }
-
-    void Window::window_cleanup_routine()
-    {
-        if(!is_window_open() && trigger != nullptr) // TODO make sure to add a away to register a callback to glfw directly
-        {
-            WindowCloseEvent event;
-
-            trigger(event);
-        }
-
-        framework_window->cleanup_routine();
+        glfwSwapBuffers(window);
     }
 
     void Window::set_background_color(RGB* color)
     {
-        framework_window->set_background_color(color);
+        if(background_color_owned)
+            delete background_color;
+
+        background_color = color;
+        background_color_owned = false;
     }
 
-    void Window::get_size(uint16_t *set_width, uint16_t *set_height)
+    void Window::hide_cursor() const
     {
-        *set_width = width;
-        *set_height = height;
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+
+    void Window::set_active()
+    {
+        glfwMakeContextCurrent(window);
+
+        BOLT_LOG_INFO("Set context to window")
+
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        glCullFace(GL_FRONT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        BOLT_LOG_INFO("GLEW initialised")
     }
 
     [[nodiscard]] bool Window::is_window_open() const
     {
-        return framework_window->should_close();
+        return !glfwWindowShouldClose(window);
     }
 
-    void Window::close() const
+    void Window::close()
     {
-        framework_window->close();
+        glfwDestroyWindow(window);
     }
 }

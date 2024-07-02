@@ -15,6 +15,7 @@ conaninfo.txt
 graph_info.json
 _deps
 *.log
+.DS_Store
 
 /cmake-build-debug/**
 

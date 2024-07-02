@@ -1,19 +1,13 @@
 #pragma once
 
 #include <primitives.hpp>
+#include <structs.hpp>
 
 namespace bolt {
-    struct AttributeLayout
-    {
-        int32_t size;
-        uint32_t type;
-        uint32_t normalise;
-        int32_t totalSizeInBytes;
-        ptrdiff_t offset;
-    };
-
     class ModelInterface {
         public:
+            ModelInterface(std::vector<vector_3> vertices, std::vector<vector_2> UVs, std::vector<vector_3> normals, std::vector<uint32_t> indices);
+
             virtual ~ModelInterface() { ; };
 
             virtual void move_model(const vector_3& position) noexcept = 0;
@@ -26,14 +20,26 @@ namespace bolt {
 
             virtual void apply_lighting() = 0;
 
-            [[nodiscard]] virtual uint32_t polygon_count() const noexcept = 0;
+            [[nodiscard]] virtual uint32_t vertices_count() const noexcept = 0;
 
-            [[nodiscard]] virtual const std::vector<AttributeLayout>& get_attribute_layout() const noexcept = 0;
-            // TODO: return vector of doubles!!!
-            [[nodiscard]] virtual const std::vector<float>& get_drawable_vector() const noexcept = 0;
+            [[nodiscard]] const std::vector<attribute_layout>& get_attribute_layout() const noexcept;
 
-            [[nodiscard]] virtual const std::vector<uint32_t>& get_index_buffer() const noexcept = 0;
+            [[nodiscard]] const std::vector<float>& get_drawable_vector() const noexcept;
 
-            [[nodiscard]] virtual const std::vector<polygon>& get_polygons() const noexcept = 0;
+            [[nodiscard]] const std::vector<uint32_t>& get_index_buffer() const noexcept;
+
+            [[nodiscard]] const std::vector<vector_3>& get_vertices() const noexcept;
+
+            [[nodiscard]] const std::vector<vector_2>& get_UVs() const noexcept;
+
+            [[nodiscard]] const std::vector<vector_3>& get_normals() const noexcept;
+
+        protected:
+            std::vector<vector_3> vertices;
+            std::vector<vector_2> UVs;
+            std::vector<vector_3> normals;
+            std::vector<uint32_t> indices;
+            std::vector<float> drawable_vector;
+            std::vector<attribute_layout> attrib_layout;
     };
 }
