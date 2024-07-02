@@ -36,7 +36,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
 {
     ObjectCreator::set_uniform_binding_func(binding_function);
 
-    auto quad = ObjectCreator::quad({0.0f, 0.0f, 0.0f}, {0.05f, 0.05f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
+    auto quad = ObjectCreator::quad({0.0f, 0.0f, 0.0f}, {0.2f, 0.2f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
 
     quad->add_texture("../example/textures/color-frame-bordo.png");
 
