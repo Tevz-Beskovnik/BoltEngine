@@ -56,7 +56,10 @@ void create_frames(std::vector<uint32_t>& object_frames, const std::vector<std::
             glUniform4f(glGetUniformLocation(program, "uCol"), color.r_dec, color.g_dec, color.b_dec, color.a_dec);
         });
 
-        object_one->add_texture(frames[i]);
+        object_one->add_texture(TextureGL::create({
+            .type = TEXTURE_2D,
+            .texture_location = frames[i].c_str(),
+        }));
 
         object_frames.push_back(scene.add_object(object_one));
 
@@ -73,7 +76,10 @@ void create_frames(std::vector<uint32_t>& object_frames, const std::vector<std::
             glUniform4f(glGetUniformLocation(program, "uCol"), color.r_dec, color.g_dec, color.b_dec, color.a_dec);
         });
 
-        object_two->add_texture(frames[i+1]);
+        object_two->add_texture(TextureGL::create({
+            .type = TEXTURE_2D,
+            .texture_location = frames[i+1].c_str(),
+            }));
 
         object_frames.push_back(scene.add_object(object_two));
 
@@ -88,7 +94,10 @@ uint32_t create_full_frame(const std::string& texture, const rectangle& rect, Sc
 {
     auto full_frame = ObjectCreator::quad({rect.pos.x, rect.pos.y, 0.0f}, {rect.dims.x, rect.dims.y}, "../example/shaders/frag_flat.glsl", "../example/shaders/vert_flat.glsl");
 
-    full_frame->add_texture(texture);
+    full_frame->add_texture(TextureGL::create({
+        .type = TEXTURE_2D,
+        .texture_location = texture.c_str(),
+        }));
 
     full_frame->add_binding_func([](uint32_t program){
         RGB color(255, 255, 255, 255); // TODO there has to be a better way of doing this but for now this is ok
@@ -103,7 +112,10 @@ uint32_t create_transparent_frame(const std::string& texture, const rectangle& r
 {
     auto full_frame = ObjectCreator::quad({rect.pos.x, rect.pos.y, 0.0f}, {rect.dims.x, rect.dims.y}, "../example/shaders/frag_flat.glsl", "../example/shaders/vert_flat.glsl");
 
-    full_frame->add_texture(texture);
+    full_frame->add_texture(TextureGL::create({
+        .type = TEXTURE_2D,
+        .texture_location = texture.c_str(),
+        }));
 
     full_frame->add_binding_func([](uint32_t program){
         RGB color(255, 255, 255, 125); // TODO there has to be a better way of doing this but for now this is ok

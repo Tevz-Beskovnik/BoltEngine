@@ -71,7 +71,7 @@ namespace bolt
 
     void Line::rotate_model(vector_3 rotation_vector) noexcept
     {
-        // TODO: implement model rotation
+        // TODO: implement model_from_file rotation
     }
 
     void Line::apply_lighting()

@@ -2,7 +2,7 @@
 
 namespace bolt
 {
-    void RendererVK::add_texture(const std::string &path)
+    void RendererVK::add_texture(const ref_ptr<CommonTextureGL> path)
     {
         ;
     }

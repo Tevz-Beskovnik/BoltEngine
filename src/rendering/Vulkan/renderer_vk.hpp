@@ -3,6 +3,7 @@
 #include <renderer_interface.hpp>
 #include <core.hpp>
 #include <util.hpp>
+#include <common_texture.hpp>
 
 namespace bolt
 {
@@ -11,7 +12,7 @@ namespace bolt
         public:
             ~RendererVK() override { ; };
 
-            void add_texture(const std::string &path) override;
+            void add_texture(const ref_ptr<CommonTextureGL> path) override;
 
             void render() const override;
     };

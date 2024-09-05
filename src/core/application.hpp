@@ -6,6 +6,7 @@
 #include <application_events.hpp>
 #include <layer_interface.hpp>
 #include <window.hpp>
+#include <renderer.hpp>
 #include "camera/camera_3d_base.hpp"
 
 namespace bolt
@@ -15,7 +16,7 @@ namespace bolt
         public:
             Application();
 
-            explicit Application(const ref_ptr<Window>& window);
+            explicit Application(const ref_ptr<Window> window);
 
             void set_window(const ref_ptr<bolt::Window> &window);
 
@@ -25,7 +26,7 @@ namespace bolt
 
             void add_camera(ref_ptr<CameraBase> camera);
 
-            void run() const;
+            void run();
 
             void on_event(Event& event);
 
@@ -35,9 +36,8 @@ namespace bolt
             bool running;
 
             ref_ptr<Window> window;
-
             std::vector<ref_ptr<LayerInterface>> layers{};
-
             std::vector<ref_ptr<CameraBase>> cameras{};
+            Renderer renderer;
     };
 }

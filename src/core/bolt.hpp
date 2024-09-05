@@ -17,7 +17,10 @@
 #include <mesh_builder.hpp>
 #include <model.hpp>
 #include <line_model.hpp>
-#include <model_interface.hpp> // for creating custom model interfaces
+#include <texture_gl.hpp>
+#include <animated_texture_gl.hpp>
+#include <animation.hpp>
+#include <model_interface.hpp> // for creating custom model_from_file interfaces
 #include <setup_primitives.hpp> // primitive defs
 #include <line.hpp>
 #include <rectangle.hpp>

@@ -1,46 +1,70 @@
 //
 // Created by tevz on 11.7.2023.
 //
-#define MOVEMENT_MODIFIER 5
+#define MOVEMENT_MODIFIER 1000
 
 #include <test_layer_two.hpp>
 
 /**
  * TODO:
- * Screen coords are from -1 - 1 no 0 - 1 as I assumed (you already knew this you idiot
+ * Screen coords are from -1 - 1 not 0 - 1 as I assumed (you already knew this you idiot)
  * Anyway make sure it binds correctly
  * */
 
 MouseButton TestLayerTwo::pressed_button = NONE;
 int32_t TestLayerTwo::action = -1;
 vector_2 TestLayerTwo::mouse_pos = {0, 0};
-vector_2 TestLayerTwo::obj_pos = {800, 450};
 
 static bool w_held;
 static bool a_held;
 static bool s_held;
 static bool d_held;
- static vector_3 translationVector = {0.0f, 0.0f, 1.0f};
-
-void binding_function(uint32_t program) {
-    auto uTranslationVec = glGetUniformLocation(program, "uTranslation");
-
-    translationVector.x = (TestLayerTwo::obj_pos.x/1600)*2-1;
-    translationVector.y = (TestLayerTwo::obj_pos.y/900)*2-1;
-
-    glUniform3f(uTranslationVec, translationVector.x, translationVector.y, translationVector.z);
-}
+static vector_3 translationVector = {0.0f, 0.0f, 1.0f};
+static double previous_time = 0;
+static uint32_t frameCount = 0;
 
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
-    :window(window), current_active(0)
+    :window(window), current_active(0), obj_pos({800, 450})
 {
-    ObjectCreator::set_uniform_binding_func(binding_function);
+    ObjectCreator::set_uniform_binding_func([this](uint32_t program) {
+        auto uTranslationVec = glGetUniformLocation(program, "uTranslation");
 
-    auto quad = ObjectCreator::quad({0.0f, 0.0f, 0.0f}, {0.2f, 0.2f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
+        this->binding_lock.lock();
+        translationVector.x = (this->obj_pos.x/1600)*2-1;
+        translationVector.y = (this->obj_pos.y/900)*2-1;
+        this->binding_lock.unlock();
 
-    quad->add_texture("../example/textures/color-frame-bordo.png");
+        glUniform3f(uTranslationVec, translationVector.x, translationVector.y, translationVector.z);
+    });
 
-    scene.add_object(quad);
+    auto quad = ObjectCreator::quad({0.0f, 0.0f, 0.0f}, {0.5f, 0.5f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
+
+    std::vector<const_str> frames = {
+        "../example/textures/color-frame-bordo.png",
+        "../example/textures/color-frame-black.png"
+        /*"../example/textures/color-frame-cyan.png",
+        "../example/textures/color-frame-red.png",
+        "../example/textures/color-frame-white.png"*/
+    };
+
+    std::vector<const_str> frames2 = {
+        "../example/textures/color-frame-cyan.png",
+        "../example/textures/color-frame-red.png"
+        /*"../example/textures/color-frame-cyan.png",
+        "../example/textures/color-frame-red.png",
+        "../example/textures/color-frame-white.png"*/
+    };
+
+    anim1 = Animation::create(frames, 1.0f, "Player");
+    anim2 = Animation::create(frames2, 1.0f, "Player");
+    texture = AnimatedTextureGL::create({
+        .type = TEXTURE_2D,
+        .animation = Animation::create(frames, 1.0f, "Player")
+    });
+
+    quad->add_texture(texture);
+
+    scene->add_object(quad);
     //auto pos = scene.add_object(generate_3d_grid());
 
     /*uint16_t w, h;
@@ -75,7 +99,9 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
 
 void TestLayerTwo::frame()
 {
-    scene.draw();
+    double current_time = glfwGetTime();
+
+    // Rest of your game loop...
     /*scene.draw();
 
     if(pressed_button == MouseButton::LEFT_BUTTON && action == 1)
@@ -99,10 +125,16 @@ void TestLayerTwo::frame()
         }
     }*/
 
-    obj_pos.x += static_cast<float>(-MOVEMENT_MODIFIER*a_held) + static_cast<float>(MOVEMENT_MODIFIER*d_held);
-    obj_pos.y += static_cast<float>(-MOVEMENT_MODIFIER*s_held) + static_cast<float>(MOVEMENT_MODIFIER*w_held);
+    //std::cout << "doing stuff" << std::endl;
 
-    ImGui_ImplOpenGL3_NewFrame();
+
+
+    binding_lock.lock();
+    obj_pos.x += static_cast<float>(-MOVEMENT_MODIFIER * a_held * (current_time - prev_time)) + static_cast<float>(MOVEMENT_MODIFIER * d_held * (current_time - prev_time));
+    obj_pos.y += static_cast<float>(-MOVEMENT_MODIFIER * s_held * (current_time - prev_time)) + static_cast<float>(MOVEMENT_MODIFIER * w_held * (current_time - prev_time));
+    binding_lock.unlock();
+
+    /*ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
@@ -128,7 +160,8 @@ void TestLayerTwo::frame()
     ImGui::EndFrame();
     ImGui::Render();
 
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
+    prev_time = current_time;
 }
 
 void TestLayerTwo::bind_event_trigger(event_trigger trigger)
@@ -136,7 +169,7 @@ void TestLayerTwo::bind_event_trigger(event_trigger trigger)
     this->trigger = trigger;
 }
 
-void TestLayerTwo::on_event(Event& e) const
+void TestLayerTwo::on_event(Event& e) const // TODO: Bleh remove const from here its annoying af
 {
     EventDispatcher dispatcher(e);
 
@@ -207,6 +240,26 @@ bool TestLayerTwo::handle_keyboard_input(class bolt::KeyEvent &event) const
             } else if(event.action == GLFW_RELEASE) {
                 s_held = false;
             }
+            break;
+        }
+        case Key::N:
+        {
+            texture->set_animation(anim2);
+            break;
+        }
+        case Key::M:
+        {
+            texture->set_animation(anim1);
+            break;
+        }
+        case Key::F:
+        {
+            window->fullscreen();
+            break;
+        }
+        case Key::P:
+        {
+            window->windowed(800, 600);
             break;
         }
     }

@@ -21,6 +21,7 @@
 #include <source_location.hpp>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <stdexcept>
 #include <vector>
 

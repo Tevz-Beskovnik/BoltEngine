@@ -9,7 +9,8 @@ using namespace bolt;
 class TestLayerTwo final : public LayerInterface
 {
     public:
-        static vector_2 obj_pos;
+        vector_2 obj_pos;
+        std::mutex binding_lock;
 
         explicit TestLayerTwo(ref_ptr<Window> window);
 
@@ -43,6 +44,11 @@ class TestLayerTwo final : public LayerInterface
         std::vector<std::string> frames;
         std::vector<uint32_t> frame_objects;
         uint32_t current_active;
+        double prev_time = 0;
+
+        ref_ptr<Animation> anim2;
+        ref_ptr<Animation> anim1;
+        ref_ptr<AnimatedTextureGL> texture;
 
         event_trigger trigger;
         ref_ptr<Window> window;

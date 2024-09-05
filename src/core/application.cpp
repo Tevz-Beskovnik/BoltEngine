@@ -7,7 +7,7 @@
 namespace bolt
 {
     Application::Application()
-        :running(true), window(nullptr)
+        :running(true), window(nullptr), renderer(nullptr)
     {
         LogUtil::initLogs();
 
@@ -20,8 +20,8 @@ namespace bolt
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     }
 
-    Application::Application(const ref_ptr<Window>& window)
-            :running(true), window(window)
+    Application::Application(const ref_ptr<Window> window)
+            :running(true), window(window), renderer(window)
     {
         LogUtil::initLogs();
 
@@ -39,6 +39,7 @@ namespace bolt
     void Application::add_layer(ref_ptr<LayerInterface> layer)
     {
         layers.push_back(layer);
+        renderer.add_scene(layer->get_scene());
 
         layer->bind_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }
@@ -50,17 +51,20 @@ namespace bolt
         camera->set_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }
 
-    void Application::run() const
+    void Application::run()
     {
         if(window == nullptr) throw SetupException("Application window is not set");
 
+        renderer.init();
+
         while(running)
         {
-            window->frame_routine();
+            glfwPollEvents();
             for(const auto& layer : layers) layer->frame();
             for(const auto& camera : cameras) camera->update();
-            window->cleanup_routine();
         }
+
+        renderer.wait_for();
     }
 
     void Application::on_event(Event& event)
@@ -96,6 +100,7 @@ namespace bolt
     void Application::set_window(const ref_ptr<bolt::Window> &window)
     {
         Application::window = window;
+        renderer.set_window(window);
 
         window->register_event_trigger(CAST_MEMBER_FUNCTION(Application::on_event));
     }

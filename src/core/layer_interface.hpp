@@ -10,6 +10,18 @@ namespace bolt
     class LayerInterface
     {
         public:
+            explicit LayerInterface(ref_ptr<Scene> scene)
+                : scene(scene)
+            {
+                ;
+            }
+
+            LayerInterface()
+                : scene(create_ref<Scene>(Scene()))
+            {
+                ;
+            }
+
             virtual ~LayerInterface() { ; }
 
             virtual void frame() = 0;
@@ -18,7 +30,12 @@ namespace bolt
 
             virtual void on_event(Event& e) const = 0;
 
+            ref_ptr<Scene> get_scene()
+            {
+                return scene;
+            }
+
         protected:
-            Scene scene;
+            ref_ptr<Scene> scene;
     };
 }

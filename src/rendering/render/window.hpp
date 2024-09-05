@@ -52,17 +52,23 @@ namespace bolt
 
             void register_event_trigger(event_trigger trigger);
 
-            void get_size(uint16_t *width, uint16_t *height) const;
+            void get_size(uint16_t *width, uint16_t *height);
 
             void cleanup_routine();
 
             void set_background_color(RGB* color);
 
-            void hide_cursor() const;
+            void hide_cursor();
 
             [[nodiscard]] bool is_window_open() const;
 
             void close();
+
+            void set_active();
+
+            void lock();
+
+            void unlock();
 
         private:
             bool background_color_owned;
@@ -70,15 +76,11 @@ namespace bolt
 
             event_trigger trigger;
 
+            std::mutex use_lock;
             basic_str title;
-
             uint16_t width, height;
-
             EventCaller* caller;
-
             GLFWwindow* window;
-
-            void set_active();
 
             void set_event_caller();
     };

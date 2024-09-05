@@ -2,8 +2,6 @@
 
 namespace bolt
 {
-    uint32_t TextureGL::activeTexture = GL_TEXTURE0;
-
     TextureGL::TextureGL(texture_config_gl config)
         :width(0), height(0), type(config.type), binding(0)
     {
@@ -18,8 +16,8 @@ namespace bolt
 
         glTexParameteri(config.type, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(config.type, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexParameteri(config.type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(config.type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(config.type, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(config.type, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
         if(texture_buffer)
         {
@@ -43,6 +41,12 @@ namespace bolt
         stbi_image_free(texture_buffer);
     }
 
+    TextureGL::TextureGL(premade_texture_config_gl config)
+        :texture(config.texture), type(config.type), width(config.width), height(config.height)
+    {
+        ;
+    }
+
     TextureGL::~TextureGL()
     {
         glDeleteTextures(1, &texture);
@@ -53,16 +57,21 @@ namespace bolt
         return create_ref<TextureGL>(config);
     }
 
+    [[nodiscard]] ref_ptr<TextureGL> TextureGL::create(premade_texture_config_gl config)
+    {
+        return create_ref<TextureGL>(config);
+    }
+
     void TextureGL::bind()
     {
-        if(activeTexture < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+        if(CommonTextureGL::activeTexture < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
         {
-            binding = (int32_t)activeTexture;
+            binding = (int32_t)CommonTextureGL::activeTexture;
 
-            glActiveTexture(activeTexture);
+            glActiveTexture(CommonTextureGL::activeTexture);
             glBindTexture(type, texture);
 
-            activeTexture++;
+            CommonTextureGL::activeTexture++;
         }
     }
 
@@ -79,11 +88,11 @@ namespace bolt
 
     void TextureGL::unbind()
     {
-        if(activeTexture > GL_TEXTURE0)
+        if(CommonTextureGL::activeTexture > GL_TEXTURE0)
         {
-            activeTexture--;
-
-            glBindTexture(type, 0);
+            CommonTextureGL::activeTexture--;
         }
+
+        glBindTexture(type, 0);
     }
 }
