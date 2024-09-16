@@ -16,6 +16,7 @@ namespace bolt
     {
         texture_type_gl type;
         const_str texture_location;
+        const_str name;
     };
 
     struct premade_texture_config_gl
@@ -23,6 +24,7 @@ namespace bolt
         texture_type_gl type;
         uint32_t texture;
         int32_t width, height;
+        const_str name;
     };
 
     class TextureGL : public CommonTextureGL
@@ -45,6 +47,8 @@ namespace bolt
             void unbind() override;
 
         private:
+            const_str name;
+
             int32_t binding;
 
             uint8_t* texture_buffer;

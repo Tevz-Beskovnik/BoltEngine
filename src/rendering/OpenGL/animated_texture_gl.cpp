@@ -4,7 +4,7 @@ namespace bolt
 {
     AnimatedTextureGL::AnimatedTextureGL(animated_texture_config_gl config)
         :type(config.type), binding(0), animation(config.animation), previous_time(0), current_frame(0), prev_animation(
-        nullptr), new_animation(false)
+        nullptr), new_animation(false), name(config.name)
     {
         BOLT_LOG_INFO("Generating textures")
 
@@ -36,11 +36,13 @@ namespace bolt
 
     void AnimatedTextureGL::bind()
     {
+        use_lock.lock();
         if (new_animation)
         {
             set_animation_internal();
             new_animation = false;
         }
+        use_lock.unlock();
 
         if (previous_time == 0)
         {
@@ -67,7 +69,7 @@ namespace bolt
 
     void AnimatedTextureGL::bind_uniform(uint32_t program) const
     {
-        std::string uniform_name = "uTexture" + std::string(animation->get_name());
+        std::string uniform_name = "uTexture" + std::string(name);
         BOLT_LOG_INFO("Binding on uniform location: ")
         BOLT_LOG_INFO(uniform_name)
 
@@ -105,12 +107,12 @@ namespace bolt
             else if(animation->get_file_extension() == ".png")
                 glTexImage2D(type, 0, GL_RGBA, animation->get_width(), animation->get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, tex_buffer);
             else
-                throw TextureException("Unsuported file extension on texture", animation->get_name());
+                throw TextureException("Unsuported file extension on texture", name);
 
             glGenerateMipmap(type);
         }
         else
-            throw TextureException("Failed to load image: ", animation->get_name());
+            throw TextureException("Failed to load image: ", name);
 
         BOLT_LOG_INFO("Finished setting up tex");
     }

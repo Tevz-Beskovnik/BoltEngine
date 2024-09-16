@@ -42,3 +42,8 @@
 #include <setup_exception.hpp>
 #include <texture_exception.hpp>
 #include <wrong_file_extension_exception.hpp>
+
+// interactions
+#include <box_util.hpp>
+#include <collision.hpp>
+#include <hitbox_2d.hpp>

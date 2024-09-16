@@ -14,6 +14,7 @@ namespace bolt
     {
         texture_type_gl type;
         ref_ptr<Animation> animation;
+        const_str name;
     };
 
     class AnimatedTextureGL : public CommonTextureGL {
@@ -43,6 +44,7 @@ namespace bolt
         uint32_t current_frame;
         double previous_time;
 
+        const_str name;
         int32_t binding;
         texture_type_gl type;
         uint32_t* textures;

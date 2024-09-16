@@ -75,7 +75,8 @@ namespace bolt
             .type = TEXTURE_2D,
             .texture = fbo_texture,
             .width = texture_width,
-            .height = texture_height
+            .height = texture_height,
+            .name = "FrameBuffer"
         };
 
         return TextureGL::create(config);
@@ -83,7 +84,7 @@ namespace bolt
 
     void FrameBufferGL::delete_frame_buffer() const
     {
-        BOLT_LOG_INFO("Deleting frame buffer")
+        BOLT_LOG_INFO("Deleting update buffer")
         glDeleteFramebuffers(1, &FBO);
     }
 }

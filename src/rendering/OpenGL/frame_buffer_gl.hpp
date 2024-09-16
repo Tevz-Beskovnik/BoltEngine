@@ -6,7 +6,7 @@
 #include <texture_gl.hpp>
 #include <renderer_exception.hpp>
 
-// TODO: add ability to instanciate this with depth or create frame buffer with depth attachment
+// TODO: add ability to instanciate this with depth or create update buffer with depth attachment
 
 namespace bolt
 {

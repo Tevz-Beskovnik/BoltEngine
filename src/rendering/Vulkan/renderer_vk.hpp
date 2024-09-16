@@ -5,6 +5,8 @@
 #include <util.hpp>
 #include <common_texture.hpp>
 
+// TODO: remove everything and anything todo with vulkan
+
 namespace bolt
 {
     class RendererVK : public RenderInterface

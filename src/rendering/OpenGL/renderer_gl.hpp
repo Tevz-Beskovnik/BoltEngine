@@ -11,6 +11,8 @@
 #include <file_system.hpp>
 #include <structs.hpp>
 
+// TODO: Remove framebuffer references from here framebuffer now resides in scenes
+
 namespace bolt
 {
     struct render_config_gl {

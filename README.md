@@ -15,24 +15,20 @@ Bolt engine is a very simple renderer that hopes to implement the following feat
 
 # Installing dependecies
 
-You need to have `conan` installed on your system.
-
-To install conan dependecies run:
-```
-conan install conanfile.py
+To setup the projects run:
+```sh
+./scripts/setup.sh [Debug|Release]
 ```
 
-If the install command gives you troubles with not finding pre build packages add the
-`--build-missing` flag to the install command that should resolve the issues
+This will install the correct dependecies needed for the projects and configure cmake
 
-This will install opengl, glfw and imgui dependencies and should create a `build` folder in the project root
+After that to build the project simply navigate to the build directory and run make:
+```
+cd ./build/
+make
+```
 
-(I'm using CLion so these next steps might not apply to you, I will add how to generate build files with cmake in the future :) )
-
-Download and install the Conan plugin for CLion and open it via the icon that appeared in your bottom left toolbar. 
-That should generate the cmake build files in your project.
-
-After that you're all set to run the project
+If succesfully compiled there should be a `BoltEngine` executible in your build directory that you can run.
 
 # Project layout
 

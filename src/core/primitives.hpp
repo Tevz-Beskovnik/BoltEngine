@@ -30,8 +30,8 @@ namespace bolt
         [[nodiscard]] inline vector_2 operator - (vector_2 const &vec) const
         {
             vector_2 res;
-            res.x = this->y - vec.y;
-            res.y = this->x - vec.x;
+            res.x = this->x - vec.x;
+            res.y = this->y - vec.y;
             return res;
         }
 

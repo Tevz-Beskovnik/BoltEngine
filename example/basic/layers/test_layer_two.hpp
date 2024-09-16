@@ -1,16 +1,17 @@
 #pragma once
 
 #include <bolt.hpp>
-#include <collision.hpp>
 #include <object_generator.hpp>
+#include <player.hpp>
+#include <platform.hpp>
 
 using namespace bolt;
 
 class TestLayerTwo final : public LayerInterface
 {
     public:
-        vector_2 obj_pos;
-        std::mutex binding_lock;
+        //vector_2 obj_pos;
+        //std::mutex binding_lock;
 
         explicit TestLayerTwo(ref_ptr<Window> window);
 
@@ -18,7 +19,7 @@ class TestLayerTwo final : public LayerInterface
 
         virtual ~TestLayerTwo() override = default;
 
-        void frame() final;
+        void update(double delta_time) final;
 
         void bind_event_trigger(event_trigger trigger) final;
 
@@ -38,17 +39,20 @@ class TestLayerTwo final : public LayerInterface
         static MouseButton pressed_button;
         static int32_t action;
 
+
         float ar;
 
         std::vector<rectangle> collision_boxes{};
         std::vector<std::string> frames;
         std::vector<uint32_t> frame_objects;
         uint32_t current_active;
-        double prev_time = 0;
 
-        ref_ptr<Animation> anim2;
+        /*ref_ptr<Animation> anim2;
         ref_ptr<Animation> anim1;
-        ref_ptr<AnimatedTextureGL> texture;
+        ref_ptr<AnimatedTextureGL> texture;*/
+
+        ref_ptr<Player> player;
+        std::vector<ref_ptr<Platform>> platforms;
 
         event_trigger trigger;
         ref_ptr<Window> window;

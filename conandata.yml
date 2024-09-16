@@ -4,4 +4,4 @@
 requirements:
   - "imgui/1.89.4"
   - "glew/2.2.0"
-  - "glfw/3.3.8"
+  - "glfw/3.4"

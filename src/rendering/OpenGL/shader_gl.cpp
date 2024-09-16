@@ -116,8 +116,9 @@ namespace bolt
 
             glDeleteShader(shader);
 
+            BOLT_LOG_INFO("Failed to compile shader")
             BOLT_LOG_ERROR(message)
-            BOLT_ERROR("Failed to compile shader")
+            BOLT_ERROR(std::runtime_error("Shared failed to compiler"))
         }
 
         delete_queue.push_back(shader);

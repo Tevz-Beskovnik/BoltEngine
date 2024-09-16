@@ -59,9 +59,11 @@ namespace bolt
 
         while(running)
         {
+            double current_time = glfwGetTime();
             glfwPollEvents();
-            for(const auto& layer : layers) layer->frame();
-            for(const auto& camera : cameras) camera->update();
+            for(const auto& layer : layers) layer->update(current_time - previous_time);
+            for(const auto& camera : cameras) camera->update(); // TODO: cameras need to get reworked
+            previous_time = current_time;
         }
 
         renderer.wait_for();

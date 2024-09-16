@@ -5,15 +5,15 @@
 #include <animation.hpp>
 
 namespace bolt {
-    Animation::Animation(std::vector<const_str> &frames, double duration, const_str name)
-        : duration(duration), width(0), height(0), raw_frames(create_ref<std::vector<uint8_t *>>()), name(std::move(name)), file_extension("")
+    Animation::Animation(std::vector<const_str> &frames, double duration)
+        : duration(duration), width(0), height(0), raw_frames(create_ref<std::vector<uint8_t *>>()), file_extension("")
         {
         int32_t lWidth, lHeight;
         int32_t lBPP;
         uint8_t *buffer;
 
-        BOLT_LOG_INFO("Loading animation: ")
-        BOLT_LOG_INFO(name)
+        BOLT_LOG_INFO("Loading animation")
+        BOLT_LOG_INFO(frames[0])
 
         std::filesystem::path file_path;
         for (const auto &frame: frames) {
@@ -34,8 +34,8 @@ namespace bolt {
         }
     }
 
-    [[nodiscard]] ref_ptr<Animation> Animation::create(std::vector<const_str> &frames, double duration, const_str name) {
-        return create_ref<Animation>(frames, duration, name);
+    [[nodiscard]] ref_ptr<Animation> Animation::create(std::vector<const_str> &frames, double duration) {
+        return create_ref<Animation>(frames, duration);
     }
 
     Animation::~Animation() {
@@ -50,11 +50,6 @@ namespace bolt {
 
     double Animation::get_duration() const {
         return duration;
-    }
-
-    const_str Animation::get_name() const
-    {
-        return name;
     }
 
     std::string Animation::get_file_extension() const

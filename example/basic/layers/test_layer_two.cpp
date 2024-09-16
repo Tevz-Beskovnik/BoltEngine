@@ -24,72 +24,23 @@ static double previous_time = 0;
 static uint32_t frameCount = 0;
 
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
-    :window(window), current_active(0), obj_pos({800, 450})
+    :window(window), current_active(0)
 {
-    ObjectCreator::set_uniform_binding_func([this](uint32_t program) {
-        auto uTranslationVec = glGetUniformLocation(program, "uTranslation");
-
-        this->binding_lock.lock();
-        translationVector.x = (this->obj_pos.x/1600)*2-1;
-        translationVector.y = (this->obj_pos.y/900)*2-1;
-        this->binding_lock.unlock();
-
-        glUniform3f(uTranslationVec, translationVector.x, translationVector.y, translationVector.z);
-    });
-
-    auto quad = ObjectCreator::quad({0.0f, 0.0f, 0.0f}, {0.5f, 0.5f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
-
-    std::vector<const_str> frames = {
-        "../example/textures/color-frame-bordo.png",
-        "../example/textures/color-frame-black.png"
-        /*"../example/textures/color-frame-cyan.png",
-        "../example/textures/color-frame-red.png",
-        "../example/textures/color-frame-white.png"*/
+    platforms = {
+        Platform::create({600, 300}, 6),
+        Platform::create({312, 396}, 4),
+        Platform::create({936, 444}, 5)
     };
 
-    std::vector<const_str> frames2 = {
-        "../example/textures/color-frame-cyan.png",
-        "../example/textures/color-frame-red.png"
-        /*"../example/textures/color-frame-cyan.png",
-        "../example/textures/color-frame-red.png",
-        "../example/textures/color-frame-white.png"*/
-    };
+    player = Player::create({800, 400});
 
-    anim1 = Animation::create(frames, 1.0f, "Player");
-    anim2 = Animation::create(frames2, 1.0f, "Player");
-    texture = AnimatedTextureGL::create({
-        .type = TEXTURE_2D,
-        .animation = Animation::create(frames, 1.0f, "Player")
-    });
+    scene->add_object(player->get_render_interface());
 
-    quad->add_texture(texture);
-
-    scene->add_object(quad);
-    //auto pos = scene.add_object(generate_3d_grid());
-
-    /*uint16_t w, h;
-
-    window->get_size(&w, &h);
-    ar = static_cast<float>(w) / static_cast<float>(h);
-
-    frames = {
-        "../example/textures/color-frame-black.png",
-        "../example/textures/color-frame-white.png",
-        "../example/textures/color-frame-red.png",
-        "../example/textures/color-frame-orange.png",
-        "../example/textures/color-frame-vanilla.png",
-        "../example/textures/color-frame-bordo.png",
-        "../example/textures/color-frame-cyan.png",
-        "../example/textures/color-frame-dark-blue.png",
-        "../example/textures/color-frame-light-blue.png",
-        "../example/textures/color-frame-dark-green.png",
-        "../example/textures/color-frame-light-green.png",
-        "../example/textures/color-frame-pinky.png",
-        "../example/textures/color-frame-rose.png",
-        "../example/textures/color-frame-brown.png"
-    };
-
-    create_frames(frame_objects, frames, collision_boxes, scene, ar);*/
+    for (const auto& platform : platforms)
+    {
+        scene->add_object(platform->get_render_interface());
+        player->add_hitbox(platform->get_hitbox());
+    }
 }
 
 [[nodiscard]] ref_ptr<TestLayerTwo> TestLayerTwo::create(ref_ptr<Window> window)
@@ -97,42 +48,9 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
     return create_ref<TestLayerTwo>(window);
 }
 
-void TestLayerTwo::frame()
+void TestLayerTwo::update(double delta_time)
 {
-    double current_time = glfwGetTime();
-
-    // Rest of your game loop...
-    /*scene.draw();
-
-    if(pressed_button == MouseButton::LEFT_BUTTON && action == 1)
-    {
-        if(int32_t new_active = intersects_rects(mouse_pos, collision_boxes); new_active != -1)
-        {
-            std::cout << "This was clicked" << std::endl;
-            BOLT_LOG_INFO("Remove from scene the current active frame")
-            scene.remove(frame_objects[current_active]);
-
-            BOLT_LOG_INFO("Replace old active with transparent frame")
-            frame_objects[current_active] = create_transparent_frame(frames[current_active], collision_boxes[current_active], scene);
-
-            BOLT_LOG_INFO("Remove the to be active frame")
-            scene.remove(frame_objects[new_active]);
-
-            BOLT_LOG_INFO("Create the new active frame")
-            frame_objects[new_active] = create_full_frame(frames[new_active], collision_boxes[new_active], scene);
-
-            current_active = new_active;
-        }
-    }*/
-
-    //std::cout << "doing stuff" << std::endl;
-
-
-
-    binding_lock.lock();
-    obj_pos.x += static_cast<float>(-MOVEMENT_MODIFIER * a_held * (current_time - prev_time)) + static_cast<float>(MOVEMENT_MODIFIER * d_held * (current_time - prev_time));
-    obj_pos.y += static_cast<float>(-MOVEMENT_MODIFIER * s_held * (current_time - prev_time)) + static_cast<float>(MOVEMENT_MODIFIER * w_held * (current_time - prev_time));
-    binding_lock.unlock();
+    player->compute(delta_time);
 
     /*ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -161,7 +79,6 @@ void TestLayerTwo::frame()
     ImGui::Render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
-    prev_time = current_time;
 }
 
 void TestLayerTwo::bind_event_trigger(event_trigger trigger)
@@ -205,65 +122,7 @@ bool TestLayerTwo::handle_mouse_button_event(MouseClickEvent& event) const
 
 bool TestLayerTwo::handle_keyboard_input(class bolt::KeyEvent &event) const
 {
-    switch(event.key) {
-        case Key::A:
-        {
-            if(event.action == GLFW_PRESS) {
-                a_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                a_held = false;
-            }
-            break;
-        }
-        case Key::D:
-        {
-            if(event.action == GLFW_PRESS) {
-                d_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                d_held = false;
-            }
-            break;
-        }
-        case Key::W:
-        {
-            if(event.action == GLFW_PRESS) {
-                w_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                w_held = false;
-            }
-            break;
-        }
-        case Key::S:
-        {
-            if(event.action == GLFW_PRESS) {
-                s_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                s_held = false;
-            }
-            break;
-        }
-        case Key::N:
-        {
-            texture->set_animation(anim2);
-            break;
-        }
-        case Key::M:
-        {
-            texture->set_animation(anim1);
-            break;
-        }
-        case Key::F:
-        {
-            window->fullscreen();
-            break;
-        }
-        case Key::P:
-        {
-            window->windowed(800, 600);
-            break;
-        }
-    }
-
+    player->handle_keyboard_event(event);
     return false;
 }
 

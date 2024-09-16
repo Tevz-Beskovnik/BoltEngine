@@ -34,6 +34,7 @@ namespace bolt
 
         private:
             bool running;
+            double previous_time;
 
             ref_ptr<Window> window;
             std::vector<ref_ptr<LayerInterface>> layers{};

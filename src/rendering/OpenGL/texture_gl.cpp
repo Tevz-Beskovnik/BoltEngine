@@ -3,7 +3,7 @@
 namespace bolt
 {
     TextureGL::TextureGL(texture_config_gl config)
-        :width(0), height(0), type(config.type), binding(0)
+        :width(0), height(0), type(config.type), binding(0), name(std::move(config.name))
     {
         stbi_set_flip_vertically_on_load(true);
         texture_buffer = stbi_load(config.texture_location, &width, &height, &BPP, 0);
@@ -16,8 +16,8 @@ namespace bolt
 
         glTexParameteri(config.type, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(config.type, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexParameteri(config.type, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(config.type, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(config.type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(config.type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         if(texture_buffer)
         {
@@ -42,7 +42,7 @@ namespace bolt
     }
 
     TextureGL::TextureGL(premade_texture_config_gl config)
-        :texture(config.texture), type(config.type), width(config.width), height(config.height)
+        :texture(config.texture), type(config.type), width(config.width), height(config.height), name(std::move(config.name))
     {
         ;
     }
@@ -77,7 +77,7 @@ namespace bolt
 
     void TextureGL::bind_uniform(uint32_t program) const
     {
-        std::string uniform_name = "uTexture" + std::to_string(binding-GL_TEXTURE0);
+        std::string uniform_name = "uTexture" + std::string(name);
         BOLT_LOG_INFO("Binding on uniform location: ")
         BOLT_LOG_INFO(uniform_name)
 

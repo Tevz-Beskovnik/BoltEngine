@@ -33,20 +33,6 @@ namespace bolt
 
         while(window->is_window_open())
         {
-            double current_time = glfwGetTime();
-            // Measure speed
-            frameCount++;
-            // If a second has passed.
-            if ( current_time - previous_time >= 1.0 )
-            {
-                // Display the frame count here any way you want.
-                std::cout << frameCount << std::endl;
-
-                frameCount = 0;
-                previous_time = current_time;
-            }
-
-            //std::cout << "rendering" << std::endl;
             for(const auto& scene : scenes)
             {
                 window->frame_routine();
