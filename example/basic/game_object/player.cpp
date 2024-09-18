@@ -2,6 +2,9 @@
 // Created by Tevz on 5. 9. 24.
 //
 
+#include "collision.hpp"
+#include "primitives.hpp"
+#include <algorithm>
 #include <player.hpp>
 
 Player::Player(bolt::vector_2 position)
@@ -147,29 +150,39 @@ void Player::compute(double delta_time)
 void Player::update_player(double delta_time)
 {
     velocity.x = (-1.0f * a_held + d_held) * MOVEMENT_MOD;
-    velocity.y -= GRAVITATIONAL_ACCELERATION * delta_time;
-    //std::cout << position.x << " " << position.y << " Velo: " << velocity.x << " " << velocity.y << std::endl;
 
-    if(velocity.length() > MAX_SPEED)
-        velocity = velocity.normalize() * MAX_SPEED;
-
-    bolt::vector_2 pos_delta = velocity * delta_time;
-    bolt::vector_2 next_pos = position + pos_delta;
-    position = next_pos;
-    set_hitbox(position);
+    if(velocity.y < MAX_SPEED)
+        velocity.y -= GRAVITATIONAL_ACCELERATION * delta_time;
+   
+    bolt::vector_2 delta_velocity = velocity * delta_time;
 
     for(const auto& box : other_hitboxes)
     {
-        bolt::collision_info coll_info = bolt::check_collision(box, player_hitbox);
-        if(coll_info.collision)
+        if(bolt::intersects_BBB(bolt::calculate_BBB(player_hitbox, delta_velocity), box))
         {
-            std::cout << "collision detected: " <<  player_hitbox->center.x << " " << player_hitbox->center.y << std::endl;;
-            position = bolt::get_resting_point_and_update_velcity(coll_info.minkowski_hitbox, player_hitbox, velocity) - bolt::vector_2{16.0f, 12.0f};
-            if (velocity.y == 0)
-                grounded = true;
-            set_hitbox(position);
+            auto collision_info = bolt::check_collision(box, player_hitbox, delta_velocity);
+
+            if(collision_info.collision) 
+            {
+                if(collision_info.face == bolt::CollisionFace::UP || collision_info.face == bolt::CollisionFace::DOWN)
+                {
+                    velocity.y *= collision_info.collision_time;
+                    delta_velocity.y *= collision_info.collision_time;
+                }else {
+                    velocity.x *= collision_info.collision_time;
+                    delta_velocity.x *= collision_info.collision_time;
+                }
+
+                std::cout << "Delta velocity: " << delta_velocity.x << " " << delta_velocity.y << std::endl;
+
+                if (collision_info.face == bolt::CollisionFace::UP)
+                    grounded = true;
+            }
         }
     }
+
+    position += delta_velocity;
+    set_hitbox(position);
 }
 
 void Player::set_hitbox(bolt::vector_2 pos)

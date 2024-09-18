@@ -7,13 +7,6 @@
 
 // Todo implement hitboxes for not only rectangles (currently i don't need polygons)
 namespace bolt {
-    class Hitbox2D;
-
-    struct collision_info {
-        bool collision;
-        ref_ptr<Hitbox2D> minkowski_hitbox;
-    };
-
     class Hitbox2D {
     public:
         Hitbox2D(float x, float y, float w, float h);

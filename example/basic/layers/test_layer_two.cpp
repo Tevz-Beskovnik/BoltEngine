@@ -32,7 +32,7 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
         Platform::create({936, 444}, 5)
     };
 
-    player = Player::create({800, 400});
+    player = Player::create({800,500});
 
     scene->add_object(player->get_render_interface());
 

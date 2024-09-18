@@ -129,7 +129,8 @@ namespace bolt
     {
         glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
-        std::vector<float> data = {p1.x, p1.y, p1.z, p2.x, p2.y, p2.z};
+        std::vector<float> data = {static_cast<float>(p1.x), static_cast<float>(p1.y), static_cast<float>(p1.z), 
+                                    static_cast<float>(p2.x), static_cast<float>(p2.y), static_cast<float>(p2.z)};
 
         glBufferSubData(GL_ARRAY_BUFFER, current_size, 6 * sizeof(float), data.data());
 
@@ -144,7 +145,8 @@ namespace bolt
 
         glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
-        std::vector<float> data = {p1.x, p1.y, p1.z, p2.x, p2.y, p2.z};
+         std::vector<float> data = {static_cast<float>(p1.x), static_cast<float>(p1.y), static_cast<float>(p1.z), 
+                                    static_cast<float>(p2.x), static_cast<float>(p2.y), static_cast<float>(p2.z)};
 
         glBufferData(buffer, 6 * sizeof(float), data.data(), GL_STATIC_DRAW);
 

@@ -17,8 +17,7 @@
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "CMAKE_POLICY_DEFAULT_CMP0091": "NEW"
-      },
-      "toolchainFile": "${sourceDir}/build/Release/generators/conan_toolchain.cmake"
+      }
     },
     {
       "name": "defaultDebug",
@@ -27,7 +26,8 @@
       "inherits": "default",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
-      } 
+      },
+      "toolchainFile": "${sourceDir}/build/Debug/generators/conan_toolchain.cmake"
     },
     {
       "name": "defaultRelease",
@@ -36,7 +36,8 @@
       "inherits": "default",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
-      }
+      },
+      "toolchainFile": "${sourceDir}/build/Release/generators/conan_toolchain.cmake"
     }
   ] 
 }

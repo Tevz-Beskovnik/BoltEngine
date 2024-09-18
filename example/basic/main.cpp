@@ -23,11 +23,7 @@ int main() // todo start handeling exceptions
 
     RGB bg(65, 134, 244);
 
-    std::cout << "About to create window" << std::endl;
-
     ref_ptr<Window> window = Window::create(w_conf);
-
-  std::cout << "Created window" << std::endl;
 
     window->set_background_color(&bg);
 
