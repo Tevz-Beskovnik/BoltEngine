@@ -72,7 +72,7 @@ namespace bolt
 
     void Model::rotate_model(vector_3 rotation_vector) noexcept
     {
-        // TODO: implement model rotation
+        // TODO: implement model_from_file rotation
     }
 
     void Model::apply_lighting()
@@ -82,7 +82,7 @@ namespace bolt
 
     void Model::recalculate_normals()
     {
-        BOLT_LOG_INFO("Recalculating normals for model")
+        BOLT_LOG_INFO("Recalculating normals for model_from_file")
 
         #pragma omp parallel for
         for(uint64_t i = 0; i < vertices.size()-3; i+=3)

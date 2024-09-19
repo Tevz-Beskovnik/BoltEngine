@@ -2,7 +2,9 @@
 
 namespace bolt {
     RendererGL::RendererGL(render_config_gl config)
-        :instances(config.instances == 0 ? 1 : config.instances), offset(config.offset), draw_type(config.draw_type), binding_function(config.shader_bindings), model(config.model)
+        :instances(config.instances == 0 ? 1 : config.instances), offset(config.offset), draw_type(config.draw_type),
+        binding_function(config.shader_bindings), model(config.model), textures(std::move(config.texture_config)),
+        framebuffer(nullptr)
     {
         this->vertex = VertexGL::create({
             .index_buffer = model->get_index_buffer().size() != 0
@@ -17,9 +19,6 @@ namespace bolt {
         this->shader = ShaderGL::create(config.shader_config);
 
         this->vertex->unbind();
-
-        for(const auto& texture : config.texture_config)
-            this->textures.push_back(TextureGL::create(texture));
     }
 
     ref_ptr<RendererGL> RendererGL::create(render_config_gl config)
@@ -36,17 +35,20 @@ namespace bolt {
         return true;
     }
 
+    void RendererGL::set_draw_type(uint32_t draw_type)
+    {
+        this->draw_type = draw_type;
+    }
+
     void RendererGL::set_viewport(vector_2 corner, vector_2 dimensions)
     {
         glViewport(corner.x, corner.y, dimensions.x, dimensions.y);
     }
 
-    void RendererGL::add_texture(const std::string &path) {
-        ASSERT(!path.empty(), "Path cannot be a empty string");
-        ASSERT_FILE_EXISTS(path.c_str(), "Bad texture file");
+    void RendererGL::add_texture(const ref_ptr<CommonTextureGL> texture) {
         ASSERT((textures.size() < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS), "Max number of textures binded to renderer");
         // todo: slice string and determin file extension
-        this->textures.push_back(TextureGL::create({TEXTURE_2D, path.c_str()})); // TODO: implement texture class
+        this->textures.push_back(texture); // TODO: implement texture class
     }
 
     void RendererGL::add_model(const ref_ptr<ModelInterface>& model)
@@ -62,7 +64,12 @@ namespace bolt {
         });
     }
 
-    void RendererGL::add_binding_func(uniform_bindings func)
+    void RendererGL::add_framebuffer(const ref_ptr<FrameBufferGL> framebuffer)
+    {
+        this->framebuffer = framebuffer;
+    }
+
+    void RendererGL::add_binding_func(std::function<void(uint32_t)> func)
     {
         this->binding_function = func;
     }

@@ -11,7 +11,7 @@ namespace bolt
     {
         std::string error = "Model file: " + std::string(file_path) + " does not exist.";
         ASSERT_FILE_EXISTS(file_path, error);
-        BOLT_LOG_INFO(std::string("Creating new model with mesh") + std::string(file_path))
+        BOLT_LOG_INFO(std::string("Creating new model_from_file with mesh") + std::string(file_path))
 
         switch(file_standard)
         {

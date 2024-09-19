@@ -1,5 +1,7 @@
 #include <window.hpp>
 
+// TODO: lack of mutex locks might cause crashing here :>
+
 namespace bolt
 {
     [[nodiscard]] Window::Window(const window_config& config)
@@ -75,12 +77,14 @@ namespace bolt
         glfwSetWindowSize(window, width, height);
     }
 
-    void Window::get_size(uint16_t *set_width, uint16_t *set_height) const
+    void Window::get_size(uint16_t *set_width, uint16_t *set_height)
     {
+        lock();
         int s_width, s_height;
         glfwGetWindowSize(window, &s_width, &s_height);
         *set_width = s_width;
         *set_height = s_height;
+        unlock();
     }
 
     void Window::fullscreen()
@@ -138,11 +142,12 @@ namespace bolt
 
     void Window::frame_routine()
     {
-        glfwPollEvents();
+        lock();
 
         glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        unlock();
     }
 
     void Window::register_event_trigger(event_trigger trigger)
@@ -185,26 +190,36 @@ namespace bolt
 
     void Window::cleanup_routine()
     {
+        lock();
         glfwSwapBuffers(window);
+        unlock();
     }
 
     void Window::set_background_color(RGB* color)
     {
+        lock();
+
         if(background_color_owned)
             delete background_color;
 
         background_color = color;
         background_color_owned = false;
+
+        unlock();
     }
 
-    void Window::hide_cursor() const
+    void Window::hide_cursor()
     {
+        lock();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        unlock();
     }
 
     void Window::set_active()
     {
+        lock();
         glfwMakeContextCurrent(window);
+        unlock();
 
         BOLT_LOG_INFO("Set context to window")
 
@@ -214,8 +229,6 @@ namespace bolt
         glCullFace(GL_FRONT);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        BOLT_LOG_INFO("GLEW initialised")
     }
 
     [[nodiscard]] bool Window::is_window_open() const
@@ -226,5 +239,15 @@ namespace bolt
     void Window::close()
     {
         glfwDestroyWindow(window);
+    }
+
+    void Window::lock()
+    {
+        use_lock.lock();
+    }
+
+    void Window::unlock()
+    {
+        use_lock.unlock();
     }
 }

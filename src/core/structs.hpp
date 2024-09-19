@@ -12,6 +12,4 @@ namespace bolt
         int32_t total_size_in_bytes;
         ptrdiff_t offset;
     };
-
-    typedef void (*uniform_bindings)(uint32_t program);
 }

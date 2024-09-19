@@ -6695,7 +6695,7 @@ static stbi_uc* stbi__gif_load_next(stbi__context* s, stbi__gif* g, int* comp, i
     int pcount;
     STBI_NOTUSED(req_comp);
 
-    // on first frame, any non-written pixels get the background colour (non-transparent)
+    // on first update, any non-written pixels get the background colour (non-transparent)
     first_frame = 0;
     if (g->out == 0) {
         if (!stbi__gif_header(s, g, comp, 0)) return 0; // stbi__g_failure_reason set by stbi__gif_header
@@ -6709,15 +6709,15 @@ static stbi_uc* stbi__gif_load_next(stbi__context* s, stbi__gif* g, int* comp, i
             return stbi__errpuc("outofmem", "Out of memory");
 
         // image is treated as "transparent" at the start - ie, nothing overwrites the current background;
-        // background colour is only used for pixels that are not rendered first frame, after that "background"
-        // color refers to the color that was there the previous frame.
+        // background colour is only used for pixels that are not rendered first update, after that "background"
+        // color refers to the color that was there the previous update.
         memset(g->out, 0x00, 4 * pcount);
         memset(g->background, 0x00, 4 * pcount); // state of the background (starts transparent)
-        memset(g->history, 0x00, pcount);        // pixels that were affected previous frame
+        memset(g->history, 0x00, pcount);        // pixels that were affected previous update
         first_frame = 1;
     }
     else {
-        // second frame - how do we dispose of the previous one?
+        // second update - how do we dispose of the previous one?
         dispose = (g->eflags & 0x1C) >> 2;
         pcount = g->w * g->h;
 
@@ -6733,7 +6733,7 @@ static stbi_uc* stbi__gif_load_next(stbi__context* s, stbi__gif* g, int* comp, i
             }
         }
         else if (dispose == 2) {
-            // restore what was changed last frame to background before that frame;
+            // restore what was changed last frame to background before that update;
             for (pi = 0; pi < pcount; ++pi) {
                 if (g->history[pi]) {
                     memcpy(&g->out[pi * 4], &g->background[pi * 4], 4);
@@ -6747,12 +6747,12 @@ static stbi_uc* stbi__gif_load_next(stbi__context* s, stbi__gif* g, int* comp, i
             // 0:  not specified.
         }
 
-        // background is what out is after the undoing of the previou frame;
+        // background is what out is after the undoing of the previou update;
         memcpy(g->background, g->out, 4 * g->w * g->h);
     }
 
     // clear my history;
-    memset(g->history, 0x00, g->w * g->h);        // pixels that were affected previous frame
+    memset(g->history, 0x00, g->w * g->h);        // pixels that were affected previous update
 
     for (;;) {
         int tag = stbi__get8(s);
@@ -6808,13 +6808,13 @@ static stbi_uc* stbi__gif_load_next(stbi__context* s, stbi__gif* g, int* comp, i
             o = stbi__process_gif_raster(s, g);
             if (!o) return NULL;
 
-            // if this was the first frame,
+            // if this was the first update,
             pcount = g->w * g->h;
             if (first_frame && (g->bgindex > 0)) {
-                // if first frame, any pixel not drawn to gets the background color
+                // if first update, any pixel not drawn to gets the background color
                 for (pi = 0; pi < pcount; ++pi) {
                     if (g->history[pi] == 0) {
-                        g->pal[g->bgindex][3] = 255; // just in case it was made transparent, undo that; It will be reset next frame if need be;
+                        g->pal[g->bgindex][3] = 255; // just in case it was made transparent, undo that; It will be reset next update if need be;
                         memcpy(&g->out[pi * 4], &g->pal[g->bgindex], 4);
                     }
                 }
@@ -6972,7 +6972,7 @@ static void* stbi__gif_load(stbi__context* s, int* x, int* y, int* comp, int req
         STBI_FREE(g.out);
     }
 
-    // free buffers needed for multiple frame loading;
+    // free buffers needed for multiple update loading;
     STBI_FREE(g.history);
     STBI_FREE(g.background);
 

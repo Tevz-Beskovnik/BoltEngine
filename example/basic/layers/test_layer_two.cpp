@@ -1,71 +1,46 @@
 //
 // Created by tevz on 11.7.2023.
 //
-#define MOVEMENT_MODIFIER 5
+#define MOVEMENT_MODIFIER 1000
 
 #include <test_layer_two.hpp>
 
 /**
  * TODO:
- * Screen coords are from -1 - 1 no 0 - 1 as I assumed (you already knew this you idiot
+ * Screen coords are from -1 - 1 not 0 - 1 as I assumed (you already knew this you idiot)
  * Anyway make sure it binds correctly
  * */
 
 MouseButton TestLayerTwo::pressed_button = NONE;
 int32_t TestLayerTwo::action = -1;
 vector_2 TestLayerTwo::mouse_pos = {0, 0};
-vector_2 TestLayerTwo::obj_pos = {800, 450};
 
 static bool w_held;
 static bool a_held;
 static bool s_held;
 static bool d_held;
- static vector_3 translationVector = {0.0f, 0.0f, 1.0f};
-
-void binding_function(uint32_t program) {
-    auto uTranslationVec = glGetUniformLocation(program, "uTranslation");
-
-    translationVector.x = (TestLayerTwo::obj_pos.x/1600)*2-1;
-    translationVector.y = (TestLayerTwo::obj_pos.y/900)*2-1;
-
-    glUniform3f(uTranslationVec, translationVector.x, translationVector.y, translationVector.z);
-}
+static vector_3 translationVector = {0.0f, 0.0f, 1.0f};
+static double previous_time = 0;
+static uint32_t frameCount = 0;
 
 TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
     :window(window), current_active(0)
 {
-    ObjectCreator::set_uniform_binding_func(binding_function);
-
-    auto quad = ObjectCreator::quad({0.0f, 0.0f, 0.0f}, {0.2f, 0.2f * (1600.0f/900.0f)}, "../example/shaders/frag_tex.glsl", "../example/shaders/2d_player.vert");
-
-    quad->add_texture("../example/textures/color-frame-bordo.png");
-
-    scene.add_object(quad);
-    //auto pos = scene.add_object(generate_3d_grid());
-
-    /*uint16_t w, h;
-
-    window->get_size(&w, &h);
-    ar = static_cast<float>(w) / static_cast<float>(h);
-
-    frames = {
-        "../example/textures/color-frame-black.png",
-        "../example/textures/color-frame-white.png",
-        "../example/textures/color-frame-red.png",
-        "../example/textures/color-frame-orange.png",
-        "../example/textures/color-frame-vanilla.png",
-        "../example/textures/color-frame-bordo.png",
-        "../example/textures/color-frame-cyan.png",
-        "../example/textures/color-frame-dark-blue.png",
-        "../example/textures/color-frame-light-blue.png",
-        "../example/textures/color-frame-dark-green.png",
-        "../example/textures/color-frame-light-green.png",
-        "../example/textures/color-frame-pinky.png",
-        "../example/textures/color-frame-rose.png",
-        "../example/textures/color-frame-brown.png"
+    platforms = {
+        Platform::create({600, 300}, 6),
+        Platform::create({312, 396}, 4),
+        Platform::create({936, 444}, 5)
     };
 
-    create_frames(frame_objects, frames, collision_boxes, scene, ar);*/
+    player = Player::create({800,500});
+
+    scene->add_object(player->get_render_interface());
+
+    for (const auto& platform : platforms)
+    {
+        scene->add_object(platform->get_render_interface());
+        player->add_hitbox(platform->get_hitbox());
+    }
 }
 
 [[nodiscard]] ref_ptr<TestLayerTwo> TestLayerTwo::create(ref_ptr<Window> window)
@@ -73,36 +48,11 @@ TestLayerTwo::TestLayerTwo(ref_ptr<Window> window)
     return create_ref<TestLayerTwo>(window);
 }
 
-void TestLayerTwo::frame()
+void TestLayerTwo::update(double delta_time)
 {
-    scene.draw();
-    /*scene.draw();
+    player->compute(delta_time);
 
-    if(pressed_button == MouseButton::LEFT_BUTTON && action == 1)
-    {
-        if(int32_t new_active = intersects_rects(mouse_pos, collision_boxes); new_active != -1)
-        {
-            std::cout << "This was clicked" << std::endl;
-            BOLT_LOG_INFO("Remove from scene the current active frame")
-            scene.remove(frame_objects[current_active]);
-
-            BOLT_LOG_INFO("Replace old active with transparent frame")
-            frame_objects[current_active] = create_transparent_frame(frames[current_active], collision_boxes[current_active], scene);
-
-            BOLT_LOG_INFO("Remove the to be active frame")
-            scene.remove(frame_objects[new_active]);
-
-            BOLT_LOG_INFO("Create the new active frame")
-            frame_objects[new_active] = create_full_frame(frames[new_active], collision_boxes[new_active], scene);
-
-            current_active = new_active;
-        }
-    }*/
-
-    obj_pos.x += static_cast<float>(-MOVEMENT_MODIFIER*a_held) + static_cast<float>(MOVEMENT_MODIFIER*d_held);
-    obj_pos.y += static_cast<float>(-MOVEMENT_MODIFIER*s_held) + static_cast<float>(MOVEMENT_MODIFIER*w_held);
-
-    ImGui_ImplOpenGL3_NewFrame();
+    /*ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
@@ -128,7 +78,7 @@ void TestLayerTwo::frame()
     ImGui::EndFrame();
     ImGui::Render();
 
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 }
 
 void TestLayerTwo::bind_event_trigger(event_trigger trigger)
@@ -136,7 +86,7 @@ void TestLayerTwo::bind_event_trigger(event_trigger trigger)
     this->trigger = trigger;
 }
 
-void TestLayerTwo::on_event(Event& e) const
+void TestLayerTwo::on_event(Event& e) const // TODO: Bleh remove const from here its annoying af
 {
     EventDispatcher dispatcher(e);
 
@@ -172,45 +122,7 @@ bool TestLayerTwo::handle_mouse_button_event(MouseClickEvent& event) const
 
 bool TestLayerTwo::handle_keyboard_input(class bolt::KeyEvent &event) const
 {
-    switch(event.key) {
-        case Key::A:
-        {
-            if(event.action == GLFW_PRESS) {
-                a_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                a_held = false;
-            }
-            break;
-        }
-        case Key::D:
-        {
-            if(event.action == GLFW_PRESS) {
-                d_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                d_held = false;
-            }
-            break;
-        }
-        case Key::W:
-        {
-            if(event.action == GLFW_PRESS) {
-                w_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                w_held = false;
-            }
-            break;
-        }
-        case Key::S:
-        {
-            if(event.action == GLFW_PRESS) {
-                s_held = true;
-            } else if(event.action == GLFW_RELEASE) {
-                s_held = false;
-            }
-            break;
-        }
-    }
-
+    player->handle_keyboard_event(event);
     return false;
 }
 

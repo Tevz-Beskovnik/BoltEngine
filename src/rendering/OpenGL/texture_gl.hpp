@@ -1,6 +1,7 @@
 #pragma once
 
 #include <texture_exception.hpp>
+#include <common_texture.hpp>
 #include <primitives.hpp>
 #include <util.hpp>
 #include <core.hpp>
@@ -15,25 +16,38 @@ namespace bolt
     {
         texture_type_gl type;
         const_str texture_location;
+        const_str name;
     };
 
-    class TextureGL
+    struct premade_texture_config_gl
+    {
+        texture_type_gl type;
+        uint32_t texture;
+        int32_t width, height;
+        const_str name;
+    };
+
+    class TextureGL : public CommonTextureGL
     {
         public:
             explicit TextureGL(texture_config_gl config);
+
+            explicit TextureGL(premade_texture_config_gl config);
 
             ~TextureGL();
 
             [[nodiscard]] static ref_ptr<TextureGL> create(texture_config_gl config);
 
-            void bind();
+            [[nodiscard]] static ref_ptr<TextureGL> create(premade_texture_config_gl config);
 
-            void bind_uniform(uint32_t program) const;
+            void bind() override;
 
-            void unbind();
+            void bind_uniform(uint32_t program) const override;
+
+            void unbind() override;
 
         private:
-            static uint32_t activeTexture;
+            const_str name;
 
             int32_t binding;
 

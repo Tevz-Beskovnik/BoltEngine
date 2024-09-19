@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.20.5)
 project(BoltEngine VERSION 1.0)
 # TODO localize all things to do with engine in a library!!! THIS SHOULD BE HIGH PRIORITY
 
+# by setting this cmake exports the compile commands
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 23)
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_APPLE_SILICON_PROCESSOR arm64) # comment out for linux builds
@@ -54,6 +56,7 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/model/types
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/events
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/layers
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/game_object
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/scene
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/exceptions
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/primitives
@@ -64,5 +67,6 @@ target_include_directories(
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/camera
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/example/basic/game_functions
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/scene/camera
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/interactions
         #PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )

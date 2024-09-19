@@ -1,0 +1,43 @@
+{
+  "version": 4,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 15,
+    "patch": 0
+  },
+  "vendor": {
+    "conan": {}
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "description": "Default preset for building bolt",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_POLICY_DEFAULT_CMP0091": "NEW"
+      }
+    },
+    {
+      "name": "defaultDebug",
+      "hidden": false,
+      "displayName": "Default Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "toolchainFile": "${sourceDir}/build/Debug/generators/conan_toolchain.cmake"
+    },
+    {
+      "name": "defaultRelease",
+      "hidden": false,
+      "displayName": "Default Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "toolchainFile": "${sourceDir}/build/Release/generators/conan_toolchain.cmake"
+    }
+  ] 
+}

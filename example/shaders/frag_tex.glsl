@@ -4,8 +4,8 @@ out vec4 FragColor;
 
 in vec2 oUV;
 
-uniform sampler2D uTexture;
+uniform sampler2D uTexturePlayer;
 
 void main() {
-    FragColor = texture(uTexture, oUV);
+    FragColor = texture(uTexturePlayer, oUV);
 }

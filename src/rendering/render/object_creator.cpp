@@ -8,7 +8,10 @@ namespace bolt
 
     render_framework ObjectCreator::framework = OPEN_GL;
 
-    uniform_bindings ObjectCreator::binding_func = trash;
+    std::function<void(uint32_t)> ObjectCreator::binding_func = trash;
+
+    uint16_t ObjectCreator::width = 0;
+    uint16_t ObjectCreator::height = 0;
 
     void ObjectCreator::set_render_framework(bolt::render_framework new_framework)
     {
@@ -109,7 +112,7 @@ namespace bolt
         renderer->add_model(MeshBuilder::make_quad(pos, dims));
     }
 
-    [[nodiscard]] ref_ptr<RenderInterface> ObjectCreator::model(const_str model_file, const_str frag_shader, const_str vert_shader)
+    [[nodiscard]] ref_ptr<RenderInterface> ObjectCreator::model_from_file(const_str model_file, const_str frag_shader, const_str vert_shader)
     {
         return RendererGL::create(render_config_gl{
                 .shader_config = {
@@ -131,13 +134,46 @@ namespace bolt
         });
     }
 
-    void ObjectCreator::add_model(const_str model, const ref_ptr<RenderInterface>& renderer)
+    void ObjectCreator::add_model_from_file(const_str model, const ref_ptr<RenderInterface>& renderer)
     {
         renderer->add_model(MeshBuilder::read_model(model, OBJ));
     }
 
-    void ObjectCreator::set_uniform_binding_func(bolt::uniform_bindings binding_func)
+    [[nodiscard]] ref_ptr<RenderInterface> ObjectCreator::model(ref_ptr<ModelInterface> model, const_str frag_shader, const_str vert_shader)
+    {
+        return RendererGL::create(render_config_gl{
+            .shader_config = {
+                shader_config_gl{
+                    .shader_location = frag_shader,
+                    .type = GL_FRAGMENT_SHADER
+                },
+                shader_config_gl{
+                    .shader_location = vert_shader,
+                    .type = GL_VERTEX_SHADER
+                }
+            },
+            .texture_config = {},
+            .model = model,
+            .shader_bindings = ObjectCreator::binding_func,
+            .instances = 1,
+            .draw_type = GL_TRIANGLES,
+            .offset = 0
+        });
+    }
+
+    void ObjectCreator::add_model(ref_ptr<ModelInterface> model, ref_ptr<RenderInterface> interface)
+    {
+        interface->add_model(model);
+    }
+
+    void ObjectCreator::set_uniform_binding_func(std::function<void(uint32_t)> binding_func)
     {
         ObjectCreator::binding_func = binding_func;
+    }
+
+    void ObjectCreator::set_window_dims(uint16_t width, uint16_t height)
+    {
+        ObjectCreator::width = width;
+        ObjectCreator::height = height;
     }
 }

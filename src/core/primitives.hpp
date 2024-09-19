@@ -7,15 +7,15 @@ namespace bolt
 {
     struct vector_2
     {
-        float x = 0.0f;
-        float y = 0.0f;
+        double x = 0;
+        double y = 0;
 
         //vector addition
         [[nodiscard]] inline vector_2 operator + (vector_2 const vec) const
         {
-            return {
-                this->x + vec.x,
-                this->y + vec.y
+            return vector_2 {
+                .x = this->x + vec.x,
+                .y = this->y + vec.y
             };
         }
 
@@ -30,8 +30,8 @@ namespace bolt
         [[nodiscard]] inline vector_2 operator - (vector_2 const &vec) const
         {
             vector_2 res;
-            res.x = this->y - vec.y;
-            res.y = this->x - vec.x;
+            res.x = this->x - vec.x;
+            res.y = this->y - vec.y;
             return res;
         }
 
@@ -49,11 +49,11 @@ namespace bolt
         }
 
         // multiply by vector
-        [[nodiscard]] inline vector_2 operator * (float const &scalar) const
+        [[nodiscard]] inline vector_2 operator * (double const &scalar) const
         {
-            return {
-                this->x * scalar,
-                this->y * scalar
+            return vector_2 {
+                .x = this->x * scalar,
+                .y = this->y * scalar
             };
         }
 
@@ -63,32 +63,32 @@ namespace bolt
             this->y *= scalar;
         }
 
-        [[nodiscard]] inline vector_2 operator / (float const &scalar) const
+        [[nodiscard]] inline vector_2 operator / (double const &scalar) const
         {
-            return {
-                this->x / scalar,
-                this->y / scalar
+            return vector_2 {
+                .x = this->x / scalar,
+                .y = this->y / scalar
             };
         }
 
-        inline void operator /= (float const &scalar)
+        inline void operator /= (double const &scalar)
         {
             this->x /= scalar;
             this->y /= scalar;
         }
 
-        [[nodiscard]] inline float length() const
+        [[nodiscard]] inline double length() const
         {
-            return (float)sqrtl((*this) | (*this));
+            return (double)sqrtl((*this) | (*this));
         }
 
         [[nodiscard]] inline vector_2 normalize() const
         {
-            float l = this->length();
+            double l = this->length();
             bool lf = l != 0, lt = l == 0;
-            return {
-                ((this->x / l) * lf + this->x * lt),
-                ((this->y / l) * lf + this->y * lt)
+            return vector_2 {
+                .x = ((this->x / static_cast<double>(l)) * static_cast<double>(lf) + this->x * static_cast<double>(lt)),
+                .y = ((this->y / static_cast<double>(l)) * static_cast<double>(lf) + this->y * static_cast<double>(lt))
             };
         }
 
@@ -100,9 +100,9 @@ namespace bolt
 
     struct vector_3
     {
-        float x = 0.0f;
-        float y = 0.0f;
-        float z = 0.0f;
+        double x = 0.0f;
+        double y = 0.0f;
+        double z = 0.0f;
 
         // vector addition
         [[nodiscard]] inline vector_3 operator + (vector_3 const &vec) const
@@ -242,7 +242,7 @@ namespace bolt
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f,
                 0.0f, 0.0f, 1.0f, 0.0f,
-                vec.x, vec.y, vec.z, 1.0f
+                static_cast<float>(vec.x), static_cast<float>(vec.y), static_cast<float>(vec.z), 1.0f
             };
         }
 
