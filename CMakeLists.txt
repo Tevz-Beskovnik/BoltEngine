@@ -42,7 +42,10 @@ set(BoltEngine_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(${PROJECT_NAME} GLEW::GLEW glfw imgui::imgui)
+find_package(imgui)
+find_package(glew)
+find_package(glfw3)
+target_link_libraries(${PROJECT_NAME} imgui::imgui GLEW::GLEW glfw)
 
 target_include_directories(
         "${CMAKE_PROJECT_NAME}"

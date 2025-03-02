@@ -130,7 +130,7 @@ void Player::handle_keyboard_event(class bolt::KeyEvent &event)
         {
             if (grounded)
             {
-                velocity.y = 500.0f;
+                velocity.y = 700.0f;
                 grounded = false;
             }
         }
@@ -149,12 +149,14 @@ void Player::compute(double delta_time)
 
 void Player::update_player(double delta_time)
 {
-    velocity.x = (-1.0f * a_held + d_held) * MOVEMENT_MOD;
+    velocity.x = (-1.0f * a_held + d_held) * PLAYER_ACCELERATION;
 
     if(velocity.y < MAX_SPEED)
         velocity.y -= GRAVITATIONAL_ACCELERATION * delta_time;
    
     bolt::vector_2 delta_velocity = velocity * delta_time;
+
+    grounded = false;
 
     for(const auto& box : other_hitboxes)
     {
@@ -173,14 +175,14 @@ void Player::update_player(double delta_time)
                     delta_velocity.x *= collision_info.collision_time;
                 }
 
-                std::cout << "Delta velocity: " << delta_velocity.x << " " << delta_velocity.y << std::endl;
-
                 if (collision_info.face == bolt::CollisionFace::UP)
-                    grounded = true;
+                    grounded |= true;
             }
         }
     }
-
+    
+    velocity.x *= 0.5;
+    std::cout << "Velocity x: " << velocity.x << std::endl;
     position += delta_velocity;
     set_hitbox(position);
 }

@@ -1,10 +1,12 @@
+#include <fstream>
 #include <renderer_gl.hpp>
+#include <sstream>
 
 namespace bolt {
     RendererGL::RendererGL(render_config_gl config)
         :instances(config.instances == 0 ? 1 : config.instances), offset(config.offset), draw_type(config.draw_type),
         binding_function(config.shader_bindings), model(config.model), textures(std::move(config.texture_config)),
-        framebuffer(nullptr)
+        framebuffer(nullptr), config(config)
     {
         this->vertex = VertexGL::create({
             .index_buffer = model->get_index_buffer().size() != 0

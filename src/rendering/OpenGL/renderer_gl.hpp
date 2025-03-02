@@ -1,6 +1,8 @@
 #pragma once
 
 #include <core.hpp>
+#include <fstream>
+#include <string>
 #include <util.hpp>
 #include <renderer_interface.hpp>
 #include <frame_buffer_gl.hpp>
@@ -60,5 +62,6 @@ namespace bolt
             ref_ptr<ShaderGL> shader;
             std::vector<ref_ptr<CommonTextureGL>> textures;
             ref_ptr<VertexGL> vertex;
+            render_config_gl config;
     };
 }

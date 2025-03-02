@@ -21,8 +21,8 @@ protected:
 
     void set_hitbox(bolt::vector_2 pos);
 
-    static constexpr double MOVEMENT_MOD = 500;
-    static constexpr double GRAVITATIONAL_ACCELERATION = 1000;
+    static constexpr double PLAYER_ACCELERATION = 600;
+    static constexpr double GRAVITATIONAL_ACCELERATION = 1600;
     static constexpr double MAX_SPEED = 1000;
 
     bolt::vector_2 position;
