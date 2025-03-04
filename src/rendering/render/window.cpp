@@ -1,4 +1,5 @@
 #include <window.hpp>
+#include <GLFW/glfw3.h>
 
 // TODO: lack of mutex locks might cause crashing here :>
 
@@ -143,7 +144,6 @@ namespace bolt
     void Window::frame_routine()
     {
         lock();
-
         glClearColor(background_color->r_dec, background_color->g_dec, background_color->b_dec, background_color->a_dec);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -229,6 +229,13 @@ namespace bolt
         glCullFace(GL_FRONT);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    void Window::set_context_none()
+    {
+        lock();
+        glfwMakeContextCurrent(NULL);
+        unlock();
     }
 
     [[nodiscard]] bool Window::is_window_open() const

@@ -3,6 +3,7 @@
 //
 
 #include <application.hpp>
+#include <imgui.h>
 
 namespace bolt
 {
@@ -55,15 +56,26 @@ namespace bolt
     {
         if(window == nullptr) throw SetupException("Application window is not set");
 
+        window->set_context_none();
+
         renderer.init();
+
+        previous_time = glfwGetTime();
 
         while(running)
         {
             double current_time = glfwGetTime();
-            glfwPollEvents();
-            for(const auto& layer : layers) layer->update(current_time - previous_time);
-            for(const auto& camera : cameras) camera->update(); // TODO: cameras need to get reworked
-            previous_time = current_time;
+            float frame_time = 1.f / 120.0f;
+            if(current_time - previous_time > frame_time) {
+                glfwPollEvents();
+                for(const auto& layer : layers) layer->update(current_time - previous_time);
+                for(const auto& camera : cameras) camera->update(); // TODO: cameras need to get reworked
+                previous_time = current_time;
+
+                window->frame_routine();
+                for(const auto& layer : layers) layer->get_scene()->draw();
+                window->cleanup_routine();
+            }
         }
 
         renderer.wait_for();

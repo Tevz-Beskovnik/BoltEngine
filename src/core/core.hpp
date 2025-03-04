@@ -6,6 +6,10 @@
 
 #define ENUM_TO_STRING(e) #e
 
+#if defined(NDEBUG) && !defined(BOLT_DEBUG)
+#define BOLT_DEBUG
+#endif
+
 // PRIMARY
 #include <algorithm>
 #include <chrono>

@@ -1,6 +1,4 @@
-#include <fstream>
 #include <renderer_gl.hpp>
-#include <sstream>
 
 namespace bolt {
     RendererGL::RendererGL(render_config_gl config)
@@ -77,9 +75,9 @@ namespace bolt {
     }
 
     void RendererGL::render() const {
-        shader->bind();
-
         vertex->bind();
+        
+        shader->bind();
 
         for(const auto& texture : textures)
         {

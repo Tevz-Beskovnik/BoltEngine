@@ -66,6 +66,8 @@ namespace bolt
 
             void set_active();
 
+            void set_context_none();
+
             void lock();
 
             void unlock();

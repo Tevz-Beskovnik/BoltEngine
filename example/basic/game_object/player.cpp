@@ -182,7 +182,6 @@ void Player::update_player(double delta_time)
     }
     
     velocity.x *= 0.5;
-    std::cout << "Velocity x: " << velocity.x << std::endl;
     position += delta_velocity;
     set_hitbox(position);
 }
