@@ -1,106 +1,30 @@
+#include "util.hpp"
 #include <shader_gl.hpp>
 
 namespace bolt
 {
-    [[nodiscard]] ShaderGL::ShaderGL(std::vector<shader_config_gl> config)
+    ShaderGL::ShaderGL(shader_config_gl config)
     {
-        BOLT_LOG_INFO("Creating shader program")
+        std::string error = "File: " + std::string(config.shader_location) + " does not exist.";
+        ASSERT_FILE_EXISTS(config.shader_location, error);
 
-        for(auto& conf : config)
-        {
-            std::string error = "File: " + std::string(conf.shader_location) + " does not exist.";
-            ASSERT_FILE_EXISTS(conf.shader_location, error);
-
-            read_shader(conf.shader_location);
-
-            compile_shader(conf.type);
-        }
-
-        BOLT_LOG_INFO("Linking shader")
-
-        program = glCreateProgram();
-        for(auto& shader : delete_queue)
-            glAttachShader(program, shader);
-        glLinkProgram(program);
-        glValidateProgram(program);
-
-        int32_t status;
-        glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
-
-        if(status == GL_FALSE)
-        {
-            int32_t length;
-            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-
-            auto message = new char[length];
-            glGetProgramInfoLog(program, length, &length, message);
-
-            glDeleteProgram(program);
-
-            BOLT_LOG_ERROR(message)
-            BOLT_ERROR(RendererException("Program failed to validate"))
-        }
-
-        for(auto& shader : delete_queue)
-            glDeleteShader(shader);
-
-        BOLT_LOG_INFO("Linking finished");
-    }
-
-    ShaderGL::~ShaderGL()
-    {
-        BOLT_LOG_INFO("Deleting shader program")
-        glDeleteProgram(program);
-    }
-
-    [[nodiscard]] ref_ptr<ShaderGL> ShaderGL::create(std::vector<shader_config_gl> config)
-    {
-        return create_ref<ShaderGL>(config);
-    }
-
-
-    [[nodiscard]] uint32_t ShaderGL::get_program() const {
-        return program;
-    }
-
-    void ShaderGL::bind() const
-    {
-        glUseProgram(program);
-    }
-
-    void ShaderGL::unbind()
-    {
-        glUseProgram(0);
-    }
-
-    void ShaderGL::destroy() const
-    {
-        glDeleteProgram(program);
-    }
-
-    void ShaderGL::read_shader(const_str shader_location)
-    {
-        shader_string = "";
-
+        std::string shader_string =  "";
         std::string line;
-        std::ifstream file(shader_location);
+        std::ifstream file(config.shader_location);
 
         while(std::getline(file, line))
         {
             shader_string += line + '\n';
         }
         shader_string += '\0';
-    }
 
-    void ShaderGL::compile_shader(uint32_t type)
-    {
-        const_str c_str_shader = shader_string.c_str();
-        uint32_t shader = glCreateShader(type);
+        const_str shader_str = shader_string.c_str();
+        shader = glCreateShader(config.type);
 
         BOLT_LOG_INFO("Compiling shader:")
-        BOLT_LOG_INFO(c_str_shader)
+        BOLT_LOG_INFO(shader_str)
 
-        glShaderSource(shader, 1, &c_str_shader, NULL);
+        glShaderSource(shader, 1, &shader_str, NULL);
         glCompileShader(shader);
 
         int32_t status;
@@ -121,8 +45,84 @@ namespace bolt
             BOLT_ERROR(std::runtime_error("Shared failed to compiler"))
         }
 
-        delete_queue.push_back(shader);
-
         BOLT_LOG_INFO("Shader compiled")
+    }
+
+    ShaderGL::~ShaderGL()
+    {
+        glDeleteShader(shader);
+    }
+
+    ref_ptr<ShaderGL> ShaderGL::create(shader_config_gl config)
+    {
+        return create_ref<ShaderGL>(config);
+    }
+
+    uint32_t ShaderGL::get_shader() const
+    {
+        return shader;
+    }
+
+    [[nodiscard]] ProgramGL::ProgramGL(std::vector<ref_ptr<ShaderGL>> config)
+    {
+        BOLT_LOG_INFO("Creating shader program")
+
+        BOLT_LOG_INFO("Linking shader")
+
+        program = glCreateProgram();
+        for(auto& shader : config)
+            glAttachShader(program, shader->get_shader());
+        glLinkProgram(program);
+        glValidateProgram(program);
+
+        int32_t status;
+        glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
+
+        if(status == GL_FALSE)
+        {
+            int32_t length;
+            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+
+            auto message = new char[length];
+            glGetProgramInfoLog(program, length, &length, message);
+
+            glDeleteProgram(program);
+
+            BOLT_LOG_ERROR(message)
+            BOLT_ERROR(RendererException("Program failed to validate"))
+        }
+
+        BOLT_LOG_INFO("Linking finished");
+    }
+
+    ProgramGL::~ProgramGL()
+    {
+        BOLT_LOG_INFO("Deleting shader program")
+        glDeleteProgram(program);
+    }
+
+    [[nodiscard]] ref_ptr<ProgramGL> ProgramGL::create(std::vector<ref_ptr<ShaderGL>> config)
+    {
+        return create_ref<ProgramGL>(config);
+    }
+
+
+    [[nodiscard]] uint32_t ProgramGL::get_program() const {
+        return program;
+    }
+
+    void ProgramGL::bind() const
+    {
+        glUseProgram(program);
+    }
+
+    void ProgramGL::unbind()
+    {
+        glUseProgram(0);
+    }
+
+    void ProgramGL::destroy() const
+    {
+        glDeleteProgram(program);
     }
 }

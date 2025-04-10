@@ -26,16 +26,16 @@ namespace bolt
     [[nodiscard]] ref_ptr<RenderInterface> ObjectCreator::lines(const std::vector<vector_3>& points, RGB color, const_str frag_shader, const_str vert_shader)
     {
         return RendererGL::create(render_config_gl{
-            .shader_config = {
-                    shader_config_gl{
-                        .shader_location = frag_shader,
-                        .type = GL_FRAGMENT_SHADER
-                    },
-                    shader_config_gl{
-                        .shader_location = vert_shader,
-                        .type = GL_VERTEX_SHADER
-                    }
-                },
+            .shader = { // program should idealy be passed via params already but for now i'll leave it like this ik it's bad like this
+                ShaderGL::create({
+                    .shader_location = frag_shader,
+                    .type = GL_FRAGMENT_SHADER
+                }),
+                ShaderGL::create({
+                    .shader_location = vert_shader,
+                    .type = GL_VERTEX_SHADER
+                })
+            },
             .texture_config = {},
             .model = Line::create(points, color),
             .shader_bindings = ObjectCreator::binding_func,
@@ -57,15 +57,15 @@ namespace bolt
         model->move_model(pos);
 
         return RendererGL::create(render_config_gl{
-                .shader_config = {
-                        shader_config_gl{
-                                .shader_location = frag_shader,
-                                .type = GL_FRAGMENT_SHADER
-                        },
-                        shader_config_gl{
-                                .shader_location = vert_shader,
-                                .type = GL_VERTEX_SHADER
-                        }
+                .shader = { // program should idealy be passed via params already but for now i'll leave it like this ik it's bad like this
+                    ShaderGL::create({
+                        .shader_location = frag_shader,
+                        .type = GL_FRAGMENT_SHADER
+                    }),
+                    ShaderGL::create({
+                        .shader_location = vert_shader,
+                        .type = GL_VERTEX_SHADER
+                    })
                 },
                 .texture_config = {},
                 .model = model,
@@ -88,15 +88,15 @@ namespace bolt
     [[nodiscard]] ref_ptr<RenderInterface> ObjectCreator::quad(vector_3 pos, vector_2 dims, const_str frag_shader, const_str vert_shader)
     {
         return RendererGL::create(render_config_gl{
-                .shader_config = {
-                        shader_config_gl{
-                                .shader_location = frag_shader,
-                                .type = GL_FRAGMENT_SHADER
-                        },
-                        shader_config_gl{
-                                .shader_location = vert_shader,
-                                .type = GL_VERTEX_SHADER
-                        }
+                .shader = { // program should idealy be passed via params already but for now i'll leave it like this ik it's bad like this
+                    ShaderGL::create({
+                        .shader_location = frag_shader,
+                        .type = GL_FRAGMENT_SHADER
+                    }),
+                    ShaderGL::create({
+                        .shader_location = vert_shader,
+                        .type = GL_VERTEX_SHADER
+                    })
                 },
                 .texture_config = {},
                 .model = MeshBuilder::make_quad(pos, dims),
@@ -115,15 +115,15 @@ namespace bolt
     [[nodiscard]] ref_ptr<RenderInterface> ObjectCreator::model_from_file(const_str model_file, const_str frag_shader, const_str vert_shader)
     {
         return RendererGL::create(render_config_gl{
-                .shader_config = {
-                        shader_config_gl{
-                                .shader_location = frag_shader,
-                                .type = GL_FRAGMENT_SHADER
-                        },
-                        shader_config_gl{
-                                .shader_location = vert_shader,
-                                .type = GL_VERTEX_SHADER
-                        }
+                .shader = { // program should idealy be passed via params already but for now i'll leave it like this ik it's bad like this
+                    ShaderGL::create({
+                        .shader_location = frag_shader,
+                        .type = GL_FRAGMENT_SHADER
+                    }),
+                    ShaderGL::create({
+                        .shader_location = vert_shader,
+                        .type = GL_VERTEX_SHADER
+                    })
                 },
                 .texture_config = {},
                 .model = MeshBuilder::read_model(model_file, OBJ), // TODO check for file extension to determin what file type to add
@@ -142,15 +142,15 @@ namespace bolt
     [[nodiscard]] ref_ptr<RenderInterface> ObjectCreator::model(ref_ptr<ModelInterface> model, const_str frag_shader, const_str vert_shader)
     {
         return RendererGL::create(render_config_gl{
-            .shader_config = {
-                shader_config_gl{
+            .shader = { // program should idealy be passed via params already but for now i'll leave it like this ik it's bad like this
+                ShaderGL::create({
                     .shader_location = frag_shader,
                     .type = GL_FRAGMENT_SHADER
-                },
-                shader_config_gl{
+                }),
+                ShaderGL::create({
                     .shader_location = vert_shader,
                     .type = GL_VERTEX_SHADER
-                }
+                })
             },
             .texture_config = {},
             .model = model,

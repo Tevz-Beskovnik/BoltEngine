@@ -1,8 +1,6 @@
 #pragma once
 
 #include <core.hpp>
-#include <fstream>
-#include <string>
 #include <util.hpp>
 #include <renderer_interface.hpp>
 #include <frame_buffer_gl.hpp>
@@ -14,11 +12,12 @@
 #include <structs.hpp>
 
 // TODO: Remove framebuffer references from here framebuffer now resides in scenes
+// ^ hah what exactly is this suppost to mean stupid
 
 namespace bolt
 {
     struct render_config_gl {
-        std::vector<shader_config_gl> shader_config;
+        std::vector<ref_ptr<ShaderGL>> shader;
         std::vector<ref_ptr<CommonTextureGL>> texture_config;
         ref_ptr<ModelInterface> model;
         std::function<void(int32_t)> shader_bindings;
@@ -59,7 +58,7 @@ namespace bolt
 
             ref_ptr<FrameBufferGL> framebuffer;
             ref_ptr<ModelInterface> model;
-            ref_ptr<ShaderGL> shader;
+            ref_ptr<ProgramGL> shader;
             std::vector<ref_ptr<CommonTextureGL>> textures;
             ref_ptr<VertexGL> vertex;
             render_config_gl config;

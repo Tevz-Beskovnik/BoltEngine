@@ -1,6 +1,4 @@
-#include <fstream>
 #include <renderer_gl.hpp>
-#include <sstream>
 
 namespace bolt {
     RendererGL::RendererGL(render_config_gl config)
@@ -18,7 +16,7 @@ namespace bolt {
 
         this->vertex->bind();
 
-        this->shader = ShaderGL::create(config.shader_config);
+        this->shader = ProgramGL::create(config.shader);
 
         this->vertex->unbind();
     }

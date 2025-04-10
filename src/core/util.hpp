@@ -53,4 +53,19 @@ namespace bolt
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
+
+    namespace util // TODO: put this whole file into the namespace
+    {
+        template<typename T>
+        inline bool __null_check(ref_ptr<T> shdr)
+        {
+            return shdr != nullptr;
+        }
+
+        template<typename... T, typename E>
+        inline bool __null_check(ref_ptr<E> shdr, T... args)
+        {
+            return shdr != nullptr && __null_check(args...);
+        }
+    }
 }

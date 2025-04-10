@@ -13,6 +13,7 @@ find_package(glfw3)
 find_package(imgui)
 
 set(MAIN_FILE_BASIC "example/basic/main.cpp")
+set(BoltEngine_BUILD_SHADERS_DIR "/shaders")
 
 file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L1 CONFIGURE_DEPENDS "example/*.cpp")
 file (GLOB_RECURSE BoltEngine_EXAMPLE_SOURCES_L2 CONFIGURE_DEPENDS "example/*/*.cpp")
@@ -23,6 +24,8 @@ file (GLOB_RECURSE BoltEngine_SOURCES_L1 CONFIGURE_DEPENDS "src/*.cpp")
 file (GLOB_RECURSE BoltEngine_SOURCES_L2 CONFIGURE_DEPENDS "src/*/*.cpp")
 file (GLOB_RECURSE BoltEngine_SOURCES_L3 CONFIGURE_DEPENDS "src/*/*/*.cpp")
 file (GLOB_RECURSE BoltEngine_SOURCES_L4 CONFIGURE_DEPENDS "src/*/*/*/*.cpp")
+
+message("Compiling headers")
 
 add_executable("${CMAKE_PROJECT_NAME}"
         ${BoltEngine_SOURCES_L1} # Main sources
@@ -42,10 +45,21 @@ set(BoltEngine_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
+set(BoltEngine_SHADERS "src/rendering/OpenGL/shaders")
+
+message("Copying resources")
+
+make_directory("${CMAKE_CURRENT_BINARY_DIR}${BoltEngine_BUILD_SHADERS_DIR}")
+file(COPY ${BoltEngine_SHADERS}/ DESTINATION "${CMAKE_CURRENT_BINARY_DIR}${BoltEngine_BUILD_SHADERS_DIR}")
+
+message("Linking libraries")
+
 find_package(imgui)
 find_package(glew)
 find_package(glfw3)
 target_link_libraries(${PROJECT_NAME} imgui::imgui GLEW::GLEW glfw)
+
+message("Adding include directories")
 
 target_include_directories(
         "${CMAKE_PROJECT_NAME}"

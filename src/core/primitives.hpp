@@ -104,6 +104,18 @@ namespace bolt
         double y = 0.0f;
         double z = 0.0f;
 
+        vector_3(double x, double y, double z)
+            :x(x), y(y), z(z)
+        {
+            ;
+        }
+
+        vector_3(const vector_2& vec2)
+            :x(vec2.x), y(vec2.y), z(0)
+        {
+            ;
+        }
+
         // vector addition
         [[nodiscard]] inline vector_3 operator + (vector_3 const &vec) const
         {

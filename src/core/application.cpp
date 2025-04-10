@@ -2,6 +2,7 @@
 // Created by Tevz on 15/04/2023.
 //
 
+#include "predef_shader_gl.hpp"
 #include <application.hpp>
 
 namespace bolt
@@ -65,6 +66,8 @@ namespace bolt
             for(const auto& camera : cameras) camera->update(); // TODO: cameras need to get reworked
             previous_time = current_time;
         }
+
+        Shaders::clean();
 
         renderer.wait_for();
     }
