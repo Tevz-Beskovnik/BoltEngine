@@ -256,7 +256,7 @@ namespace bolt
                 else
                 {
                     s >> junk >> f[0] >> f[1] >> f[2];
-                    mesh.push_back({ { verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] }, { 0.0f }, 1.0f, 0.0f, 0.0f });
+                    mesh.push_back({ { verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] }, { 0.0f }, {1.0f, 0.0f, 0.0f }});
                 }
             }
         }

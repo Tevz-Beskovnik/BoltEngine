@@ -116,6 +116,11 @@ namespace bolt
             ;
         }
 
+        vector_3()
+            :x(0.0), y(0.0), z(0.0)
+        {
+        }
+
         // vector addition
         [[nodiscard]] inline vector_3 operator + (vector_3 const &vec) const
         {

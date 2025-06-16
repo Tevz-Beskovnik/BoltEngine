@@ -12,10 +12,10 @@ namespace bolt
         :texture({texture_type_gl::TEXTURE_2D, path, name}), position(pos), dimensions(dimensions)
     {
         renderer = RendererGL::create(render_config_gl{
-        .shader = Shaders::get_texture_shaders(),
+            .shader = Shaders::get_texture_shaders(),
             .texture_config = {},
             .model = MeshBuilder::make_quad(pos, dimensions),
-            .shader_bindings = ,
+            .shader_bindings = [this](uint32_t program) { binding_func(program); },
             .instances = 1,
             .draw_type = GL_TRIANGLES,
             .offset = 0
